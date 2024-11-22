@@ -9,7 +9,7 @@ const Card = () => {
         ];
      return (
           <div>
-          <div className="flex justify-around items-center space-x-2 ">
+          <div className="flex justify-around bg-slate-200 p-3 items-center space-x-2 ">
       {items.map((item, index) => (
         <div
           key={index}

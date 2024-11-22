@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 
 
 const Banner = () => {
@@ -5,19 +6,22 @@ const Banner = () => {
           <div>
 <div className="w-full">
   {/* Header Section */}
-  <div className="flex justify-between items-center bg-blue-500 px-4 py-2">
+  <div className="flex justify-between items-center bg-blue-500  px-4 py-2">
     {/* Logo */}
     <div>
       {/* Replace the commented code with your logo if needed */}
       <h2 className="text-2xl text-white">Gain</h2>
     </div>
     {/* Icon or Flag */}
-    <div>
+    <div className="flex gap-3 p-1">
       <img
-        src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Flag_of_Bangladesh.svg"
-        alt="Flag"
-        className="h-8 w-8 rounded-full"
+        src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+        alt="Avatar"
+        className="h-10 w-10 rounded-full"
       />
+        <div>
+        <button className="btn btn-sm bg-blue-500 text-white -space-y-3"><Link to={'/login'}>Login</Link></button>
+        </div>
     </div>
   </div>
 
@@ -26,7 +30,7 @@ const Banner = () => {
     <img
       src="https://img.freepik.com/free-vector/gradient-real-estate-linkedin-banner_23-2149058715.jpg?t=st=1731998828~exp=1732002428~hmac=d7d2ff3ebb88f3b50e10a11c902a63a416f60269ccab7353cd1f21b6fa7113e8&w=1060"
       alt="Banner Image"
-      className="w-full h-[200px] sm:h-[300px] md:h-[400px] object-cover"
+      className="lg:w-full sm:w-[400px] md:w-[900px] h-[200px] sm:h-[300px] md:h-[400px] lg:object-cover md:object-bottom"
     />
   </div>
 </div>
