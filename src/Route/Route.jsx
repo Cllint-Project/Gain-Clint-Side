@@ -8,6 +8,7 @@ import Registation from "../Page/Registation";
 import Details1 from "../Component/Details1";
 import Details2 from "../Component/Details2";
 import Details3 from "../Component/Details3";
+import Reacharge from "../Component/Reacharge";
 
 const router = createBrowserRouter([
      {
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
           {
             path:"/detailed",
             element:<Details3></Details3>
+          },
+          {
+            path:"/reacharge",
+            element:<Reacharge></Reacharge>
           },
        ]
      },
