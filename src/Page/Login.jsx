@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import {
@@ -8,9 +8,11 @@ import {
   validateCaptcha,
 } from "react-simple-captcha";
 import { toast } from "react-toastify";
+import { AuthContext } from "../Auth/AuthProvider";
 const Login = () => {
+  const {login, user, loading,setLoading} = useContext(AuthContext);
   const [disabled, setdisabled] = useState(true);
-  const [loading, setIsLoading] = useState(false);
+
 
   const {
     register,
@@ -33,10 +35,10 @@ const Login = () => {
   };
 
   const onSubmit = async(data)=>{
-    setIsLoading(true)
+    setLoading(true)
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/login', data);
-      if(res.data){
+      const getUser = await login(data);
+      if(getUser){
         toast.success("Login successful!");
       }
     } catch (error) {
@@ -44,7 +46,7 @@ const Login = () => {
         toast.success(error.message | error);
       }
     }finally{
-      setIsLoading(false)
+      setLoading(false)
     }
   }
   return (

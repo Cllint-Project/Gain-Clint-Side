@@ -1,15 +1,16 @@
-import axios from "axios";
-import { useState } from "react";
+// import axios from "axios";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { PiEyeClosedLight } from "react-icons/pi";
 import { VscEyeClosed } from "react-icons/vsc";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import { AuthContext } from "../Auth/AuthProvider";
 
 const Registation = () => {
+  const {Register, user, loading,setLoading} = useContext(AuthContext);
   const [showpassword, setShowpassword] = useState(false);
-  const [loading, setIsLoading] = useState(false);
 
   const {
     register,
@@ -18,22 +19,16 @@ const Registation = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    setIsLoading(true);
+    setLoading(true);
     try {
-     console.log(data)
-      const response = await axios.post(
-        "http://localhost:5000/api/auth/register",
-        data
-      );
-      if(response.data){
-        toast.success("Registration successful!");
+      const getUser = await Register(data);
+      if(getUser){
+        toast.success("Register successful!");
       }
-      //   reset(); // Clear form after successful submission
-      console.log("Registration successful:", response.data);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Registration failed");
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
   return (
@@ -151,7 +146,7 @@ const Registation = () => {
                 className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300"
               >
                 {
-                  loading? <span className="loading loading-dots loading-lg"></span> : "Registration"
+                  loading? <span className="loading loading-dots loading-xs"></span> : "Registration"
                 }
               </button>
             </form>
