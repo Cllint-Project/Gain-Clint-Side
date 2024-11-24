@@ -39,7 +39,6 @@ const Login = () => {
       if(res.data){
         toast.success("Login successful!");
       }
-      console.log(res.data)
     } catch (error) {
       if(error){
         toast.success(error.message | error);
