@@ -15,15 +15,16 @@ const Registation = () => {
      const onSubmit = (data) => console.log(data)
      return (
           <div>
-               <div className="h-screen w-screen flex items-center justify-center">
+               <div className="h-screen w-screen flex items-center justify-center my-11">
                     <div
-                         className="flex items-center justify-center h-[550px] w-[550px] bg-no-repeat bg-origin-content bg-right "
+                         className="flex items-center justify-center h-[600px] w-[600px] bg-no-repeat bg-origin-content bg-right "
                          style={{
                               backgroundImage: "url('https://www.terawulf-pre.com/img/login_background.88bb70cf.png')",
                          }}
                     >
                          <div className="bg-opacity-90 p-8  w-full max-w-md">
-                              <form onSubmit={handleSubmit(onSubmit)}>
+                              <h1 className="text-2xl font-bold text-center mb-6">Registration</h1>
+                              <form  onSubmit={handleSubmit(onSubmit)}>
                                    < div className="mb-4 ">
                                         <label
                                              htmlFor="name"
@@ -91,6 +92,22 @@ const Registation = () => {
                                               one lowwerCase and upperCase and one Special character
                                         </span>}
                                    </div>
+                                   <div className="mb-4">
+                                        <label
+                                             htmlFor="code"
+                                             className="block text-left text-gray-700 font-medium mb-2"
+                                        >
+                                             Referal Code
+                                        </label>
+                                        <input
+                                             type="text"
+                                             name="code"
+                                             {...register("code", { required: true })}
+                                             placeholder="Enter your code"
+                                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        />
+                                        {errors.code && <span className="text-left">code is required</span>}
+                                   </div>
                                    <button
                                         type="submit"
                                         className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300"
@@ -98,7 +115,7 @@ const Registation = () => {
                                         Registration
                                    </button>
                               </form>
-                              <p className="text-center text-gray-600 mt-4">
+                              <p className="text-center text-gray-600 ">
                                    Don You have account?{" "}
                                    <Link to={'/login'} className="text-blue-500 hover:underline">
                                         Sign In

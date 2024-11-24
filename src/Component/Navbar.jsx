@@ -7,7 +7,7 @@ import { NavLink } from "react-router-dom";
 const Navbar = () => {
      return (
           <div>
-<div className="fixed bottom-0 left-0 w-full h-[70px] bg-white shadow-md z-30">
+<div className="fixed bottom-0 left-0 w-full h-[60px] bg-white shadow-md z-30">
   <div className="flex justify-around items-center py-1 md:py-3">
     {/* Home */}
     <div className="flex flex-col items-center">
@@ -35,8 +35,10 @@ const Navbar = () => {
 
     {/* Profile */}
     <div className="flex flex-col items-center">
+      <NavLink to={'/personal'}>
       <HiOutlineUserCircle className="text-gray-400 text-2xl md:text-3xl" />
       <span className="text-xs md:text-sm text-gray-600">ব্যক্তিগত কেন্দ্র</span>
+      </NavLink>
     </div>
   </div>
 </div>

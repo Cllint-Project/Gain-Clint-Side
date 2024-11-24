@@ -1,10 +1,11 @@
 import { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 
 const Reacharge = () => {
      const [selectedAmount, setSelectedAmount] = useState("");
   const [customAmount, setCustomAmount] = useState("");
-  const [selectedPayment, setSelectedPayment] = useState("xlpay");
+  const [selectedPayment, setSelectedPayment] = useState("Bikash");
 
   const predefinedAmounts = [1000, 1800, 3000, 9500, 16500];
 
@@ -22,15 +23,15 @@ const Reacharge = () => {
     e.preventDefault();
     const rechargeAmount = selectedAmount || customAmount;
     if (!rechargeAmount) {
-      alert("Please select or enter an amount.");
+      toast.success("Please select or enter an amount.");
       return;
     }
-    alert(`Recharge of ${rechargeAmount} TK via ${selectedPayment} initiated!`);
+    toast.success(`Recharge of ${rechargeAmount} TK via ${selectedPayment} initiated!`);
   };
      return (
           <div>
-               <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
+               <div className="min-h-screen flex items-center justify-center my-8">
+      <div className="bg-white p-8 rounded-lg shadow-lg max-w-lg h-1/2 w-full">
         <h2 className="text-2xl font-bold text-center mb-6">Recharge Form</h2>
 
         {/* Amount Selection */}
@@ -73,34 +74,34 @@ const Reacharge = () => {
               <input
                 type="radio"
                 name="payment"
-                value="xlpay"
-                checked={selectedPayment === "xlpay"}
+                value="Bikash"
+                checked={selectedPayment === "Bikash"}
                 onChange={(e) => setSelectedPayment(e.target.value)}
                 className="text-blue-500 focus:ring-blue-500"
               />
-              <span>XL Pay</span>
+              <span>Bikash</span>
             </label>
             <label className="flex items-center space-x-2">
               <input
                 type="radio"
                 name="payment"
-                value="wakapay"
-                checked={selectedPayment === "wakapay"}
+                value="Nagad"
+                checked={selectedPayment === "Nagad"}
                 onChange={(e) => setSelectedPayment(e.target.value)}
                 className="text-blue-500 focus:ring-blue-500"
               />
-              <span>Waka Pay</span>
+              <span>Nagad</span>
             </label>
             <label className="flex items-center space-x-2">
               <input
                 type="radio"
                 name="payment"
-                value="onepay"
-                checked={selectedPayment === "onepay"}
+                value="Rocket"
+                checked={selectedPayment === "Rocket"}
                 onChange={(e) => setSelectedPayment(e.target.value)}
                 className="text-blue-500 focus:ring-blue-500"
               />
-              <span>One Pay</span>
+              <span>Rocket</span>
             </label>
           </div>
         </div>
@@ -114,6 +115,7 @@ const Reacharge = () => {
         </button>
       </div>
     </div>
+    <Toaster />
           </div>
      );
 };

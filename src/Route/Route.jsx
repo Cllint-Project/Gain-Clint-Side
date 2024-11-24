@@ -9,6 +9,7 @@ import Details1 from "../Component/Details1";
 import Details2 from "../Component/Details2";
 import Details3 from "../Component/Details3";
 import Reacharge from "../Component/Reacharge";
+import Personal from "../Page/Personal";
 
 const router = createBrowserRouter([
      {
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
           {
             path:"/reacharge",
             element:<Reacharge></Reacharge>
+          },
+          {
+            path:"/personal",
+            element:<Personal></Personal>
           },
        ]
      },
