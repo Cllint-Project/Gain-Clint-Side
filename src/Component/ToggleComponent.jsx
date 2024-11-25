@@ -1,37 +1,47 @@
-import { useState } from 'react';
-// import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-// import 'react-tabs/style/react-tabs.css';
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom"; // Import Link
 
 const ToggleComponent = () => {
-     const [activeTab, setActiveTab] = useState("P");
-     return (
-          <div>
-               {/* <Tabs >
-                    <TabList>
-                         <Tab>Title 1</Tab>
-                         <Tab>Title 2</Tab>
-                    </TabList>
+  const [activeTab, setActiveTab] = useState("P");
+  const [data, setData] = useState([]);
 
-                    <TabPanel>
-                         
-                    </TabPanel>
-                    <TabPanel>
-                         <h2>Any content 2</h2>
-                    </TabPanel>
-               </Tabs> */}
-               <div className="min-h-screen my-8">
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/Data.json"); // Path to your data.json file
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        const result = await response.json();
+        setData(result); // Assuming result is an array
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // Filtering data based on activeTab
+  const filteredData =
+    activeTab === "P"
+      ? data.filter((item) => item.machine_name === "M-8" || item.machine_name === "M-10")
+      : data.filter((item) => item.machine_name === "M-20" || item.machine_name === "M-25");
+
+  return (
+    <div className="min-h-[300px] w-full max-w-[750px] mx-auto px-4">
       {/* Tab Buttons */}
-      <div className="flex justify-center m-4">
+      <div className="flex justify-center mt-4 gap-4">
         <button
-          className={`px-6  py-2 font-semibold w-1/2 btn-sm rounded-lg ${
+          className={`px-6 py-2 font-semibold w-1/2 rounded-lg transition-all duration-300 ${
             activeTab === "P" ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-700"
           }`}
           onClick={() => setActiveTab("P")}
         >
-          P
+          M
         </button>
         <button
-          className={`px-6 py-2 font-semibold w-1/2 btn-sm rounded-lg ml-4 ${
+          className={`px-6 py-2 font-semibold w-1/2 rounded-lg transition-all duration-300 ${
             activeTab === "PRO" ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-700"
           }`}
           onClick={() => setActiveTab("PRO")}
@@ -41,46 +51,60 @@ const ToggleComponent = () => {
       </div>
 
       {/* Tab Content */}
-      <div className=" mx-auto mt-8">
-        {activeTab === "P" && (
-          <div className="flex justify-center items-center min-h-screen">
-  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-    {/* Card 1 */}
-    <div className="bg-white rounded-lg shadow-md p-6">
-      <img
-        src="https://via.placeholder.com/400x200"
-        alt="P-45"
-        className="w-full h-48 object-cover rounded-md"
-      />
-      <h3 className="text-xl font-semibold mt-4">P-45</h3>
-      <p className="text-gray-600 mt-2">
-        বিনিয়োগ পরিমাণ: <span className="font-bold">1000.00TK</span>
-      </p>
-      <p className="text-gray-600">
-        বিনিয়োগ সময়কাল: <span className="font-bold">45 দিন</span>
-      </p>
-      <p className="text-gray-600">
-        মোট আয়: <span className="font-bold">2160.00TK</span>
-      </p>
-      <p className="text-gray-600">
-        দৈনিক আয়: <span className="font-bold">48.00TK</span>
-      </p>
-    </div>
-  </div>
-</div>
-
-    
-        )}
-
-        {activeTab === "PRO" && (
-          <div className="text-center p-6 bg-white rounded-lg shadow-md">
-            <p className="text-gray-700">PRO content goes here...</p>
+      <div className="w-full max-w-[700px] h-auto mt-8 mx-auto space-y-9">
+        {filteredData.length > 0 ? (
+          filteredData.map((item, index) => (
+            <Link key={index} to={`/carddetail/${item.id}`}> 
+              <div className="w-full bg-white rounded-lg shadow-md overflow-hidden border hover:shadow-lg transition-shadow  duration-300">
+                {/* Image Section */}
+                <div>
+                  <img
+                    src={item.machine_image || "https://via.placeholder.com/150"}
+                    alt={item.machine_name}
+                    className="w-full h-44 object-cover"
+                  />
+                </div>
+                {/* Card Body */}
+                <div className="p-4 space-y-2">
+                  <h3 className="text-lg font-bold text-gray-800">
+                    {item.machine_name}
+                  </h3>
+                  <p className="text-gray-700">
+                    <span className="font-medium">বিনিয়োগ পরিমাণ:</span>{" "}
+                    <span className="font-bold text-green-600">
+                      {item.investment_amount} TK
+                    </span>
+                  </p>
+                  <p className="text-gray-700">
+                    <span className="font-medium">বিনিয়োগ সময়কাল:</span>{" "}
+                    <span className="font-bold text-green-600">
+                      {item.investment_duration}
+                    </span>
+                  </p>
+                  <p className="text-gray-700">
+                    <span className="font-medium">মোট আয়:</span>{" "}
+                    <span className="font-bold text-green-600">
+                      {item.total_income} TK
+                    </span>
+                  </p>
+                  <p className="text-gray-700">
+                    <span className="font-medium">দৈনিক আয়:</span>{" "}
+                    <span className="font-bold text-green-600">
+                      {item.daily_income} TK
+                    </span>
+                  </p>
+                </div>
+              </div>
+            </Link>
+          ))
+        ) : (
+          <div className="text-center text-gray-600 mt-6">
+            কোনো ডাটা পাওয়া যায়নি।
           </div>
         )}
       </div>
     </div>
-          </div>
-     );
+  );
 };
 
 export default ToggleComponent;

@@ -10,6 +10,7 @@ import Details2 from "../Component/Details2";
 import Details3 from "../Component/Details3";
 import Reacharge from "../Component/Reacharge";
 import Personal from "../Page/Personal";
+import CardDetails from "../Component/CardDetails";
 
 const router = createBrowserRouter([
      {
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
           {
             path:"/personal",
             element:<Personal></Personal>
+          },
+          {
+            path:"/carddetail/:id",
+            element:<CardDetails></CardDetails>
           },
        ]
      },
