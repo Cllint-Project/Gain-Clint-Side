@@ -14,7 +14,7 @@ const Card = () => {
           <div>
           <div className="flex justify-evenly bg-slate-200 p-3 items-center  ">
       
-        <Link to={'/reacharge'}
+        <Link to={'/recharge'}
           
           className="flex flex-col items-center bg-blue-500 border-b-8 border-b-yellow-400 text-white rounded-md shadow-md w-24 h-28 justify-center"
         >

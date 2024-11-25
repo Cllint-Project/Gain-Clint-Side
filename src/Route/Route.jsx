@@ -51,7 +51,7 @@ const router = createBrowserRouter([
             element:<Details3></Details3>
           },
           {
-            path:"/reacharge",
+            path:"/recharge",
             element:<Reacharge></Reacharge>
           },
           {
@@ -59,11 +59,11 @@ const router = createBrowserRouter([
             element:<Personal></Personal>
           },
           {
-            path:"/carddetail/:id",
+            path:"/cardDetails/:id",
             element:<CardDetails></CardDetails>
           },
           {
-            path:"/transection",
+            path:"/transaction",
             element:<Transaction></Transaction>
           },
        ]

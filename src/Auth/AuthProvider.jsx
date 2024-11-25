@@ -20,7 +20,7 @@ const AuthProvider = ({ children }) => {
   // Login function
   const login = async (data) => {
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", data);
+      const res = await axios.post("https://gain-server-side-production.up.railway.app/api/auth/login", data);
       const loggedInUser = res.data.data;
       setUser(loggedInUser);
       localStorage.setItem("user", JSON.stringify(loggedInUser)); // Store user data locally
@@ -34,7 +34,7 @@ const AuthProvider = ({ children }) => {
   const Register = async (data) => {
     try {
         console.log(data,36)
-      const res = await axios.post("http://localhost:5000/api/auth/register", data);
+      const res = await axios.post("https://gain-server-side-production.up.railway.app/api/auth/register", data);
       const registeredUser = res.data.data;
       setUser(registeredUser);
       console.log(registeredUser,40)

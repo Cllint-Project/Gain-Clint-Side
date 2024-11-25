@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom"; // Import Link
 
@@ -6,16 +7,30 @@ const ToggleComponent = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
+    // const fetchData = async () => {
+    //   try {
+    //     const response = await fetch("https://gain-server-side-production.up.railway.app/api/users/get-invest-data");
+    //     console.log(response.data)
+    //     if (!response.ok) {
+    //       throw new Error("Failed to fetch data");
+    //     }
+    //     const result = await response.json();
+    //     setData(result); // Assuming result is an array
+    //   } catch (error) {
+    //     console.error("Error fetching data:", error);
+    //   }
+    // };
+
     const fetchData = async () => {
       try {
-        const response = await fetch("/Data.json"); // Path to your data.json file
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-        const result = await response.json();
-        setData(result); // Assuming result is an array
+        const res = await axios.get("https://gain-server-side-production.up.railway.app/api/users/get-invest-data");
+
+        const getData = res.data.data;
+
+        setData(getData);
+
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("machine data fail to fetch", error);
       }
     };
 
@@ -25,8 +40,8 @@ const ToggleComponent = () => {
   // Filtering data based on activeTab
   const filteredData =
     activeTab === "P"
-      ? data.filter((item) => item.machine_name === "M-8" || item.machine_name === "M-10")
-      : data.filter((item) => item.machine_name === "M-20" || item.machine_name === "M-25");
+      ? data?.filter((item) => item.machine_name === "M-8" || item.machine_name === "M-10")
+      : data?.filter((item) => item.machine_name === "M-20" || item.machine_name === "M-25");
 
   return (
     <div className="min-h-[300px] w-full max-w-[750px] mx-auto px-4">
@@ -52,15 +67,15 @@ const ToggleComponent = () => {
 
       {/* Tab Content */}
       <div className="w-full max-w-[700px] h-auto mx-auto space-y-2">
-        {filteredData.length > 0 ? (
-          filteredData.map((item, index) => (
-            <Link key={index} to={`/carddetail/${item.id}`}> 
+        {filteredData?.length > 0 ? (
+          filteredData?.map((item, index) => (
+            <Link key={index} to={`/cardDetails/${item._id}`}> 
               <div className="w-full bg-white rounded-lg shadow-md overflow-hidden border hover:shadow-lg transition-shadow my-11  duration-300">
                 {/* Image Section */}
                 <div>
                   <img
-                    src={item.machine_image || "https://via.placeholder.com/150"}
-                    alt={item.machine_name}
+                    src={item?.machine_image}
+                    alt={item?.machine_name}
                     className="w-full h-44 object-cover"
                   />
                 </div>
