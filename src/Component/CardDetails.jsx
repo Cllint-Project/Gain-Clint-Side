@@ -1,19 +1,23 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 
 const CardDetails = () => {
      const { id } = useParams();
+     console.log(id);
+     
      const [item, setItem] = useState([]);
      useEffect(() => {
           const fetchData = async () => {
             try {
-              const response = await fetch(`/Data.json/${id}`); // Path to your data.json file
+              const response = await fetch(`Data.json/${id}`); 
               if (!response.ok) {
                 throw new Error("Failed to fetch data");
               }
               const result = await response.json();
-              setItem(result); // Assuming result is an array
+              setItem(result);
+              console.log(result);
+               
             } catch (error) {
               console.error("Error fetching data:", error);
             }
@@ -27,7 +31,7 @@ const CardDetails = () => {
       <div className="relative">
         <img
           className="w-full h-48 object-cover" // Height কমিয়ে h-48 করা হয়েছে
-          src="https://via.placeholder.com/500" // Replace with actual image URL
+          src={item.machine_image} // Replace with actual image URL
           alt="P-45"
         />
         <div className="absolute top-4 left-4">
@@ -42,7 +46,7 @@ const CardDetails = () => {
         </div>
       </div>
       <div className="p-4">
-        <h2 className="text-lg font-bold mb-2">P-45</h2>
+        <h2 className="text-lg font-bold mb-2">{item?.machine_name}</h2>
         <ul className="text-sm space-y-1">
           <li>মূল্য: <span className="font-semibold">1000TK</span></li>
           <li>দৈনিক আয়: <span className="font-semibold">48TK</span></li>
@@ -53,9 +57,11 @@ const CardDetails = () => {
         </ul>
       </div>
       <div className="p-4 text-center">
-        <button className="w-full py-2 text-white font-semibold btn btn-sm transition duration-300">
+          <Link to={"/reacharge"}>
+          <button className="w-full py-2 text-white bg-blue-400 hover:bg-blue-600 font-semibold btn btn-sm transition duration-300">
           এখনই  কিনুন
         </button>
+          </Link>
       </div>
     </div>
           </div>

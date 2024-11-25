@@ -11,6 +11,7 @@ import Details3 from "../Component/Details3";
 import Reacharge from "../Component/Reacharge";
 import Personal from "../Page/Personal";
 import CardDetails from "../Component/CardDetails";
+import Transaction from "../Component/Transaction";
 
 const router = createBrowserRouter([
      {
@@ -60,6 +61,10 @@ const router = createBrowserRouter([
           {
             path:"/carddetail/:id",
             element:<CardDetails></CardDetails>
+          },
+          {
+            path:"/transection",
+            element:<Transaction></Transaction>
           },
        ]
      },

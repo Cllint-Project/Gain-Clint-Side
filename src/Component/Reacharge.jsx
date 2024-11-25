@@ -1,11 +1,12 @@
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import { Link, useNavigate } from "react-router-dom";
 
 
 const Reacharge = () => {
      const [selectedAmount, setSelectedAmount] = useState("");
      const [accountNumber, setAccountNumber] = useState("");
-
+      const navigate = useNavigate();
   const [customAmount, setCustomAmount] = useState("");
   const [selectedPayment, setSelectedPayment] = useState("Bikash");
 
@@ -29,6 +30,7 @@ const Reacharge = () => {
       return;
     }
     toast.success(`Recharge of ${rechargeAmount} TK via ${selectedPayment} initiated!`);
+    navigate('/transection')
   };
      return (
           <div>
