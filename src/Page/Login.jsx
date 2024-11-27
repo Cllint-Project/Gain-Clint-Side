@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   loadCaptchaEnginge,
   LoadCanvasTemplate,
@@ -12,6 +12,7 @@ import { AuthContext } from "../Auth/AuthProvider";
 const Login = () => {
   const {login, user, loading,setLoading} = useContext(AuthContext);
   const [disabled, setdisabled] = useState(true);
+  const navigate = useNavigate();
 
 
   const {
@@ -40,6 +41,7 @@ const Login = () => {
       const getUser = await login(data);
       if(getUser){
         toast.success("Login successful!");
+        navigate('/')
       }
     } catch (error) {
       if(error){
@@ -53,14 +55,14 @@ const Login = () => {
     <div className="h-screen w-screen flex items-center justify-center my-8">
 
       <div
-        className="flex items-center justify-center h-[600px] w-[600px] bg-no-repeat bg-origin-content bg-right "
+        className="flex items-center justify-center h-[600px] w-[600px] bg-no-repeat bg-origin-content bg-center"
         style={{
           backgroundImage:
             "url('https://www.terawulf-pre.com/img/login_background.88bb70cf.png')",
         }}
       >
         <div className="bg-opacity-90 p-8  w-full max-w-md">
-          <h1 className="text-2xl font-bold text-center mb-4">Login</h1>
+          {/* <h1 className="text-2xl font-bold text-center mb-4">Login</h1> */}
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="mb-4">
               <label
@@ -111,12 +113,13 @@ const Login = () => {
               />
             </div>
             <button
-              disabled={disabled}
-              type="submit"
-              className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300"
-            >
-              Login
-            </button>
+                type="submit"
+                className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300"
+              >
+                {
+                  loading? <span className="loading loading-dots loading-xs"></span> : "Login"
+                }
+              </button>
           </form>
           <p className="text-center text-gray-600 mt-1 ">
             Don’t have an account?{" "}

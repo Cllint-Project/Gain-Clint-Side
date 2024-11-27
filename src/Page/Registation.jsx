@@ -3,7 +3,7 @@ import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { PiEyeClosedLight } from "react-icons/pi";
 import { VscEyeClosed } from "react-icons/vsc";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { AuthContext } from "../Auth/AuthProvider";
@@ -11,6 +11,7 @@ import { AuthContext } from "../Auth/AuthProvider";
 const Registation = () => {
   const {Register, user, loading,setLoading} = useContext(AuthContext);
   const [showpassword, setShowpassword] = useState(false);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -24,6 +25,7 @@ const Registation = () => {
       const getUser = await Register(data);
       if(getUser){
         toast.success("Register successful!");
+        navigate('/login')
       }
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Registration failed");
@@ -33,9 +35,9 @@ const Registation = () => {
   };
   return (
     <div>
-      <div className="max-h-full max-w-screen-xl flex items-center justify-center mt-11">
+      <div className="h-screen w-screen flex items-center justify-center my-8">
         <div
-          className="flex items-center justify-center h-[500px] w-[500px] max- bg-no-repeat bg-origin-content bg-right "
+          className="flex items-center justify-center h-[600px] w-[600px] bg-no-repeat bg-origin-content bg-center"
           style={{
             backgroundImage:
               "url('https://www.terawulf-pre.com/img/login_background.88bb70cf.png')",
