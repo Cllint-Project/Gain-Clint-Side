@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {  PencilIcon, X } from 'lucide-react';
 import axios from 'axios';
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 function TransactionPage() {
 //   const location = useLocation();
@@ -100,16 +102,19 @@ const location = useLocation();
       const response = await axios.post('https://gain-server-side-production.up.railway.app/api/users/submit-recharge', finalData);
       console.log(response.data)
       if (response.status === 200) {
-        alert('Transaction submitted successfully!');
-        navigate('/');
+        toast.success('Transaction submitted successfully!');
+        setTimeout(() => {
+          navigate('/');
+        },2000)
       }
     } catch (error) {
       console.error('Error details:', error.response?.data);
-      alert('Error submitting transaction. Please try again.');
+      toast.alert('Error submitting transaction. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
   };
+  
 
   return (
     <div className="pb-20 bg-gray-50 py-8 px-4">

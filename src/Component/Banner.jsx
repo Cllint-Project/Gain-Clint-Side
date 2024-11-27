@@ -1,9 +1,10 @@
 import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, } from "react-router-dom";
 import { AuthContext } from "../Auth/AuthProvider";
 
 const Banner = () => {
-  const { user,logout } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
+
   return (
     <div>
       <div className="w-full">
@@ -21,13 +22,22 @@ const Banner = () => {
               alt="Avatar"
               className="h-10 w-10 rounded-full"
             />
+
             <div className="flex gap-4">
-              <button className="btn btn-sm bg-blue-500 hover:bg-blue-600  text-white">
-                <Link to={"/login"}>Login</Link>
-              </button>
-              <button onClick={logout} className="btn btn-sm bg-blue-500 hover:bg-blue-600  text-white">
-                Logout
-              </button>
+              {user ? (
+                <button
+                  onClick={logout}
+                  className="btn btn-sm bg-blue-500 hover:bg-blue-600 text-white"
+                >
+                  Logout
+                </button>
+              ) : (
+                <Link to="/login">
+                  <button className="btn btn-sm bg-blue-500 hover:bg-blue-600 text-white">
+                    Login
+                  </button>
+                </Link>
+              )}
             </div>
           </div>
         </div>

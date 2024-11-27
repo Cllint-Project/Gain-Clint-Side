@@ -1,9 +1,25 @@
+import { FaChartLine } from "react-icons/fa";
+import { HiArrowLongRight } from "react-icons/hi2";
+import { MdSupportAgent } from "react-icons/md";
+import { TbMoneybag } from "react-icons/tb";
+import { useState } from 'react'
+import Modal from "./Modal";
+import SecretCode from "./SecretCode";
+import { Link } from "react-router-dom";
 
 
 const PersonalInformation = () => {
+  const [isOpen, setIsOpen] = useState(false)
+  const [secretCode, setSecretCode] = useState('')
+
+  const handleSubmit = () => {
+    console.log('Secret Code:', secretCode)
+    setSecretCode('')
+    setIsOpen(false)
+  }
      return (
           <div>
- <div className="bg-gray-100 min-h-screen flex flex-col">
+ <div className="bg-gray-100 min-h-screen  flex flex-col">
       {/* Header Section */}
       <header className="bg-blue-500 text-white text-center p-4">
         <h1 className="text-xl font-bold">ব্যক্তিগত কেন্দ্র</h1>
@@ -14,61 +30,115 @@ const PersonalInformation = () => {
         <div className="flex flex-col items-center">
           <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center">
             <img
-              src="https://via.placeholder.com/80"
+              src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
               alt="Profile"
               className="rounded-full"
             />
           </div>
-          <div className="flex justify-between w-full mt-4 gap-4">
-            <div className="flex-1 text-center">
+          <h2 className="text-2xl text-white">Your Name</h2>
+        </div>
+        <div className="flex justify-between items-center mt-4">
+            <div className="flex gap-14 ">
+            <div className=" text-center ">
+            <p className="text-lg font-bold">0.00TK</p>
               <p className="text-sm">অবশিষ্ট ব্যালেন্স</p>
-              <p className="text-lg font-bold">0.00TK</p>
+          
             </div>
-            <div className="flex-1 text-center">
+            <div className=" text-center">
+            <p className="text-lg font-bold">0.00TK</p>
               <p className="text-sm">আয়</p>
-              <p className="text-lg font-bold">0.00TK</p>
             </div>
-          </div>
-          <div className="flex mt-6 gap-4">
-            <button className="bg-red-500 px-4 py-2 rounded text-white w-full sm:w-auto">
-              উত্তোলন
-            </button>
-            <button className="bg-green-500 px-4 py-2 rounded text-white w-full sm:w-auto">
+            </div>
+            <div className="flex flex-col items-center mt-6 gap-4">
+            <button className="btn btn-sm bg-blue-500 px-4 py-2 rounded hover:to-blue-500 text-white w-full sm:w-auto">
               রিচার্জ
             </button>
+            <button className=" btn bg-red-500 btn-sm px-4 py-2 hover:bg-red-500 rounded text-white w-full sm:w-auto">
+              উত্তোলন
+            </button>
           </div>
-        </div>
+          </div>
       </div>
 
       {/* Menu Section */}
       <div className="bg-white mt-6 shadow-sm rounded-lg mx-4 flex-grow">
         <div className="flex justify-around border-b">
           <div className="p-4 text-center">
-            <p className="text-blue-500">মিনিটের রিপোর্ট</p>
+          <span className="text-blue-500 text-4xl flex justify-center"><FaChartLine></FaChartLine></span>
+            <p className="">বিনিয়োগ রেকর্ড</p>
           </div>
           <div className="p-4 text-center">
-            <p className="text-blue-500">অবধান শিখুন</p>
+          <span className="text-blue-500 text-4xl flex justify-center"><TbMoneybag/></span>
+            <p className="">অর্থায়ন বিশদ</p>
           </div>
           <div className="p-4 text-center">
-            <p className="text-blue-500">অনলাইন সেবা</p>
+          <span className="text-blue-500 text-4xl flex justify-center"><MdSupportAgent /></span>
+            <p className="">অনলাইন সেবা</p>
           </div>
         </div>
         <ul>
-          <li className="flex items-center justify-between p-4 border-b">
-            <span>ভাউচার ট্রে</span>
-            <span>&rarr;</span>
+        <li className="flex items-center justify-between p-4 border-b">
+            <span>আমার পুরস্কার</span>
+            
+            <div className=" flex items-center justify-center p-4">
+      <button
+        onClick={() => setIsOpen(true)}
+        className="px-6 btn-sm bg-blue-500 text-white rounded-lg hover:bg-blue-600  duration-200 text-lg font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
+      >
+        <span className="text-2xl"><HiArrowLongRight /></span>
+      </button>
+
+      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+        <div className="space-y-6">
+          <div className="flex justify-between items-center">
+            <h2 className="text-2xl font-semibold text-gray-800">Enter Secret Code</h2>
+            <button
+              onClick={() => setIsOpen(false)}
+              className="text-gray-500 hover:text-gray-700 text-xl transition-colors"
+            >
+              ✕
+            </button>
+          </div>
+
+          <SecretCode
+            value={secretCode}
+            onChange={(e) => setSecretCode(e.target.value)}
+          />
+
+          <div className="flex justify-end space-x-4">
+            <button
+              onClick={() => setIsOpen(false)}
+              className="px-4 py-2 text-gray-600 hover:text-gray-800 font-medium transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleSubmit}
+              className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors font-medium shadow-md hover:shadow-lg"
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+      </Modal>
+    </div>
           </li>
           <li className="flex items-center justify-between p-4 border-b">
             <span>দান করুন</span>
-            <span>&rarr;</span>
-          </li>
-          <li className="flex items-center justify-between p-4 border-b">
-            <span>আমার পুরস্কার</span>
-            <span>&rarr;</span>
+            <button 
+            className="px-6 btn-sm mr-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600  duration-200 text-lg font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
+            >
+          <Link to={"/donat"} className="text-2xl"><HiArrowLongRight /></Link>
+            </button>
+          
           </li>
           <li className="flex items-center justify-between p-4 border-b">
             <span>চার্জ রেকর্ড</span>
-            <span>&rarr;</span>
+            <button 
+            className="px-6 btn-sm mr-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600  duration-200 text-lg font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
+            >
+          <span className="text-2xl"><HiArrowLongRight /></span>
+            </button>
           </li>
         </ul>
       </div>

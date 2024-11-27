@@ -13,6 +13,11 @@ import Personal from "../Page/Personal";
 import CardDetails from "../Component/CardDetails";
 import Transaction from "../Component/Transaction";
 import WithDraw from "../Component/WithDraw";
+// import ReachargeDetail from "../DashBord/DashBoardComponent/ReachargeDetail";
+// import DashBord from "../DashBord/DashBord";
+import DashBordLayout from "../DashBord/DashBordLayout/DashBordLayout";
+import DonetPage from "../Component/DonetPage";
+
 
 const router = createBrowserRouter([
      {
@@ -71,7 +76,18 @@ const router = createBrowserRouter([
             path:"/withdraw",
             element:<WithDraw></WithDraw>
           },
+          {
+            path:"/donat",
+            element:<DonetPage></DonetPage>
+          },
        ]
      },
+     {
+      path: "/dashbord",
+       element: <DashBordLayout></DashBordLayout>,
+       children:[
+        
+       ]
+     }
    ]);
  export default router 
