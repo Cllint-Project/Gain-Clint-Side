@@ -33,7 +33,7 @@ const Registation = () => {
   };
   return (
     <div>
-      <div className="max-h-full max-w-screen-xl flex items-center justify-center">
+      <div className="max-h-full max-w-screen-xl flex items-center justify-center mt-11">
         <div
           className="flex items-center justify-center h-[500px] w-[500px] max- bg-no-repeat bg-origin-content bg-right "
           style={{

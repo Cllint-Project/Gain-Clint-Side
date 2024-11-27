@@ -1,7 +1,11 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../Auth/AuthProvider";
+
 
 
 const Banner = () => {
+        const { user }  = useContext(AuthContext)
      return (
           <div>
 <div className="w-full">
@@ -13,7 +17,7 @@ const Banner = () => {
       <h2 className="text-2xl text-white">Gain</h2>
     </div>
     {/* Icon or Flag */}
-    <div className="flex gap-3 p-1">
+    <div className="  flex gap-3 p-1">
       <img
         src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
         alt="Avatar"
