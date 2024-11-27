@@ -9,6 +9,10 @@ import Details1 from "../Component/Details1";
 import Details2 from "../Component/Details2";
 import Details3 from "../Component/Details3";
 import Reacharge from "../Component/Reacharge";
+import Personal from "../Page/Personal";
+import CardDetails from "../Component/CardDetails";
+import Transaction from "../Component/Transaction";
+import WithDraw from "../Component/WithDraw";
 
 const router = createBrowserRouter([
      {
@@ -48,8 +52,24 @@ const router = createBrowserRouter([
             element:<Details3></Details3>
           },
           {
-            path:"/reacharge",
+            path:"/recharge",
             element:<Reacharge></Reacharge>
+          },
+          {
+            path:"/personal",
+            element:<Personal></Personal>
+          },
+          {
+            path:"/cardDetails/:id",
+            element:<CardDetails></CardDetails>
+          },
+          {
+            path:"/transaction",
+            element:<Transaction></Transaction>
+          },
+          {
+            path:"/withdraw",
+            element:<WithDraw></WithDraw>
           },
        ]
      },

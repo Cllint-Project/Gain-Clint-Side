@@ -33,15 +33,15 @@ const Registation = () => {
   };
   return (
     <div>
-      <div className="h-screen w-screen flex items-center justify-center">
+      <div className="max-h-full max-w-screen-xl flex items-center justify-center mt-11">
         <div
-          className="flex items-center justify-center h-[550px] w-[550px] bg-no-repeat bg-origin-content bg-right "
+          className="flex items-center justify-center h-[500px] w-[500px] max- bg-no-repeat bg-origin-content bg-right "
           style={{
             backgroundImage:
               "url('https://www.terawulf-pre.com/img/login_background.88bb70cf.png')",
           }}
         >
-          <div className="bg-opacity-90 p-8  w-full max-w-md">
+          <div className="bg-opacity-90 p-10 w-full  max-w-md">
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="mb-4 ">
                 <label
