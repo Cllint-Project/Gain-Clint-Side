@@ -12,6 +12,7 @@ import Reacharge from "../Component/Reacharge";
 import Personal from "../Page/Personal";
 import CardDetails from "../Component/CardDetails";
 import Transaction from "../Component/Transaction";
+import WithDraw from "../Component/WithDraw";
 
 const router = createBrowserRouter([
      {
@@ -65,6 +66,10 @@ const router = createBrowserRouter([
           {
             path:"/transection",
             element:<Transaction></Transaction>
+          },
+          {
+            path:"/withdraw",
+            element:<WithDraw></WithDraw>
           },
        ]
      },

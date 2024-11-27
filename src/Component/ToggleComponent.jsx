@@ -51,11 +51,11 @@ const ToggleComponent = () => {
       </div>
 
       {/* Tab Content */}
-      <div className="w-full max-w-[700px] h-auto mx-auto space-y-2">
+      <div className="w-full max-w-[700px] h-auto mx-auto my-16  mt-2">
         {filteredData.length > 0 ? (
           filteredData.map((item, index) => (
             <Link key={index} to={`/carddetail/${item.id}`}> 
-              <div className="w-full bg-white rounded-lg shadow-md overflow-hidden border hover:shadow-lg transition-shadow my-11  duration-300">
+              <div className="w-full bg-white rounded-lg shadow-md overflow-hidden border hover:shadow-lg transition-shadow my-3  duration-300">
                 {/* Image Section */}
                 <div>
                   <img
