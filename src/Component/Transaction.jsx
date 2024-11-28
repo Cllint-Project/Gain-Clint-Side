@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { PencilIcon, X } from 'lucide-react';
+
 import { formatRechargeData } from '../utils/formatRechargeData';
 import { submitRecharge } from '../utils/api';
+import {  PencilIcon, X } from 'lucide-react';
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 function Transaction() {
   const location = useLocation();
@@ -32,17 +35,21 @@ function Transaction() {
       const formattedData = formatRechargeData(rechargeData,adminNumber, transactionId);
       const response = await submitRecharge(formattedData);
       
-      if (response) {
-        alert('Transaction submitted successfully!');
-        navigate('/');
+      if (response.status === 200) {
+        toast.success('Transaction submitted successfully!');
+        setTimeout(() => {
+          navigate('/');
+        },2000)
       }
+
     } catch (error) {
       console.error('Error details:', error.response?.data);
-      alert('Error submitting transaction. Please try again.');
+      toast.alert('Error submitting transaction. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
   };
+  
 
   return (
     <div className="pb-20 bg-gray-50 py-8 px-4">

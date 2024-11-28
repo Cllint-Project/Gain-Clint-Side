@@ -31,7 +31,7 @@ const CardDetails = () => {
   };
   return (
     <div>
-      <div className="max-w-md mx-auto border rounded-lg shadow-lg overflow-hidden mt-4 bg-white">
+      <div className="max-w-lg my-14 mx-auto border rounded-lg shadow-lg overflow-hidden mt-4 bg-white">
         <div className="relative">
           <img
             className="w-full h-48 object-cover" // Height কমিয়ে h-48 করা হয়েছে

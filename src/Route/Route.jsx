@@ -14,6 +14,8 @@ import CardDetails from "../Component/CardDetails";
 import Transaction from "../Component/Transaction";
 import WithDraw from "../Component/WithDraw";
 import { InvestorDashboard } from "../Component/Daily-claim/InvestorDashboard";
+import DonetPage from "../Component/DonetPage";
+import DashBordLayout from "../DashBord/DashBordLayout/DashBordLayout";
 
 const router = createBrowserRouter([
   {
@@ -76,7 +78,17 @@ const router = createBrowserRouter([
         path: "/daily-claim",
         element: <InvestorDashboard></InvestorDashboard>,
       },
+      {
+        path: "/donat",
+        element: <DonetPage></DonetPage>,
+      },
     ],
+  },
+
+  {
+    path: "/dashbord",
+    element: <DashBordLayout></DashBordLayout>,
+    children: [],
   },
 ]);
 export default router;
