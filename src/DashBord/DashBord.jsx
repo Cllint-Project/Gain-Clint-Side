@@ -1,10 +1,11 @@
-import { WalletMinimal } from "lucide-react";
+import {  UserCircle2,  WalletMinimal } from "lucide-react";
 import { useState } from "react";
 import { AiOutlineBars } from "react-icons/ai";
-import { BsFillHouseAddFill, BsGraphUp } from "react-icons/bs";
+
 import { FcSettings } from "react-icons/fc";
 import { GrLogout } from "react-icons/gr";
-import { MdHomeWork } from "react-icons/md";
+import { RiCoupon3Fill } from "react-icons/ri";
+import { WiTime12 } from "react-icons/wi";
 import { Link, NavLink } from "react-router-dom";
 
 
@@ -68,23 +69,23 @@ return (
 
             {/*  Menu Items */}
             <nav>
-              {/* Statistics */}
+              {/* User */}
               <NavLink
-                to='statistics'
+                to='user'
                 className={({ isActive }) =>
                   `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
                     isActive ? 'bg-gray-300  text-gray-700' : 'text-gray-600'
                   }`
                 }
               >
-                <BsGraphUp className='w-5 h-5' />
+                <UserCircle2 className='w-5 h-5' />
 
-                <span className='mx-4 font-medium'>Statistics</span>
+                <span className='mx-4 font-medium'>User</span>
               </NavLink>
 
-              {/* Add Room */}
+              {/* Reacharge */}
               <NavLink
-                to='add-room'
+                to='reacharge'
                 className={({ isActive }) =>
                   `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
                     isActive ? 'bg-gray-300  text-gray-700' : 'text-gray-600'
@@ -94,20 +95,33 @@ return (
                 {/* <BsFillHouseAddFill className='w-5 h-5' /> */}
                 <WalletMinimal />
 
-                <span className='mx-4 font-medium'>Add Room</span>
+                <span className='mx-4 font-medium'>Reacharge Details</span>
               </NavLink>
-              {/* My Listing */}
+              {/* Withdraw */}
               <NavLink
-                to='my-listings'
+                to='withdraw'
                 className={({ isActive }) =>
                   `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
                     isActive ? 'bg-gray-300  text-gray-700' : 'text-gray-600'
                   }`
                 }
               >
-                <MdHomeWork className='w-5 h-5' />
+                <WiTime12 className='w-5 h-5' />
 
-                <span className='mx-4 font-medium'>My Listings</span>
+                <span className='mx-4 font-medium'>WithDraw Details</span>
+              </NavLink>
+              {/* Cupon */}
+              <NavLink
+                to='cupon'
+                className={({ isActive }) =>
+                  `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
+                    isActive ? 'bg-gray-300  text-gray-700' : 'text-gray-600'
+                  }`
+                }
+              >
+                <RiCoupon3Fill className='w-5 h-5' />
+
+                <span className='mx-4 font-medium'>Cupon</span>
               </NavLink>
             </nav>
           </div>

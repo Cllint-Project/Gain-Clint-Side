@@ -13,10 +13,14 @@ import Personal from "../Page/Personal";
 import CardDetails from "../Component/CardDetails";
 import Transaction from "../Component/Transaction";
 import WithDraw from "../Component/WithDraw";
-// import ReachargeDetail from "../DashBord/DashBoardComponent/ReachargeDetail";
-// import DashBord from "../DashBord/DashBord";
 import DashBordLayout from "../DashBord/DashBordLayout/DashBordLayout";
 import DonetPage from "../Component/DonetPage";
+import ReachargeDetail from "../DashBord/DashBoardComponent/ReachargeDetail";
+import UserManagement from "../DashBord/DashBoardComponent/UserManagement";
+import WithDrawDetails from "../DashBord/DashBoardComponent/WithDrawDetails";
+import Cuppon from "../DashBord/DashBoardComponent/Cuppon";
+import InvesmentData from "../Component/InvesmentData";
+import ReachargeRecord from "../Component/ReachargeRecord";
 
 
 const router = createBrowserRouter([
@@ -80,13 +84,38 @@ const router = createBrowserRouter([
             path:"/donat",
             element:<DonetPage></DonetPage>
           },
+          {
+            path:"/investmentrecord",
+            element:<InvesmentData></InvesmentData>
+          },
+          {
+            path:"/reachargerecord",
+            element:<ReachargeRecord></ReachargeRecord>
+          },
        ]
      },
+    //  DashBord
      {
       path: "/dashbord",
        element: <DashBordLayout></DashBordLayout>,
        children:[
         
+        {
+          path:"reacharge",
+          element:<ReachargeDetail></ReachargeDetail>
+        },
+        {
+          path:"user",
+          element:<UserManagement></UserManagement>
+        },
+        {
+          path:"withdraw",
+          element:<WithDrawDetails></WithDrawDetails>
+        },
+        {
+          path:"cupon",
+          element:<Cuppon></Cuppon>
+        },
        ]
      }
    ]);

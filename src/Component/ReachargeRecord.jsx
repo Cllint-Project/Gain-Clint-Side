@@ -1,7 +1,6 @@
 import { useState } from "react";
 
-
-const ReachargeDetail = () => {
+const ReachargeRecord = () => {
      const [data] = useState([
           { id: 1, name: "John Doe", number: "001", money: "$1,200", status: "Active" },
           { id: 2, name: "Jane Smith", number: "002", money: "$2,500", status: "Pending" },
@@ -25,7 +24,7 @@ const ReachargeDetail = () => {
       
      return (
           <div>
- <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+                <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="bg-white rounded-lg shadow-xl overflow-hidden">
           <div className="overflow-x-auto">
@@ -43,9 +42,6 @@ const ReachargeDetail = () => {
                   </th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-white uppercase tracking-wider">
                     Status
-                  </th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-white uppercase tracking-wider">
-                    Action
                   </th>
                 </tr>
               </thead>
@@ -69,14 +65,6 @@ const ReachargeDetail = () => {
                         {item.status}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <button
-                        className="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-4 py-2 rounded-md transition-colors duration-200 transform hover:scale-105"
-                        onClick={() => alert(`Action for ${item.name}`)}
-                      >
-                        View Details
-                      </button>
-                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -89,4 +77,4 @@ const ReachargeDetail = () => {
      );
 };
 
-export default ReachargeDetail;
+export default ReachargeRecord;
