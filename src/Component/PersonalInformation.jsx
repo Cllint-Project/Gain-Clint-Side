@@ -2,23 +2,49 @@ import { FaChartLine } from "react-icons/fa";
 import { HiArrowLongRight } from "react-icons/hi2";
 import { MdSupportAgent } from "react-icons/md";
 import { TbMoneybag } from "react-icons/tb";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Modal from "./Modal";
 import SecretCode from "./SecretCode";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { AuthContext } from "../Auth/AuthProvider";
 
 const PersonalInformation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [secretCode, setSecretCode] = useState("");
+  const { user } = useContext(AuthContext);
+  const userId = user?._id;
 
-  const handleSubmit = () => {
-    console.log("Secret Code:", secretCode);
-    setSecretCode("");
+  console.log("Secret Code:", secretCode);
+  const data = {
+    code: secretCode,
+    userId: userId
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/users/redeem-coupon",
+        data
+      );
+      console.log("Response:", response.data);
+
+      if(response?.data?.message){
+        toast.success(response?.data?.message)
+      }
+    } catch (error) {
+      // console.error(
+      //   "Error redeeming coupon:",
+      //   error.response ? error.response.data : error.message
+      // );
+      toast.error(error.response ? error.response.data : error.message)
+    }
     setIsOpen(false);
   };
   return (
     <div>
-      <div className="bg-gray-100 min-h-screen  flex flex-col">
+      <div className="bg-gray-100 min-h-screen mt-4 flex flex-col">
         {/* Header Section */}
         <header className="bg-blue-500 text-white text-center p-4">
           <h1 className="text-xl font-bold">ব্যক্তিগত কেন্দ্র</h1>
@@ -80,7 +106,7 @@ const PersonalInformation = () => {
               <p className="">অনলাইন সেবা</p>
             </div>
           </div>
-          <ul>
+          <ul className="my-14">
             <li className="flex items-center justify-between p-4 border-b">
               <span>আমার পুরস্কার</span>
 
@@ -129,13 +155,12 @@ const PersonalInformation = () => {
                     </div>
                   </div>
                 </Modal>
-
               </div>
             </li>
             <li className="flex items-center justify-between p-4 border-b">
               <span>দান করুন</span>
               <button className="px-6 btn-sm mr-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600  duration-200 text-lg font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all">
-                <Link to={"/donat"} className="text-2xl">
+                <Link to={"/donate"} className="text-2xl">
                   <HiArrowLongRight />
                 </Link>
               </button>
@@ -143,19 +168,12 @@ const PersonalInformation = () => {
             <li className="flex items-center justify-between p-4 border-b">
               <span>চার্জ রেকর্ড</span>
               <button className="px-6 btn-sm mr-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600  duration-200 text-lg font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all">
-                <span className="text-2xl">
+                <Link to={"/reachargerecord"} className="text-2xl">
                   <HiArrowLongRight />
-                </span>
+                </Link>
               </button>
             </li>
           </ul>
-        </div>
-
-        {/* Logout Section */}
-        <div className="text-center mt-6 mb-4">
-          <button className="bg-blue-500 text-white px-6 py-2 rounded">
-            বর্তমান অ্যাকাউন্ট থেকে লগআউট
-          </button>
         </div>
       </div>
     </div>

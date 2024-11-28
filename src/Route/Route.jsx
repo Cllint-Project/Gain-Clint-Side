@@ -13,9 +13,15 @@ import Personal from "../Page/Personal";
 import CardDetails from "../Component/CardDetails";
 import Transaction from "../Component/Transaction";
 import WithDraw from "../Component/WithDraw";
-import { InvestorDashboard } from "../Component/Daily-claim/InvestorDashboard";
-import DonetPage from "../Component/DonetPage";
 import DashBordLayout from "../DashBord/DashBordLayout/DashBordLayout";
+import DonetPage from "../Component/DonetPage";
+import ReachargeDetail from "../DashBord/DashBoardComponent/ReachargeDetail";
+import UserManagement from "../DashBord/DashBoardComponent/UserManagement";
+import WithDrawDetails from "../DashBord/DashBoardComponent/WithDrawDetails";
+import Cuppon from "../DashBord/DashBoardComponent/Cuppon";
+import InvesmentData from "../Component/InvesmentData";
+import ReachargeRecord from "../Component/ReachargeRecord";
+import { InvestorDashboard } from "../Component/Daily-claim/InvestorDashboard";
 
 const router = createBrowserRouter([
   {
@@ -75,20 +81,46 @@ const router = createBrowserRouter([
         element: <WithDraw></WithDraw>,
       },
       {
+        path: "/donate",
+        element: <DonetPage></DonetPage>,
+      },
+      {
+        path: "/investmentrecord",
+        element: <InvesmentData></InvesmentData>,
+      },
+      {
+        path: "/reachargerecord",
+        element: <ReachargeRecord></ReachargeRecord>,
+      },
+
+      {
         path: "/daily-claim",
         element: <InvestorDashboard></InvestorDashboard>,
       },
-      {
-        path: "/donat",
-        element: <DonetPage></DonetPage>,
-      },
     ],
   },
-
+  //  DashBord
   {
-    path: "/dashbord",
+    path: "/dashboard",
     element: <DashBordLayout></DashBordLayout>,
-    children: [],
+    children: [
+      {
+        path: "reacharge",
+        element: <ReachargeDetail></ReachargeDetail>,
+      },
+      {
+        path: "user",
+        element: <UserManagement></UserManagement>,
+      },
+      {
+        path: "withdraw",
+        element: <WithDrawDetails></WithDrawDetails>,
+      },
+      {
+        path: "cupon",
+        element: <Cuppon></Cuppon>,
+      },
+    ],
   },
 ]);
 export default router;

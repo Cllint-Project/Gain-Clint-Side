@@ -11,6 +11,7 @@ const Recharge = () => {
   // console.log(user?._id);
   const [rechargeData, setRechargeData] = useState({
     investor_id: user?._id,
+    investor_name: user?.username,
     recharge_amount: machineData?.investment_amount || 0,
     recharge_option: "Bikash",
     phone_number: "",

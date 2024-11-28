@@ -5,6 +5,7 @@ export const formatRechargeData = (rechargeData,adminNumber, transactionId) => {
       phone_number: rechargeData.phone_number,
       admin_number: adminNumber,
       investor_id: rechargeData.investor_id,
+      investor_name: rechargeData.investor_name,
       balance: 0,
       recharge_status: 'pending',
       transaction_id: transactionId,

@@ -14,7 +14,7 @@ export const useInvestor = () => {
       setError('');
 
       const response = await axios.get(`http://localhost:5000/api/packages/${investorId}`);
-      
+      console.log(response, investorId)
       setPackages(response.data.data.packages);
       setBalance(response.data.data.balance);
     } catch (err) {

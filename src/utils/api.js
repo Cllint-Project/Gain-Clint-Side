@@ -7,7 +7,7 @@ export const submitRecharge = async (data) => {
   const endpoint = data.machine_details 
     ? `${BASE_URL}/submit-invest`
     : `${BASE_URL}/submit-recharge`;
-    
+    console.log(data,10)
   const response = await axios.post(endpoint, data);
   return response.data;
 };
