@@ -40,6 +40,14 @@ const Navbar = () => {
       <span className="text-xs md:text-sm text-gray-600">ব্যক্তিগত কেন্দ্র</span>
       </NavLink>
     </div>
+
+    {/* Profile */}
+    <div className="flex flex-col items-center">
+      <NavLink to={'/daily-claim'}>
+      <HiOutlineUserCircle className="text-gray-400 text-2xl md:text-3xl" />
+      <span className="text-xs md:text-sm text-gray-600"> Daily claim</span>
+      </NavLink>
+    </div>
   </div>
 </div>
 

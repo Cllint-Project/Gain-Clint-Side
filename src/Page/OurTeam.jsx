@@ -1,4 +1,4 @@
-import Team from "../Component/Team";
+import Team from "../Component/My-team/Team";
 
 const OurTeam = () => {
      return (
