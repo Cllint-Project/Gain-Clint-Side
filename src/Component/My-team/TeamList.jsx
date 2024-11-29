@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 export const TeamList = ({ members }) => {
   if (!members?.length) {
     return (
@@ -9,7 +10,7 @@ export const TeamList = ({ members }) => {
       </div>
     );
   }
-
+console.log(members)
   return (
     <div className="bg-white shadow-lg rounded-lg p-6">
       <h3 className="text-lg font-semibold text-gray-800 mb-4">টিম তালিকা</h3>
@@ -21,7 +22,7 @@ export const TeamList = ({ members }) => {
           >
             <div className="flex items-center gap-3">
               <img
-                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                src={member.profileImage}
                 alt={member.username}
                 className="w-10 h-10 rounded-full"
               />

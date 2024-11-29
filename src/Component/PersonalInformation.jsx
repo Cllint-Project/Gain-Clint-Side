@@ -2,24 +2,26 @@ import { FaChartLine } from "react-icons/fa";
 import { HiArrowLongRight } from "react-icons/hi2";
 import { MdSupportAgent } from "react-icons/md";
 import { TbMoneybag } from "react-icons/tb";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Modal from "./Modal";
 import SecretCode from "./SecretCode";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { AuthContext } from "../Auth/AuthProvider";
-
+import LoadingSpinner from "../common/LoadingSpinner";
+import { getTeamMembers } from "../utils/api";
 const PersonalInformation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [secretCode, setSecretCode] = useState("");
   const { user } = useContext(AuthContext);
+  const [userData, setUserData] = useState({});
+  const [loading, setLoading] = useState(true);
   const userId = user?._id;
 
-  console.log("Secret Code:", secretCode);
   const data = {
     code: secretCode,
-    userId: userId
+    userId: userId,
   };
 
   const handleSubmit = async () => {
@@ -30,18 +32,40 @@ const PersonalInformation = () => {
       );
       console.log("Response:", response.data);
 
-      if(response?.data?.message){
-        toast.success(response?.data?.message)
+      if (response?.data?.message) {
+        toast.success(response?.data?.message);
       }
     } catch (error) {
-      // console.error(
-      //   "Error redeeming coupon:",
-      //   error.response ? error.response.data : error.message
-      // );
-      toast.error(error.response ? error.response.data : error.message)
+      toast.error(error.response ? error.response.data : error.message);
     }
     setIsOpen(false);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (user?._id) {
+        try {
+          const response = await getTeamMembers(user._id);
+          setUserData(response.userData);
+        } catch (error) {
+          console.error("Error fetching team data:", error);
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [user?._id]);
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+
+  console.log(userData);
+
   return (
     <div>
       <div className="bg-gray-100 min-h-screen mt-4 flex flex-col">
@@ -55,31 +79,35 @@ const PersonalInformation = () => {
           <div className="flex flex-col items-center">
             <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center">
               <img
-                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                src={`${userData?.profileImage}`}
                 alt="Profile"
                 className="rounded-full"
               />
             </div>
-            <h2 className="text-2xl text-white">Your Name</h2>
+            <h2 className="text-2xl text-white">{userData?.username}</h2>
           </div>
           <div className="flex justify-between items-center mt-4">
             <div className="flex gap-14 ">
               <div className=" text-center ">
-                <p className="text-lg font-bold">0.00TK</p>
+                <p className="text-lg font-bold">{userData?.balance}TK</p>
                 <p className="text-sm">অবশিষ্ট ব্যালেন্স</p>
               </div>
-              <div className=" text-center">
+              {/* <div className=" text-center">
                 <p className="text-lg font-bold">0.00TK</p>
                 <p className="text-sm">আয়</p>
-              </div>
+              </div> */}
             </div>
             <div className="flex flex-col items-center mt-6 gap-4">
-              <button className="btn btn-sm bg-blue-500 px-4 py-2 rounded hover:to-blue-500 text-white w-full sm:w-auto">
-                রিচার্জ
-              </button>
-              <button className=" btn bg-red-500 btn-sm px-4 py-2 hover:bg-red-500 rounded text-white w-full sm:w-auto">
-                উত্তোলন
-              </button>
+              <Link to={"/recharge"}>
+                <button className="btn btn-sm bg-blue-500 px-4 py-2 rounded hover:to-blue-500 text-white w-full sm:w-auto">
+                  রিচার্জ
+                </button>
+              </Link>
+              <Link to={"/withdraw"}>
+                <button className=" btn bg-red-500 btn-sm px-4 py-2 hover:bg-red-500 rounded text-white w-full sm:w-auto">
+                  উত্তোলন
+                </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -166,7 +194,7 @@ const PersonalInformation = () => {
               </button>
             </li>
             <li className="flex items-center justify-between p-4 border-b">
-              <span>চার্জ রেকর্ড</span>
+              <span>রিচার্জ রেকর্ড</span>
               <button className="px-6 btn-sm mr-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600  duration-200 text-lg font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all">
                 <Link to={"/reachargerecord"} className="text-2xl">
                   <HiArrowLongRight />

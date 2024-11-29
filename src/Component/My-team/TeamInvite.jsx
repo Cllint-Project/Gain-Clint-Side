@@ -18,7 +18,7 @@ import { ShareIcon } from 'lucide-react';
       <div className="flex justify-between items-center">
         <div>
           <h3 className="text-lg font-semibold text-gray-800">
-            Referral Code: {referralCode}
+            Referral Code: <span className='bg-green-100 text-green-800 px-2 py-1 rounded-2xl'>{referralCode}</span>
           </h3>
           <p className="text-gray-500 mt-1">Share with friends to earn rewards</p>
         </div>

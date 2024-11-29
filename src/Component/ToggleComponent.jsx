@@ -7,20 +7,6 @@ const ToggleComponent = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    // const fetchData = async () => {
-    //   try {
-    //     const response = await fetch("https://gain-server-side-production.up.railway.app/api/users/get-invest-data");
-    //     console.log(response.data)
-    //     if (!response.ok) {
-    //       throw new Error("Failed to fetch data");
-    //     }
-    //     const result = await response.json();
-    //     setData(result); // Assuming result is an array
-    //   } catch (error) {
-    //     console.error("Error fetching data:", error);
-    //   }
-    // };
-
     const fetchData = async () => {
       try {
         const res = await axios.get("https://gain-server-side-production.up.railway.app/api/users/get-invest-data");

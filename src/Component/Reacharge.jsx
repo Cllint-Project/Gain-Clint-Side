@@ -8,7 +8,8 @@ const Recharge = () => {
   const navigate = useNavigate();
   const { machineData } = location.state || {};
   const { user } = useContext(AuthContext);
-  // console.log(user?._id);
+  const isCardDetails = location.pathname.includes("cardDetails/");
+
   const [rechargeData, setRechargeData] = useState({
     investor_id: user?._id,
     investor_name: user?.username,
@@ -70,7 +71,12 @@ const Recharge = () => {
               defaultValue={machineData?.investment_amount || 0}
               onChange={handleInputChange}
               placeholder="Enter amount"
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+              className={`w-full px-4 py-2 border rounded-lg outline-none focus:ring-1 focus:ring-blue-500  focus:outline-blue-500 ${
+                isCardDetails 
+                  ? 'bg-gray-100 cursor-not-allowed'
+                  : ''
+              }`}
+              readOnly={isCardDetails}
             />
           </div>
 

@@ -21,7 +21,6 @@ import WithDrawDetails from "../DashBord/DashBoardComponent/WithDrawDetails";
 import Cuppon from "../DashBord/DashBoardComponent/Cuppon";
 import InvesmentData from "../Component/InvesmentData";
 import ReachargeRecord from "../Component/ReachargeRecord";
-import { InvestorDashboard } from "../Component/Daily-claim/InvestorDashboard";
 
 const router = createBrowserRouter([
   {
@@ -91,12 +90,7 @@ const router = createBrowserRouter([
       {
         path: "/reachargerecord",
         element: <ReachargeRecord></ReachargeRecord>,
-      },
-
-      {
-        path: "/daily-claim",
-        element: <InvestorDashboard></InvestorDashboard>,
-      },
+      }
     ],
   },
   //  DashBord

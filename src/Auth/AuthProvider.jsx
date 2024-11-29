@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import axios from "axios";
-
+import { toast } from "react-toastify";
 
 export const AuthContext = createContext(null);
 
@@ -8,7 +8,15 @@ export const AuthContext = createContext(null);
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+
   
+  // Logout function
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem("user");
+
+  };
+
 
   // Observer to check login state from local storage
   useEffect(() => {
@@ -22,37 +30,36 @@ const AuthProvider = ({ children }) => {
   // Login function
   const login = async (data) => {
     try {
-      const res = await axios.post("https://gain-server-side-production.up.railway.app/api/auth/login", data);
+
+      const res = await axios.post("http://localhost:5000/api/auth/login", data);
       const loggedInUser = res.data.data;
       setUser(loggedInUser);
       localStorage.setItem("user", JSON.stringify(loggedInUser)); // Store user data locally
       return loggedInUser;
     } catch (error) {
       console.error("Login failed", error);
+      toast.error(error.response.data.message)
     }
   };
 
   // Registration function
   const Register = async (data) => {
     try {
-        console.log(data,36)
-      const res = await axios.post("https://gain-server-side-production.up.railway.app/api/auth/register", data);
+        
+      console.log('data ki ', data)
+      const res = await axios.post("http://localhost:5000/api/auth/register", data);
       const registeredUser = res.data.data;
       setUser(registeredUser);
-      console.log(registeredUser,40)
-      localStorage.setItem("user", JSON.stringify(registeredUser));
+      // localStorage.setItem("user", JSON.stringify(registeredUser));
       return registeredUser
     } catch (error) {
       console.error("Registration failed", error);
+      
+      toast.error(error.response.data.message)
     }
   };
 
-  // Logout function
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem("user");
-  };
-
+  
   const Info = {
     user,
     loading,

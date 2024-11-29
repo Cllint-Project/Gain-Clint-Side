@@ -1,6 +1,6 @@
  export const TeamStats = ({ userData }) => {
     const stats = [
-      { label: 'মোট আয়', value: `${userData?.balance || 0}TK` },
+      { label: 'মোট ব্যালেন্স', value: `${userData?.balance || 0}TK` },
       { label: 'আজ', value: '0.00TK' },
       { label: 'গতকাল', value: '0.00TK' },
     ];

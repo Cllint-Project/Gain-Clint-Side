@@ -1,10 +1,14 @@
 import { useContext } from "react";
-import { Link, } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Auth/AuthProvider";
 
 const Banner = () => {
   const { user, logout } = useContext(AuthContext);
-
+  
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    logout, navigate("/login");
+  };
   return (
     <div>
       <div className="w-full">
@@ -18,7 +22,7 @@ const Banner = () => {
           {/* Icon or Flag */}
           <div className=" flex items-center gap-10 p-1">
             <img
-              src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+              src={`${user?.profileImage}`}
               alt="Avatar"
               className="h-10 w-10 rounded-full"
             />
@@ -26,7 +30,7 @@ const Banner = () => {
             <div className="flex gap-4">
               {user ? (
                 <button
-                  onClick={logout}
+                  onClick={handleLogout}
                   className="btn btn-sm bg-blue-500 hover:bg-blue-600 text-white"
                 >
                   Logout
