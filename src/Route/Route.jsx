@@ -21,6 +21,11 @@ import WithDrawDetails from "../DashBord/DashBoardComponent/WithDrawDetails";
 import Cuppon from "../DashBord/DashBoardComponent/Cuppon";
 import InvesmentData from "../Component/InvesmentData";
 import ReachargeRecord from "../Component/ReachargeRecord";
+import Profile from "../Component/Profile";
+import Details4 from "../Component/Details4";
+import EntryProject from "../Component/EntryProject";
+import Faq1 from "../Component/Faq1";
+import Faq2 from "../Component/Faq2";
 
 
 const router = createBrowserRouter([
@@ -59,6 +64,26 @@ const router = createBrowserRouter([
           {
             path:"/detailed",
             element:<Details3></Details3>
+          },
+          {
+            path:"/data",
+            element:<Details4></Details4>
+          },
+          {
+            path:"/entry",
+            element:<EntryProject></EntryProject>
+          },
+          {
+            path:"/faq",
+            element:<Faq1></Faq1>
+          },
+          {
+            path:"/faq",
+            element:<Faq1></Faq1>
+          },
+          {
+            path:"/faqs",
+            element:<Faq2></Faq2>
           },
           {
             path:"/recharge",
@@ -115,6 +140,10 @@ const router = createBrowserRouter([
         {
           path:"cupon",
           element:<Cuppon></Cuppon>
+        },
+        {
+          path:"profile",
+          element:<Profile></Profile>
         },
        ]
      }

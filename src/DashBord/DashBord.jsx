@@ -1,7 +1,6 @@
 import {  UserCircle2,  WalletMinimal } from "lucide-react";
 import { useState } from "react";
 import { AiOutlineBars } from "react-icons/ai";
-
 import { FcSettings } from "react-icons/fc";
 import { GrLogout } from "react-icons/gr";
 import { RiCoupon3Fill } from "react-icons/ri";
@@ -23,13 +22,13 @@ return (
         <div>
           <div className='block cursor-pointer p-4 font-bold'>
             <Link to='/'>
-              <img
+              {/* <img
                 // className='hidden md:block'
                 src='https://i.ibb.co/4ZXzmq5/logo.png'
                 alt='logo'
                 width='100'
                 height='100'
-              />
+              /> */}
             </Link>
           </div>
         </div>
@@ -52,13 +51,13 @@ return (
           <div>
             <div className='w-full hidden md:flex px-4 py-2 shadow-lg rounded-lg justify-center items-center bg-rose-100 mx-auto'>
               <Link to='/'>
-                <img
+                {/* <img
                   // className='hidden md:block'
                   src='https://i.ibb.co/4ZXzmq5/logo.png'
                   alt='logo'
                   width='100'
                   height='100'
-                />
+                /> */}
               </Link>
             </div>
           </div>
@@ -132,7 +131,7 @@ return (
 
           {/* Profile Menu */}
           <NavLink
-            to='/dashboard/profile'
+            to='profile'
             className={({ isActive }) =>
               `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
                 isActive ? 'bg-gray-300  text-gray-700' : 'text-gray-600'

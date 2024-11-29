@@ -44,11 +44,21 @@ const Banner = () => {
 
         {/* Main Image Section */}
         <div className="relative">
-          <img
-            src="https://img.freepik.com/free-vector/gradient-real-estate-linkedin-banner_23-2149058715.jpg?t=st=1731998828~exp=1732002428~hmac=d7d2ff3ebb88f3b50e10a11c902a63a416f60269ccab7353cd1f21b6fa7113e8&w=1060"
-            alt="Banner Image"
-            className="lg:w-full sm:w-[400px] md:w-[900px] h-[200px] sm:h-[300px] md:h-[400px] lg:object-cover md:object-bottom"
-          />
+        <video
+  src="https://www.terawulf-pre.com/media/xuanchuan.97ec90f0.mp4"
+  className="lg:w-full sm:w-[1000px] md:w-[1200px] h-[300px] sm:h-[400px] md:h-[500px] lg:object-cover md:object-bottom"
+  autoPlay
+  muted
+  loop
+  controls
+  alt="Banner Video"
+>
+  আপনার ব্রাউজার ভিডিও প্লে সাপোর্ট করে না।
+</video>
+
+
+
+
         </div>
       </div>
     </div>
