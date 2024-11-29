@@ -6,9 +6,14 @@ import { AuthContext } from "../Auth/AuthProvider";
 const Recharge = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { machineData } = location.state || {};
+  const { machineData, previousPath = "" } = location.state || {};
   const { user } = useContext(AuthContext);
-  const isCardDetails = location.pathname.includes("cardDetails/");
+
+  // console.log('Previous pathname:', previousPath);
+  // , previousPath = ''
+  const isCardDetails = previousPath.includes('cardDetails');
+  // const isCardDetails = false;
+  console.log("isCardDetails:", machineData,isCardDetails);
 
   const [rechargeData, setRechargeData] = useState({
     investor_id: user?._id,
@@ -38,7 +43,12 @@ const Recharge = () => {
     <div>
       <div className="min-h-screen flex items-center justify-center my-8">
         <div className="bg-white p-8 rounded-lg shadow-lg max-w-lg h-1/2 w-full">
-          <h2 className="text-2xl font-bold text-center mb-6">Recharge Form</h2>
+          {/* Title ডাইনামিক */}
+          <h2 className="text-2xl font-bold text-center mb-6">
+            {isCardDetails
+              ? `Buy Machine`
+              : "Recharge Form"}
+          </h2>
 
           <div className="mb-4">
             <label
@@ -53,7 +63,7 @@ const Recharge = () => {
               name="phone_number"
               onChange={handleInputChange}
               placeholder="Enter account Account Phone number"
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border rounded-lg outline-none focus:ring-1 focus:ring-blue-500 focus:outline-blue-500"
             />
           </div>
 
@@ -68,15 +78,11 @@ const Recharge = () => {
               type="number"
               id="customAmount"
               name="recharge_amount"
-              defaultValue={machineData?.investment_amount || 0}
+              value={rechargeData.recharge_amount}
               onChange={handleInputChange}
               placeholder="Enter amount"
-              className={`w-full px-4 py-2 border rounded-lg outline-none focus:ring-1 focus:ring-blue-500  focus:outline-blue-500 ${
-                isCardDetails 
-                  ? 'bg-gray-100 cursor-not-allowed'
-                  : ''
-              }`}
-              readOnly={isCardDetails}
+              className={`w-full px-4 py-2 border rounded-lg outline-none focus:ring-1 focus:ring-blue-500 focus:outline-blue-500 ${ isCardDetails && "bg-gray-100 cursor-not-allowed"}`}
+              readOnly={isCardDetails} // cardDetails পাথের জন্য readOnly
             />
           </div>
 
@@ -104,7 +110,7 @@ const Recharge = () => {
             onClick={handleSubmit}
             className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600"
           >
-            Recharge Now
+            {isCardDetails ? "Buy Now" : "Recharge Now"}
           </button>
         </div>
       </div>

@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 import { formatRechargeData } from "../utils/formatRechargeData";
 import { submitRecharge } from "../utils/api";
-import { X } from "lucide-react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -16,17 +15,15 @@ function Transaction() {
   const [transactionId, setTransactionId] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   // const [showModal, setShowModal] = useState(false);
-  // const [newPhoneNumber, setNewPhoneNumber] = useState(rechargeData?.phone_number || '');
-  const [adminNumber, setNewAdminNumber] = useState("");
+  // const [newPhoneNumber, setNewPhoneNumber] = useState();
+  const [adminNumber, setNewAdminNumber] = useState(rechargeData?.phone_number || "0152088580");
 
   // const handleUpdatePhoneNumber = () => {
   //   setRechargeData({
   //     ...rechargeData,
   //     admin_number: adminNumber
   //   });
-  //   setShowModal(false);
   // };
-  console.log(adminNumber, 26);
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -37,6 +34,8 @@ function Transaction() {
         adminNumber,
         transactionId
       );
+
+      console.log(38, formattedData)
       const response = await submitRecharge(formattedData);
 
       if (response.message) {
@@ -46,8 +45,8 @@ function Transaction() {
         }, 1000);
       }
     } catch (error) {
-      console.error("Error details:", error.response);
-      toast.error("Error submitting transaction. Please try again.");
+      console.error("Error details:", error.response.data.message);
+      toast.error(error.response.data.message);
     } finally {
       setIsSubmitting(false);
     }
