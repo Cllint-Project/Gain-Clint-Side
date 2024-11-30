@@ -1,65 +1,182 @@
-import { useContext } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+  useRef,
+} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Auth/AuthProvider";
+import { FaRegCircleUser } from "react-icons/fa6";
+import { VITE_BASE_URL } from "../baseUrl";
+import axios from "axios";
 
 const Banner = () => {
-  const { user, logout } = useContext(AuthContext);
-
+  const { logout, user } = useContext(AuthContext);
+  const [menu, setShowMenu] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [userData, setUserData] = useState({});
   const navigate = useNavigate();
-  const handleLogout = () => {
-    logout, navigate("/login");
-  };
-  return (
-    <div>
-      <div className="w-full">
-        {/* Header Section */}
-        <div className="flex justify-between items-center bg-blue-500  px-4 py-2">
-          {/* Logo */}
-          <div>
-            {/* Replace the commented code with your logo if needed */}
-            <h2 className="text-2xl text-white">Gain</h2>
-          </div>
-          {/* Icon or Flag */}
-          <div className=" flex items-center gap-10 p-1">
-            <img
-              src={`${user?.profileImage}`}
-              alt="Avatar"
-              className="h-10 w-10 rounded-full"
-            />
+  const menuRef = useRef(null);
 
-            <div className="flex gap-4">
-              {user ? (
-                <button
-                  onClick={handleLogout}
-                  className="btn btn-sm bg-blue-500 hover:bg-blue-600 text-white"
-                >
-                  Logout
-                </button>
-              ) : (
-                <Link to="/login">
-                  <button className="btn btn-sm bg-blue-500 hover:bg-blue-600 text-white">
-                    Login
+  const fetchUserData = async () => {
+    if (!user?._id) {
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await axios.get(
+        `${VITE_BASE_URL}/api/users/getUser/${user._id}`
+      );
+      const userData = response?.data?.data;
+      setUserData(userData);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserData();
+  }, [user?._id]);
+
+  // Handle click outside to close menu
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setShowMenu(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const toggleMenu = useCallback(() => {
+    setShowMenu((prev) => !prev);
+  }, []);
+
+  const handleLogout = () => {
+    logout();
+    setShowMenu(false);
+    navigate("/login");
+  };
+
+  return (
+    <div className="w-full">
+      <div className="flex justify-between items-center bg-blue-500 px-4 py-2">
+        {/* Logo */}
+        <div>
+          <h2 className="text-2xl text-white">Gain</h2>
+        </div>
+
+        {/* User Menu */}
+        <div className="flex items-center gap-4">
+          <div ref={menuRef} className="relative">
+            <div
+              onClick={toggleMenu}
+              className="cursor-pointer flex items-center"
+            >
+              {userData?._id ? (
+                <div className="flex justify-center items-center gap-6">
+                  <div className="w-10 h-10 rounded-full overflow-hidden">
+                    {userData?.profileImage ? (
+                      <img
+                        src={userData.profileImage}
+                        className="h-full w-full object-cover"
+                        alt={userData?.username}
+                      />
+                    ) : (
+                      <div className="h-full w-full flex items-center justify-center bg-blue-600 text-white">
+                        <FaRegCircleUser className="text-2xl" />
+                      </div>
+                    )}
+                  </div>
+
+                  <button
+                    onClick={handleLogout}
+                    className="hidden md:block btn btn-sm bg-blue-500 hover:bg-blue-600 text-white"
+                  >
+                    Logout
                   </button>
-                </Link>
+                </div>
+              ) : (
+                <button
+                  className="hidden md:block btn btn-sm bg-blue-500 hover:bg-blue-600 text-white"
+                >
+                  <Link to={"/login"}>login</Link>
+                </button>
               )}
             </div>
+
+            {/* Dropdown Menu */}
+            {menu && (
+              <div className="absolute right-0 top-12 w-48 bg-white rounded-lg shadow-lg py-1 z-50">
+                {userData?._id ? (
+                  <>
+                    <div className="px-4 py-2 border-b">
+                      <p className="text-sm font-medium text-gray-900 truncate">
+                        {userData.username}
+                      </p>
+                    </div>
+                    {userData?.role === "normal-user" && (
+                      <Link
+                        to="/dashboard/recharge"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        onClick={() => setShowMenu(false)}
+                      >
+                        Admin panel
+                      </Link>
+                    )}
+                  </>
+                ) : (
+                  <Link
+                    to="/login"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    onClick={() => setShowMenu(false)}
+                  >
+                    Login
+                  </Link>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Mobile Login/Logout Button */}
+          <div className="sm:hidden">
+            {userData?._id ? (
+              <button
+                onClick={handleLogout}
+                className=" btn btn-sm bg-blue-500 hover:bg-blue-600 text-white"
+              >
+                Logout
+              </button>
+            ) : (
+              <Link to="/login">
+                <button className=" btn btn-sm bg-blue-500 hover:bg-blue-600 text-white">
+                  Login
+                </button>
+              </Link>
+            )}
           </div>
         </div>
+      </div>
 
-        {/* Main Image Section */}
-        <div className="relative">
-          <video
-            src="https://www.terawulf-pre.com/media/xuanchuan.97ec90f0.mp4"
-            className="lg:w-full sm:w-[1000px] md:w-[1200px] h-[300px] sm:h-[400px] md:h-[500px] lg:object-cover md:object-bottom"
-            autoPlay
-            muted
-            loop
-            controls
-            alt="Banner Video"
-          >
-            আপনার ব্রাউজার ভিডিও প্লে সাপোর্ট করে না।
-          </video>
-        </div>
+      {/* Main Image Section */}
+      <div className="relative">
+        <video
+          src="https://www.terawulf-pre.com/media/xuanchuan.97ec90f0.mp4"
+          className="lg:w-full sm:w-[1000px] md:w-[1200px] h-[300px] sm:h-[400px] md:h-[500px] lg:object-cover md:object-bottom"
+          autoPlay
+          muted
+          loop
+          controls
+          alt="Banner Video"
+        >
+          আপনার ব্রাউজার ভিডিও প্লে সাপোর্ট করে না।
+        </video>
       </div>
     </div>
   );

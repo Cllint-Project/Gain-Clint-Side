@@ -21,13 +21,14 @@ const DashBord = () => {
         <div>
           <div className="block cursor-pointer p-4 font-bold">
             <Link to="/">
-              {/* <img
-                // className='hidden md:block'
-                src='https://i.ibb.co/4ZXzmq5/logo.png'
-                alt='logo'
-                width='100'
-                height='100'
-              /> */}
+            <img
+                  // className='hidden md:block'
+                  src='/gain-logo.jpeg'
+                  alt='logo'
+                  width='60'
+                  height='60'
+                  className="rounded-box"
+                />
             </Link>
           </div>
         </div>
@@ -48,15 +49,16 @@ const DashBord = () => {
       >
         <div>
           <div>
-            <div className="w-full hidden md:flex px-4 py-2 shadow-lg rounded-lg justify-center items-center bg-rose-100 mx-auto">
+            <div className="w-full hidden md:flex px-4 py-2 shadow-xl rounded-lg justify-center items-center  mx-auto">
               <Link to="/">
-                {/* <img
+                <img
                   // className='hidden md:block'
-                  src='https://i.ibb.co/4ZXzmq5/logo.png'
+                  src='/gain-logo.jpeg'
                   alt='logo'
-                  width='100'
-                  height='100'
-                /> */}
+                  width='60'
+                  height='60'
+                  className="rounded-box"
+                />
               </Link>
             </div>
           </div>

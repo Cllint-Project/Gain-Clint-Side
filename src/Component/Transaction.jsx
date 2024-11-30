@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-
 import { formatRechargeData } from "../utils/formatRechargeData";
 import { submitRecharge } from "../utils/api";
 import { toast } from "react-toastify";
+import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
+import { VITE_BASE_URL } from "../baseUrl";
 
 function Transaction() {
   const location = useLocation();
@@ -14,16 +15,31 @@ function Transaction() {
   const [rechargeData, setRechargeData] = useState(initialRechargeData);
   const [transactionId, setTransactionId] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  // const [showModal, setShowModal] = useState(false);
-  // const [newPhoneNumber, setNewPhoneNumber] = useState();
-  const [adminNumber, setNewAdminNumber] = useState(rechargeData?.phone_number || "0152088580");
+  const [adminData, setAdminData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // const handleUpdatePhoneNumber = () => {
-  //   setRechargeData({
-  //     ...rechargeData,
-  //     admin_number: adminNumber
-  //   });
-  // };
+  useEffect(() => {
+    const fetchAdminData = async () => {
+      try {
+        const response = await axios.get(`${VITE_BASE_URL}/api/users/getAdmin`);
+        if (response.data.success) {
+          setAdminData(response.data.data);
+          setRechargeData(prev => ({
+            ...prev,
+            adminNumber: response?.data?.data?.phoneNumber
+          }));
+        }
+      } catch (error) {
+        // toast.error("Error fetching admin details");
+        console.error("Error fetching admin:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchAdminData();
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -31,11 +47,10 @@ function Transaction() {
     try {
       const formattedData = formatRechargeData(
         rechargeData,
-        adminNumber,
+        adminData?.phoneNumber,
         transactionId
       );
 
-      console.log(38, formattedData)
       const response = await submitRecharge(formattedData);
 
       if (response.message) {
@@ -45,12 +60,20 @@ function Transaction() {
         }, 1000);
       }
     } catch (error) {
-      console.error("Error details:", error.response.data.message);
-      toast.error(error.response.data.message);
+      console.error("Error details:", error.response?.data?.message);
+      toast.error(error.response?.data?.message || "Transaction failed");
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="pb-20 bg-gray-50 py-8 px-4">
@@ -71,10 +94,8 @@ function Transaction() {
                 <input
                   type="text"
                   readOnly
-                  name="admin_number"
-                  defaultValue={adminNumber}
-                  onChange={(e) => setNewAdminNumber(e.target.value)}
-                  className="flex-1 p-3 border border-gray-300  rounded-lg outline-none focus:ring-1 focus:ring-blue-500  focus:outline-blue-500"
+                  value={adminData?.phoneNumber || ""}
+                  className="flex-1 p-3 border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-blue-500 focus:outline-blue-500"
                   placeholder="Admin account number"
                 />
               </div>
@@ -88,7 +109,7 @@ function Transaction() {
                   type="text"
                   readOnly
                   value={rechargeData?.phone_number || ""}
-                  className="flex-1 p-3 border border-gray-300  rounded-lg outline-none focus:ring-1 focus:ring-blue-500  focus:outline-blue-500"
+                  className="flex-1 p-3 border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-blue-500 focus:outline-blue-500"
                   placeholder="Account number"
                 />
               </div>
@@ -103,8 +124,7 @@ function Transaction() {
                   type="text"
                   readOnly
                   value={rechargeData?.recharge_option || ""}
-                  className="w-full p-3 border border-gray-300  rounded-lg outline-none focus:ring-1 focus:ring-blue-500  focus:outline-blue-500"
-                  
+                  className="w-full p-3 border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-blue-500 focus:outline-blue-500"
                 />
               </div>
 
@@ -115,8 +135,8 @@ function Transaction() {
                 <input
                   type="text"
                   readOnly
-                  defaultValue={`${rechargeData?.recharge_amount || ""}`}
-                  className="w-full p-3 border border-gray-300  rounded-lg outline-none focus:ring-1 focus:ring-blue-500  focus:outline-blue-500"
+                  value={rechargeData?.recharge_amount || ""}
+                  className="w-full p-3 border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-blue-500 focus:outline-blue-500"
                   placeholder="Enter amount"
                 />
               </div>
@@ -139,7 +159,7 @@ function Transaction() {
               type="text"
               value={transactionId}
               onChange={(e) => setTransactionId(e.target.value)}
-              className="w-full p-3 border border-gray-300  rounded-lg outline-none focus:ring-1 focus:ring-blue-500  focus:outline-blue-500"
+              className="w-full p-3 border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-blue-500 focus:outline-blue-500"
               placeholder="Enter your transaction number"
             />
           </div>
@@ -164,48 +184,6 @@ function Transaction() {
           </div>
         </form>
       </div>
-
-      {/* {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-semibold">Update Phone Number</h3>
-              <button
-                onClick={() => setShowModal(false)}
-                className="text-gray-500 hover:text-gray-700"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                New Phone Number
-              </label>
-              <input
-                type="tel"
-                value={newPhoneNumber}
-                onChange={(e) => setNewAdminNumber(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-lg"
-                placeholder="Enter new phone number"
-              />
-            </div>
-            <div className="flex justify-end gap-2">
-              <button
-                onClick={() => setShowModal(false)}
-                className="px-4 py-2 text-gray-600 hover:text-gray-700"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleUpdatePhoneNumber}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-              >
-                Update
-              </button>
-            </div>
-          </div>
-        </div>
-      )} */}
     </div>
   );
 }

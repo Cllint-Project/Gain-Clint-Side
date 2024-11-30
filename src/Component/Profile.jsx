@@ -116,7 +116,7 @@ const Profile = () => {
               />
               <div className="absolute bottom-0 right-0">
                 <label htmlFor="file-upload" className="cursor-pointer">
-                  <div className="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-2">
+                  <div className="bg-blue-600 hover:bg-blue-600 text-white rounded-full p-2">
                     <Upload className="h-4 w-4" />
                   </div>
                   <input

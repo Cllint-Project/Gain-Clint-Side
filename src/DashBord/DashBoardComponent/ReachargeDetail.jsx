@@ -135,7 +135,7 @@ console.log(recharges)
         <div className="bg-white rounded-lg shadow-xl overflow-hidden">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gradient-to-r from-purple-600 to-indigo-600">
+              <thead className="bg-gradient-to-r from-blue-400 to-blue-600">
                 <tr>
                   <th className="px-6 py-4 text-left text-sm font-medium text-white uppercase tracking-wider">
                     Transaction Id

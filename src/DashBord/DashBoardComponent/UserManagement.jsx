@@ -28,7 +28,7 @@ const UserManagement = () => {
   }, []);
 
   const updateRole = async (userId, currentRole) => {
-    const newRole = currentRole === "admin" ? "user" : "admin";
+    const newRole = currentRole === "admin" ? "normal-user" : "admin";
 
     // SweetAlert Confirmation
     const result = await Swal.fire({
@@ -66,7 +66,7 @@ const UserManagement = () => {
                 <>
                   <table className="w-full">
                     <thead>
-                      <tr className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white">
+                      <tr className="bg-gradient-to-r from-blue-500 to-blue-700 text-white">
                         <th className="px-6 py-4 text-left font-semibold tracking-wider whitespace-nowrap">
                           <div className="flex items-center gap-2">
                             Name
@@ -117,7 +117,7 @@ const UserManagement = () => {
                           <td className="px-6 py-4 whitespace-nowrap text-center">
                             <div className="flex justify-center gap-3">
                               <button
-                                className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors duration-200"
+                                className={`inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 ${item.role === 'admin' && 'hidden'}`}
                                 onClick={() => updateRole(item?._id, item?.role)}
                               >
                                 <FaUser className="mr-2" />

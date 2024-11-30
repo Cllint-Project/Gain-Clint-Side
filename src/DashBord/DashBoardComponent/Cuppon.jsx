@@ -46,7 +46,7 @@ const CouponForm = () => {
           <div className="bg-white rounded-2xl shadow-xl p-8">
             <div className="flex items-center justify-center mb-8">
               <div className="bg-indigo-100 p-3 rounded-full">
-                <FaTag className="text-indigo-600 text-xl" />
+                <FaTag className="text-blue-600 text-xl" />
               </div>
             </div>
 
@@ -67,7 +67,7 @@ const CouponForm = () => {
                   onChange={handleChange}
                   placeholder="Enter coupon code"
                   className="w-full px-4 py-3 border-2 rounded-lg outline-none transition-all duration-300 
-                    border-gray-200 focus:border-indigo-500"
+                    border-gray-200 focus:border-blue-600"
                   required
                 />
               </div>
@@ -84,7 +84,7 @@ const CouponForm = () => {
                   onChange={handleChange}
                   min="1"
                   className="w-full px-4 py-3 border-2 rounded-lg outline-none transition-all duration-300 
-                    border-gray-200 focus:border-indigo-500"
+                    border-gray-200 focus:border-blue-500"
                   required
                 />
               </div>
@@ -95,7 +95,7 @@ const CouponForm = () => {
                 className={`w-full py-3 px-4 rounded-lg text-white font-medium transition-all duration-300
                   ${isSubmitting || !formData.code
                     ? 'bg-gray-400 cursor-not-allowed'
-                    : 'bg-indigo-600 hover:bg-indigo-700 active:transform active:scale-[0.98]'
+                    : 'bg-blue-600 hover:bg-blue-700 active:transform active:scale-[0.98]'
                   }`}
               >
                 {isSubmitting ? (

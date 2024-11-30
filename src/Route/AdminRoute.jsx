@@ -3,7 +3,7 @@ import { Navigate, useLocation } from "react-router-dom";
 import { InfinitySpin } from "react-loader-spinner";
 import { AuthContext } from "../Auth/AuthProvider";
 
-const PrivateRoute = ({ children }) => {
+const AdminRoute = ({ children }) => {
   const { user, loading } = useContext(AuthContext);
   const location = useLocation();
 
@@ -21,11 +21,11 @@ const PrivateRoute = ({ children }) => {
     );
   }
 
-  if (user && user?._id) {
+  if (user?.role === "admin") {
     return children;
   }
 
   return <Navigate state={{ from: location.pathname }} to="/login" replace />;
 };
 
-export default PrivateRoute;
+export default AdminRoute;
