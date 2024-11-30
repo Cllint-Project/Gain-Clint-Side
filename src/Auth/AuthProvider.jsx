@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { VITE_BASE_URL } from "../baseUrl";
 
 export const AuthContext = createContext(null);
 
@@ -31,7 +32,7 @@ const AuthProvider = ({ children }) => {
   const login = async (data) => {
     try {
 
-      const res = await axios.post("http://localhost:5000/api/auth/login", data);
+      const res = await axios.post(`${VITE_BASE_URL}/api/auth/login`, data);
       const loggedInUser = res.data.data;
       setUser(loggedInUser);
       localStorage.setItem("user", JSON.stringify(loggedInUser)); // Store user data locally
@@ -47,7 +48,7 @@ const AuthProvider = ({ children }) => {
     try {
         
       console.log('data ki ', data)
-      const res = await axios.post("http://localhost:5000/api/auth/register", data);
+      const res = await axios.post(`${VITE_BASE_URL}/api/auth/register`, data);
       const registeredUser = res.data.data;
       setUser(registeredUser);
       // localStorage.setItem("user", JSON.stringify(registeredUser));

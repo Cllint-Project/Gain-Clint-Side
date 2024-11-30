@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { FaUser, FaSort } from "react-icons/fa";
 import { AuthContext } from "../../Auth/AuthProvider";
 import LoadingSpinner from "../../common/LoadingSpinner";
+import { VITE_BASE_URL } from "../../baseUrl";
 
 const UserManagement = () => {
   const [rechargeData, setRechargeData] = useState([]);
@@ -15,7 +16,7 @@ const UserManagement = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/users/getUsers");
+      const res = await axios.get(`${VITE_BASE_URL}/api/users/getUsers`);
       setRechargeData(res?.data?.data || []);
     } catch (error) {
       console.error("Failed to fetch users:", error);
@@ -43,7 +44,7 @@ const UserManagement = () => {
     if (result.isConfirmed) {
       try {
         const res = await axios.put(
-          `http://localhost:5000/api/users/update-role`,
+          `${VITE_BASE_URL}/api/users/update-role`,
           { newRole , userId }
         );
         Swal.fire("Success!", res.data.message, "success");

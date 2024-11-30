@@ -2,6 +2,7 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../Auth/AuthProvider";
 import LoadingSpinner from "../common/LoadingSpinner";
+import { VITE_BASE_URL } from "../baseUrl";
 
 const ReachargeRecord = () => {
   const [rechargeData, setRechargeData] = useState([]);
@@ -25,7 +26,7 @@ const ReachargeRecord = () => {
 
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/users/get-recharge-data?userId=${userId}`
+          `${VITE_BASE_URL}/api/users/get-recharge-data?userId=${userId}`
         );
         setRechargeData(res?.data?.data || []);
       } catch (error) {

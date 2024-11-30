@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import { AuthContext } from "../Auth/AuthProvider";
 import LoadingSpinner from "../common/LoadingSpinner";
 import { getTeamMembers } from "../utils/api";
+import { VITE_BASE_URL } from "../baseUrl";
 const PersonalInformation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [secretCode, setSecretCode] = useState("");
@@ -27,7 +28,7 @@ const PersonalInformation = () => {
   const handleSubmit = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/users/redeem-coupon",
+        `${VITE_BASE_URL}/api/users/redeem-coupon`,
         data
       );
       console.log("Response:", response.data);
@@ -36,7 +37,7 @@ const PersonalInformation = () => {
         toast.success(response?.data?.message);
       }
     } catch (error) {
-      toast.error(error.response ? error.response.data : error.message);
+      toast.error(error.response ? error.response.data.message : error.message);
     }
     setIsOpen(false);
   };

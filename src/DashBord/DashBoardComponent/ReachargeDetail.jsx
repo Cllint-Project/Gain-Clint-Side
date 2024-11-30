@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import { VITE_BASE_URL } from "../../baseUrl";
 
 const ReachargeDetail = () => {
   const [recharges, setRecharges] = useState([]);
@@ -19,7 +20,7 @@ const ReachargeDetail = () => {
       setLoading(true);
       setError("");
       const response = await axios.get(
-        `http://localhost:5000/api/users/get-AllRecharge-data${
+        `${VITE_BASE_URL}/api/users/get-AllRecharge-data${
           selectedStatus !== "all" ? `?status=${selectedStatus}` : ""
         }`
       );
@@ -50,7 +51,7 @@ const ReachargeDetail = () => {
         setError("");
 
         await axios.post(
-          "http://localhost:5000/api/users/approve-recharge",
+          `${VITE_BASE_URL}/api/users/approve-recharge`,
           {
             investor_id,
             recharge_id,

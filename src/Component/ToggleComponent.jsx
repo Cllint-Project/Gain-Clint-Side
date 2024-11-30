@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom"; // Import Link
+import { VITE_BASE_URL } from "../baseUrl";
 
 const ToggleComponent = () => {
   const [activeTab, setActiveTab] = useState("P");
@@ -9,7 +10,7 @@ const ToggleComponent = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("https://gain-server-side-production.up.railway.app/api/users/get-invest-data");
+        const res = await axios.get(`${VITE_BASE_URL}/api/users/get-invest-data`);
 
         const getData = res.data.data;
 

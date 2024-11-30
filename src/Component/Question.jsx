@@ -8,7 +8,7 @@ const Question = () => {
       {/* Image and Title */}
       <Link to={'/details'}  className=" p-2 flex items-center space-x-3">
         <img
-          src="https://via.placeholder.com/100"
+          src="https://i.ibb.co.com/9ym55kQ/c0dfe686453a5203.png"
           alt="Placeholder"
           className="w-16 h-16 s object-cover rounded"
         />
@@ -25,9 +25,9 @@ const Question = () => {
         <Link to={'/detailed'} className="text-left  text-lg w-full  h-[80px] px-4 py-2 bg-white border rounded shadow-sm hover:bg-gray-50">
           নটিলাস ক্রিপ্টোমিন
         </Link>
-        <button className="text-left  text-lg w-full  h-[80px] px-4 py-2 bg-white border rounded shadow-sm hover:bg-gray-50">
+        <Link to={"/data"} className="text-left  text-lg w-full  h-[80px] px-4 py-2 bg-white border rounded shadow-sm hover:bg-gray-50">
           TeraWulf mengumumkan pembaruan produksi dan operasi Mei 2024
-        </button>
+        </Link>
       </div>
     </div>
           </div>

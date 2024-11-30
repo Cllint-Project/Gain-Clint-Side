@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../Auth/AuthProvider";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { VITE_BASE_URL } from "../baseUrl";
 
 const InvesmentData = () => {
   const [rechargeData, SetRechargeData] = useState([]);
@@ -14,7 +15,7 @@ const InvesmentData = () => {
     const fetchData = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/users/claim-daily/${userId}`
+          `${VITE_BASE_URL}/api/users/claim-daily/${userId}`
         );
 
         const getData = res?.data?.data;
@@ -38,7 +39,7 @@ const InvesmentData = () => {
     console.log(data);
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/users/claim-daily",
+        `${VITE_BASE_URL}/api/users/claim-daily`,
         data
       );
       console.log("Response:", response.data);

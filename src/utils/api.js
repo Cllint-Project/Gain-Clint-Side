@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { VITE_BASE_URL } from '../baseUrl';
 
 // const BASE_URL = 'https://gain-server-side-production.up.railway.app/api/users';
-const BASE_URL = 'http://localhost:5000/api/users';
+const BASE_URL = `${VITE_BASE_URL}/api/users`;
 
 export const submitRecharge = async (data) => {
   const endpoint = data.machine_details 

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { VITE_BASE_URL } from "../../baseUrl";
 
 const WithdrawDetails = () => {
   const [withdrawals, setWithdrawals] = useState([]);
@@ -19,7 +20,7 @@ const WithdrawDetails = () => {
       setLoading(true);
       setError("");
       const response = await axios.get(
-        `http://localhost:5000/api/users/getWithdraw${
+        `${VITE_BASE_URL}/api/users/getWithdraw${
           selectedStatus !== "all" ? `?status=${selectedStatus}` : ""
         }`
       );
@@ -50,7 +51,7 @@ const WithdrawDetails = () => {
         setError("");
 
         await axios.put(
-          "http://localhost:5000/api/users/admin/withdraw/approve",
+          `${VITE_BASE_URL}/api/users/admin/withdraw/approve`,
           {
             user_id: userId,
             withdraw_id: withdrawId,

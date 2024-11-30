@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FaTag } from "react-icons/fa";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { VITE_BASE_URL } from "../../baseUrl";
 
 const CouponForm = () => {
   const [formData, setFormData] = useState({
@@ -17,7 +18,7 @@ const CouponForm = () => {
 
     try {
 
-      const response = await axios.post('http://localhost:5000/api/users/admin/coupon', formData);
+      const response = await axios.post(`${VITE_BASE_URL}/api/users/admin/coupon`, formData);
       
       if (response.data.success) {
         toast.success(response?.data?.message || "Coupon created successfully");
@@ -40,7 +41,7 @@ const CouponForm = () => {
 
   return (
     <>
-      <div className="min-h-screen bg-gradient-to-br from-purple-100 to-indigo-200 flex items-center justify-center p-4">
+      <div className=" md:pt-16 flex items-center justify-center p-4">
         <div className="w-full max-w-md">
           <div className="bg-white rounded-2xl shadow-xl p-8">
             <div className="flex items-center justify-center mb-8">

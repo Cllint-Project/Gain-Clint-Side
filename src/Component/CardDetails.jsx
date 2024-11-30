@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { VITE_BASE_URL } from "../baseUrl";
 
 const CardDetails = () => {
   const previousPath = location.pathname;
@@ -11,7 +12,7 @@ const CardDetails = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/users/get-invest-data/${id}`
+          `${VITE_BASE_URL}/api/users/get-invest-data/${id}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch data");
