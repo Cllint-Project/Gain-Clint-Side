@@ -1,31 +1,28 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { VITE_BASE_URL } from "../baseUrl";
+import UseAxiosPublic from "../Hooks/UseAxiosPublic";
 
 const CardDetails = () => {
   const previousPath = location.pathname;
   const navigate = useNavigate();
   const { id } = useParams();
-
   const [item, setItem] = useState([]);
+  const axiosPublic = UseAxiosPublic();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          `${VITE_BASE_URL}/api/users/get-invest-data/${id}`
+        const response = await axiosPublic.get(
+          `/api/users/get-invest-data/${id}`
         );
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-        const result = await response.json();
-        setItem(result.data);
+        setItem(response?.data?.data); // Assuming the data is in `response.data.data`
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
-  }, [id]);
+  }, [id, axiosPublic]);
 
   const handleRechargeClick = (machineData) => {
     navigate("/recharge", { state: { machineData, previousPath } });

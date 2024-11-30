@@ -3,6 +3,7 @@ import { Navigate, useLocation } from "react-router-dom";
 import { InfinitySpin } from "react-loader-spinner";
 import { AuthContext } from "../Auth/AuthProvider";
 
+
 const AdminRoute = ({ children }) => {
   const { user, loading } = useContext(AuthContext);
   const location = useLocation();
@@ -21,6 +22,7 @@ const AdminRoute = ({ children }) => {
     );
   }
 
+  console.log('admin route role check', user?.role)
   if (user?.role === "admin") {
     return children;
   }
@@ -29,3 +31,4 @@ const AdminRoute = ({ children }) => {
 };
 
 export default AdminRoute;
+

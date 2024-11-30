@@ -18,7 +18,7 @@ const Team = () => {
     const fetchData = async () => {
       if (user?._id) {
         try {
-          const response = await getTeamMembers(user._id);
+          const response = await getTeamMembers(user?._id);
           setUserData(response.userData);
           setTeamMembers(response.teamMembers);
         } catch (error) {

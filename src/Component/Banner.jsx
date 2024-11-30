@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-  useRef,
-} from "react";
+import { useCallback, useContext, useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Auth/AuthProvider";
 import { FaRegCircleUser } from "react-icons/fa6";
@@ -69,7 +63,15 @@ const Banner = () => {
       <div className="flex justify-between items-center bg-blue-500 px-4 py-2">
         {/* Logo */}
         <div>
-          <h2 className="text-2xl text-white">Gain</h2>
+          {/* <h2 className="text-2xl text-white">Gain</h2> */}
+          <img
+            // className='hidden md:block'
+            src="/gain-logo.jpeg"
+            alt="logo"
+            width="45"
+            height="45"
+            className="rounded-box"
+          />
         </div>
 
         {/* User Menu */}
@@ -103,9 +105,7 @@ const Banner = () => {
                   </button>
                 </div>
               ) : (
-                <button
-                  className="hidden md:block btn btn-sm bg-blue-500 hover:bg-blue-600 text-white"
-                >
+                <button className="hidden md:block btn btn-sm bg-blue-500 hover:bg-blue-600 text-white">
                   <Link to={"/login"}>login</Link>
                 </button>
               )}
@@ -121,9 +121,9 @@ const Banner = () => {
                         {userData.username}
                       </p>
                     </div>
-                    {userData?.role === "normal-user" && (
+                    {userData?.role === "admin" && (
                       <Link
-                        to="/dashboard/recharge"
+                        to="/dashboard"
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                         onClick={() => setShowMenu(false)}
                       >
@@ -168,7 +168,7 @@ const Banner = () => {
       <div className="relative">
         <video
           src="https://www.terawulf-pre.com/media/xuanchuan.97ec90f0.mp4"
-          className="lg:w-full sm:w-[1000px] md:w-[1200px] h-[300px] sm:h-[400px] md:h-[500px] lg:object-cover md:object-bottom"
+          className=" lg:w-full sm:w-[1000px] md:w-[1200px] sm:h-[400px] md:h-[500px] lg:object-fill md:object-bottom"
           autoPlay
           muted
           loop

@@ -1,15 +1,14 @@
 import { useState } from "react";
 import { FaTag } from "react-icons/fa";
-import axios from "axios";
 import { toast } from "react-toastify";
-import { VITE_BASE_URL } from "../../baseUrl";
-
+import useAxiosSecure from "../../Hooks/UseAxiosSecure";
 const CouponForm = () => {
   const [formData, setFormData] = useState({
     code: '',
     expirationMinutes: 10,
-    adminId: '67499618c5b7bbe0737309bf'
+    adminId: ''
   });
+  const axiosSecure = useAxiosSecure();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -18,7 +17,7 @@ const CouponForm = () => {
 
     try {
 
-      const response = await axios.post(`${VITE_BASE_URL}/api/users/admin/coupon`, formData);
+      const response = await axiosSecure.post(`/api/users/admin/coupon`, formData);
       
       if (response.data.success) {
         toast.success(response?.data?.message || "Coupon created successfully");

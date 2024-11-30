@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { VITE_BASE_URL } from "../../baseUrl";
+import useAxiosSecure from "../../Hooks/UseAxiosSecure";
 
 const WithdrawDetails = () => {
   const [withdrawals, setWithdrawals] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState("all");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
+  const axiosSecure = useAxiosSecure();
   const statusOptions = ["all", "pending", "approved", "rejected"];
 
   useEffect(() => {
@@ -19,8 +20,8 @@ const WithdrawDetails = () => {
     try {
       setLoading(true);
       setError("");
-      const response = await axios.get(
-        `${VITE_BASE_URL}/api/users/getWithdraw${
+      const response = await axiosSecure.get(
+        `/api/users/getWithdraw${
           selectedStatus !== "all" ? `?status=${selectedStatus}` : ""
         }`
       );
@@ -50,8 +51,8 @@ const WithdrawDetails = () => {
         setLoading(true);
         setError("");
 
-        await axios.put(
-          `${VITE_BASE_URL}/api/users/admin/withdraw/approve`,
+        await axiosSecure.put(
+          `/api/users/admin/withdraw/approve`,
           {
             user_id: userId,
             withdraw_id: withdrawId,

@@ -1,22 +1,19 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../Auth/AuthProvider";
-import axios from "axios";
 import { toast } from "react-toastify";
-import { VITE_BASE_URL } from "../baseUrl";
+import useAxiosSecure from "../Hooks/UseAxiosSecure";
 
 const InvesmentData = () => {
   const [rechargeData, SetRechargeData] = useState([]);
   const [isClaimed, setIsClaimed] = useState(false);
-
+  const axiosSecure = useAxiosSecure();
   const { user } = useContext(AuthContext);
   const userId = user?._id;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(
-          `${VITE_BASE_URL}/api/users/claim-daily/${userId}`
-        );
+        const res = await axiosSecure.get(`/api/users/claim-daily/${userId}`);
 
         const getData = res?.data?.data;
         console.log(getData);
@@ -27,7 +24,7 @@ const InvesmentData = () => {
       }
     };
     fetchData();
-  }, [user]);
+  }, [userId, axiosSecure]);
 
   // console.log(rechargeData, 31);
 
@@ -38,10 +35,7 @@ const InvesmentData = () => {
     };
     console.log(data);
     try {
-      const response = await axios.post(
-        `${VITE_BASE_URL}/api/users/claim-daily`,
-        data
-      );
+      const response = await axiosSecure.post(`/api/users/claim-daily`, data);
       console.log("Response:", response.data);
       if (response?.data?.data?.newBalance) {
         toast.success(
@@ -55,16 +49,16 @@ const InvesmentData = () => {
         "Error claiming daily reward:",
         error.response ? error.response.data : error.message
       );
-      toast.error(
-        error.response ? error.response.data.message : error.message
-      );
+      toast.error(error.response ? error.response.data.message : error.message);
     }
   };
 
   return (
     <div className="mt-4 min-h-[300px] w-full max-w-2xl mx-auto px-4">
-      <div className="bg-gradient-to-r from-red-500 to-red-700 rounded-lg shadow-lg p-4 mb-6  mx-auto">
-        <h1 className="text-xl font-bold text-white text-center">ধাপ-১ : Daily Claim বোতামে ক্লিক করুন</h1>
+      <div className="bg-gradient-to-r from-blue-400/90 to-blue-700 rounded-lg shadow-lg p-4 mb-6  mx-auto">
+        <h1 className="text-xl font-bold text-white text-center">
+          ধাপ-১ : Daily Claim বোতামে ক্লিক করুন
+        </h1>
       </div>
 
       {rechargeData?.length > 0 ? (
@@ -77,7 +71,10 @@ const InvesmentData = () => {
                     {data?.machine_details.machine_name}
                   </h2>
 
-                  <div onClick={() => handleClaim(data?._id)} className="cursor-pointer relative inline-flex items-center px-6 py-2 overflow-hidden text-lg font-semibold text-blue-600  border-2 border-blue-600 rounded-full hover:text-white group hover:bg-gray-50">
+                  <div
+                    onClick={() => handleClaim(data?._id)}
+                    className="cursor-pointer relative inline-flex items-center px-6 py-2 overflow-hidden text-lg font-semibold text-blue-600  border-2 border-blue-600 rounded-full hover:text-white group hover:bg-gray-50"
+                  >
                     <span className="absolute left-0 block w-full h-0 transition-all bg-blue-600 opacity-100 group-hover:h-full top-1/2 group-hover:top-0 duration-400 ease"></span>
                     <span className="absolute right-0 flex items-center justify-start w-10 h-10 duration-300 transform translate-x-full group-hover:translate-x-0 ease"></span>
                     <span className="relative">Daily Claim</span>

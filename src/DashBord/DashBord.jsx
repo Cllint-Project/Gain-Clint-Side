@@ -1,15 +1,22 @@
 import { UserCircle2, WalletMinimal } from "lucide-react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { AiOutlineBars } from "react-icons/ai";
 import { FcSettings } from "react-icons/fc";
 import { GrLogout } from "react-icons/gr";
 import { RiCoupon3Fill } from "react-icons/ri";
 import { WiTime12 } from "react-icons/wi";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { AuthContext } from "../Auth/AuthProvider";
 
 const DashBord = () => {
   const [isActive, setActive] = useState(false);
-
+  const navigate = useNavigate()
+  const {logout} = useContext(AuthContext)
+  
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
   // Sidebar Responsive Handler
   const handleToggle = () => {
     setActive(!isActive);
@@ -143,7 +150,7 @@ const DashBord = () => {
 
             <span className="mx-4 font-medium">Profile</span>
           </NavLink>
-          <button className="flex w-full items-center px-4 py-2 mt-5 text-gray-600 hover:bg-gray-300   hover:text-gray-700 transition-colors duration-300 transform">
+          <button onClick={handleLogout} className="flex w-full items-center px-4 py-2 mt-5 text-gray-600 hover:bg-gray-300   hover:text-gray-700 transition-colors duration-300 transform">
             <GrLogout className="w-5 h-5" />
 
             <span className="mx-4 font-medium">Logout</span>

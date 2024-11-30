@@ -1,13 +1,13 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import { VITE_BASE_URL } from "../../baseUrl";
+import UseAxiosSecure from "../../Hooks/UseAxiosSecure";
 
 const ReachargeDetail = () => {
   const [recharges, setRecharges] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState("all");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const axiosSecure = UseAxiosSecure();
 
   const statusOptions = ["all", "pending", "approved", "rejected"];
 
@@ -19,8 +19,8 @@ const ReachargeDetail = () => {
     try {
       setLoading(true);
       setError("");
-      const response = await axios.get(
-        `${VITE_BASE_URL}/api/users/get-AllRecharge-data${
+      const response = await axiosSecure.get(
+        `/api/users/get-AllRecharge-data${
           selectedStatus !== "all" ? `?status=${selectedStatus}` : ""
         }`
       );
@@ -50,8 +50,8 @@ const ReachargeDetail = () => {
         setLoading(true);
         setError("");
 
-        await axios.post(
-          `${VITE_BASE_URL}/api/users/approve-recharge`,
+        await axiosSecure.post(
+          `/api/users/approve-recharge`,
           {
             investor_id,
             recharge_id,

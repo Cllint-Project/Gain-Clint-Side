@@ -3,9 +3,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { formatRechargeData } from "../utils/formatRechargeData";
 import { submitRecharge } from "../utils/api";
 import { toast } from "react-toastify";
-import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
-import { VITE_BASE_URL } from "../baseUrl";
+import UseAxiosSecure from "../Hooks/UseAxiosSecure";
 
 function Transaction() {
   const location = useLocation();
@@ -17,16 +16,17 @@ function Transaction() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [adminData, setAdminData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const axiosSecure = UseAxiosSecure();
 
   useEffect(() => {
     const fetchAdminData = async () => {
       try {
-        const response = await axios.get(`${VITE_BASE_URL}/api/users/getAdmin`);
+        const response = await axiosSecure.get(`/api/users/getAdmin`);
         if (response.data.success) {
           setAdminData(response.data.data);
-          setRechargeData(prev => ({
+          setRechargeData((prev) => ({
             ...prev,
-            adminNumber: response?.data?.data?.phoneNumber
+            adminNumber: response?.data?.data?.phoneNumber,
           }));
         }
       } catch (error) {
@@ -38,7 +38,7 @@ function Transaction() {
     };
 
     fetchAdminData();
-  }, []);
+  }, [axiosSecure]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

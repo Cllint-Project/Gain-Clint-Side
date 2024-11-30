@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 import { AuthContext } from "../Auth/AuthProvider";
 import LoadingSpinner from "../common/LoadingSpinner";
 import { getTeamMembers } from "../utils/api";
-import { VITE_BASE_URL } from "../baseUrl";
+import useAxiosSecure from "../Hooks/UseAxiosSecure";
 const PersonalInformation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [secretCode, setSecretCode] = useState("");
@@ -19,7 +19,7 @@ const PersonalInformation = () => {
   const [userData, setUserData] = useState({});
   const [loading, setLoading] = useState(true);
   const userId = user?._id;
-
+  const axiosSecure = useAxiosSecure();
   const data = {
     code: secretCode,
     userId: userId,
@@ -27,8 +27,8 @@ const PersonalInformation = () => {
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post(
-        `${VITE_BASE_URL}/api/users/redeem-coupon`,
+      const response = await axiosSecure.post(
+        `/api/users/redeem-coupon`,
         data
       );
       console.log("Response:", response.data);

@@ -1,14 +1,14 @@
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../Auth/AuthProvider';
-import axios from 'axios';
 import Swal from 'sweetalert2';
 import { Briefcase, Phone, Upload, User } from "lucide-react";
-import { VITE_BASE_URL } from '../baseUrl';
+import useAxiosSecure from '../Hooks/UseAxiosSecure';
 
 
 const Profile = () => {
   const { user } = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
+  const axiosSecure = useAxiosSecure();
   const [formData, setFormData] = useState({
     username: '',
     phoneNumber: '',
@@ -24,8 +24,8 @@ const Profile = () => {
       }
 
       try {
-        const response = await axios.get(
-          `${VITE_BASE_URL}/api/users/getUser/${user._id}`
+        const response = await axiosSecure.get(
+          `/api/users/getUser/${user._id}`
         );
         const userData = response?.data?.data;
         
@@ -49,7 +49,7 @@ const Profile = () => {
     };
 
     fetchUserData();
-  }, [user?._id]);
+  }, [user?._id,axiosSecure]);
 
   const handleInputChange = (e) => {
     setFormData({
@@ -77,8 +77,8 @@ const Profile = () => {
     setLoading(true);
 
     try {
-      const response = await axios.put(
-        `${VITE_BASE_URL}/api/users/profile`,
+      const response = await axiosSecure.put(
+        `/api/users/profile`,
         {
           userId: user._id,
           ...formData,

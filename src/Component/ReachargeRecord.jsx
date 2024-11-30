@@ -1,8 +1,7 @@
-import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../Auth/AuthProvider";
 import LoadingSpinner from "../common/LoadingSpinner";
-import { VITE_BASE_URL } from "../baseUrl";
+import UseAxiosSecure from "../Hooks/UseAxiosSecure";
 
 const ReachargeRecord = () => {
   const [rechargeData, setRechargeData] = useState([]);
@@ -15,6 +14,7 @@ const ReachargeRecord = () => {
   const storedUser = JSON.parse(localStorage.getItem("user"));
   const user = authUser || storedUser; // Priority to AuthContext user
   const userId = user?._id;
+  const axiosSecure = UseAxiosSecure();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,8 +25,8 @@ const ReachargeRecord = () => {
       }
 
       try {
-        const res = await axios.get(
-          `${VITE_BASE_URL}/api/users/get-recharge-data?userId=${userId}`
+        const res = await axiosSecure.get(
+          `/api/users/get-recharge-data?userId=${userId}`
         );
         setRechargeData(res?.data?.data || []);
       } catch (error) {
@@ -40,7 +40,7 @@ const ReachargeRecord = () => {
     if (!authLoading) {
       fetchData();
     }
-  }, [userId, authLoading]);
+  }, [userId, authLoading,axiosSecure]);
 
   if (loading || authLoading) {
     return <LoadingSpinner />;

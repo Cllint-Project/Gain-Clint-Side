@@ -1,18 +1,19 @@
-import axios from "axios";
+
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom"; // Import Link
-import { VITE_BASE_URL } from "../baseUrl";
+import UseAxiosPublic from "../Hooks/UseAxiosPublic";
 
 const ToggleComponent = () => {
   const [activeTab, setActiveTab] = useState("P");
   const [data, setData] = useState([]);
+  const axiosPublic = UseAxiosPublic();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(`${VITE_BASE_URL}/api/users/get-invest-data`);
+        const res = await axiosPublic.get(`/api/users/get-invest-data`);
 
-        const getData = res.data.data;
+        const getData = res?.data.data;
 
         setData(getData);
 
@@ -22,7 +23,8 @@ const ToggleComponent = () => {
     };
 
     fetchData();
-  }, []);
+  }, [axiosPublic]);
+
 
   // Filtering data based on activeTab
   const filteredData =

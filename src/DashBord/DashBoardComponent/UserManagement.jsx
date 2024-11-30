@@ -1,18 +1,20 @@
 import axios from "axios";
 import Swal from "sweetalert2";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaUser, FaSort } from "react-icons/fa";
-import { AuthContext } from "../../Auth/AuthProvider";
+
 import LoadingSpinner from "../../common/LoadingSpinner";
 import { VITE_BASE_URL } from "../../baseUrl";
+import useAxiosSecure from "../../Hooks/UseAxiosSecure";
 
 const UserManagement = () => {
   const [rechargeData, setRechargeData] = useState([]);
-  const { user: authUser } = useContext(AuthContext);
+  const axiosSecure = useAxiosSecure();
+  // const { user: authUser } = useContext(AuthContext);
 
   // Fallback to localStorage if AuthContext user is not available
-  const storedUser = JSON.parse(localStorage.getItem("user"));
-  const userId = authUser || storedUser; // Priority to AuthContext user
+  // const storedUser = JSON.parse(localStorage.getItem("user"));
+  // const userId = authUser || storedUser; // Priority to AuthContext user
 
   const fetchUsers = async () => {
     try {
@@ -43,8 +45,8 @@ const UserManagement = () => {
 
     if (result.isConfirmed) {
       try {
-        const res = await axios.put(
-          `${VITE_BASE_URL}/api/users/update-role`,
+        const res = await axiosSecure.put(
+          `/api/users/update-role`,
           { newRole , userId }
         );
         Swal.fire("Success!", res.data.message, "success");

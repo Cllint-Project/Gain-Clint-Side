@@ -2,12 +2,14 @@ import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../Auth/AuthProvider";
 import axios from "axios";
 import { Toaster, toast } from "react-hot-toast";
-import { VITE_BASE_URL } from "../baseUrl";
+import useAxiosSecure from "../Hooks/UseAxiosSecure";
+
 
 const Withdraw = () => {
   const { user } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
   const [userData, setUserData] = useState({});
+  const axiosSecure = useAxiosSecure();
   const [withdrawData, setWithdrawData] = useState({
     account_number: '',
     amount: "",
@@ -22,8 +24,8 @@ const Withdraw = () => {
       }
 
       try {
-        const response = await axios.get(
-          `${VITE_BASE_URL}/api/users/getUser/${user._id}`
+        const response = await axiosSecure.get(
+          `/api/users/getUser/${user._id}`
         );
         const userData = response?.data?.data;
         setUserData(userData)
@@ -42,7 +44,7 @@ const Withdraw = () => {
     };
 
     fetchUserData();
-  }, [user?._id]);
+  }, [user?._id,axiosSecure]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -64,8 +66,8 @@ const Withdraw = () => {
     // }
     setLoading(true);
     try {
-      const response = await axios.post(
-        `${VITE_BASE_URL}/api/users/withdraw`,
+      const response = await axiosSecure.post(
+        `/api/users/withdraw`,
         {
           user_id: user?._id,
           amount: Number(withdrawData.amount),
@@ -93,8 +95,8 @@ const Withdraw = () => {
   console.log(userData)
 
   return (
-    <div>
-      <div className="bg-blue-500 rounded-xl max-w-xl mx-auto mt-8">
+    <div className="min-h-screen">
+      <div className=" bg-blue-500 rounded-xl max-w-xl mx-auto mt-8">
         <h2 className="text-center text-white text-lg font-semibold p-2">
           Withdraw
         </h2>
@@ -130,7 +132,7 @@ const Withdraw = () => {
       </div>
 
       <div>
-        <div className="min-h-screen flex items-center justify-center my-8 -mt-[70px]">
+        <div className=" flex items-center justify-center -mt-[15px]">
           <div className="bg-white p-8 rounded-lg border rounded-r-md max-w-lg w-full">
             <div className="mb-4">
               <label
