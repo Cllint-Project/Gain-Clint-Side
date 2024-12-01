@@ -1,30 +1,38 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import Swal from "sweetalert2";
-import { VITE_BASE_URL } from "../../baseUrl";
 import useAxiosSecure from "../../Hooks/UseAxiosSecure";
+import LoadingSpinner from "../../common/LoadingSpinner";
+// import { AuthContext } from "../../Auth/AuthProvider";
 
 const WithdrawDetails = () => {
   const [withdrawals, setWithdrawals] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState("all");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [user, setUser] = useState(null); // Initialize as null
   const axiosSecure = useAxiosSecure();
   const statusOptions = ["all", "pending", "approved", "rejected"];
 
+  // Fetch user from localStorage once on component mount
   useEffect(() => {
-    fetchWithdrawals();
-  }, [selectedStatus]);
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []); // Empty dependency array ensures this runs only once
 
   const fetchWithdrawals = async () => {
     try {
       setLoading(true);
       setError("");
-      const response = await axiosSecure.get(
-        `/api/users/getWithdraw${
-          selectedStatus !== "all" ? `?status=${selectedStatus}` : ""
-        }`
-      );
+
+      let url = `/api/users/getWithdraw?user_id=${user?._id}`;
+
+      if (selectedStatus !== "all") {
+        url += `&status=${selectedStatus}`;
+      }
+
+      const response = await axiosSecure.get(url);
       setWithdrawals(response.data.data);
     } catch (err) {
       setError(err.response?.data?.message || "Failed to fetch withdrawals");
@@ -32,6 +40,12 @@ const WithdrawDetails = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (user) {
+      fetchWithdrawals(); // Fetch withdrawals only when user is available
+    }
+  }, [selectedStatus, user]); // Include 'user' as dependency
 
   const handleStatusUpdate = async (userId, withdrawId, newStatus) => {
     try {
@@ -51,14 +65,11 @@ const WithdrawDetails = () => {
         setLoading(true);
         setError("");
 
-        await axiosSecure.put(
-          `/api/users/admin/withdraw/approve`,
-          {
-            user_id: userId,
-            withdraw_id: withdrawId,
-            status: newStatus,
-          }
-        );
+        await axiosSecure.put(`/api/users/admin/withdraw/approve`, {
+          user_id: userId,
+          withdraw_id: withdrawId,
+          status: newStatus,
+        });
 
         await Swal.fire({
           title: "Success!",
@@ -101,9 +112,7 @@ const WithdrawDetails = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        Loading...
-      </div>
+        <LoadingSpinner />
     );
   }
 

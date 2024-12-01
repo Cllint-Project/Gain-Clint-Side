@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const axiosSecure = axios.create({
-  baseURL: "http://localhost:5000", // তোমার API বেস URL
+  baseURL: "http://localhost:5000",
+  // baseURL: 'https://gain-server-side-production.up.railway.app'
 });
 
 const useAxiosSecure = () => {

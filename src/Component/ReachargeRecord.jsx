@@ -67,7 +67,7 @@ const ReachargeRecord = () => {
           <div className="bg-white rounded-lg shadow-xl overflow-hidden">
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gradient-to-r from-purple-600 to-indigo-600">
+                <thead className="bg-gradient-to-r from-blue-500 to-blue-700 text-white">
                   <tr>
                     <th className="px-6 py-4 text-left text-sm font-semibold text-white uppercase tracking-wider">
                       Transaction Id

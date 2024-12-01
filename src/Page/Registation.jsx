@@ -24,11 +24,13 @@ const Registation = () => {
 
     // Generate a profile image based on username
     // const profileImage = `https://avatars.dicebear.com/api/initials/${data.username}.svg`;
-    
+
     try {
       // const profileImage = `https://avatars.dicebear.com/api/initials/${data.username}.svg`;
-       // Generate profile image using md5 hash of the username
-       const profileImage = `https://www.gravatar.com/avatar/${md5(data?.username)}?d=identicon`;
+      // Generate profile image using md5 hash of the username
+      const profileImage = `https://www.gravatar.com/avatar/${md5(
+        data?.username
+      )}?d=identicon`;
 
       // Add profile image URL to data
       const userData = { ...data, profileImage };
@@ -40,9 +42,7 @@ const Registation = () => {
         navigate("/login");
       }
     } catch (error) {
-      toast.error(
-        error ? error.message : "Registration failed"
-      );
+      toast.error(error ? error.message : "Registration failed");
     } finally {
       setLoading(false);
     }
@@ -118,21 +118,17 @@ const Registation = () => {
                   {...register("password", {
                     required: true,
                     minLength: 6,
-                    pattern:
-                      /(?=(.*[a-z]){1,})(?=(.*[A-Z]){1,})(?=(.*[!@#$%^&*()\-__+.]){1,})/,
+                    pattern: /^\d{6,12}$/,
                   })}
                   placeholder="Enter your password"
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 {errors.password?.type === "minLength" && (
-                  <span className="text-left">
-                    Password must be 6 characters
-                  </span>
+                  <span className="text-left">Password must be 6 number</span>
                 )}
                 {errors.password?.type === "pattern" && (
                   <span className="text-left text-sm">
-                    Password must include one lowercase, one uppercase, and one
-                    special character
+                    Password must include only numbers
                   </span>
                 )}
               </div>

@@ -1,10 +1,9 @@
-import axios from "axios";
+
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import { FaUser, FaSort } from "react-icons/fa";
 
 import LoadingSpinner from "../../common/LoadingSpinner";
-import { VITE_BASE_URL } from "../../baseUrl";
 import useAxiosSecure from "../../Hooks/UseAxiosSecure";
 
 const UserManagement = () => {
@@ -18,7 +17,7 @@ const UserManagement = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get(`${VITE_BASE_URL}/api/users/getUsers`);
+      const res = await axiosSecure.get(`/api/users/getUsers`);
       setRechargeData(res?.data?.data || []);
     } catch (error) {
       console.error("Failed to fetch users:", error);
@@ -49,6 +48,7 @@ const UserManagement = () => {
           `/api/users/update-role`,
           { newRole , userId }
         );
+        console.log(newRole, userId)
         Swal.fire("Success!", res.data.message, "success");
         fetchUsers(); // Refresh the user list
       } catch (error) {
@@ -60,8 +60,8 @@ const UserManagement = () => {
 
   return (
     <div>
-      <div className="min-h-screen bg-gray-100 p-8">
-        <div className="max-w-6xl mx-auto">
+      <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
           <div className="bg-white rounded-xl shadow-lg overflow-hidden">
             <div className="overflow-x-auto">
               {rechargeData.length > 0 ? (

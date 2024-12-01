@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import UseAxiosSecure from "../../Hooks/UseAxiosSecure";
+import LoadingSpinner from "../../common/LoadingSpinner";
+
 
 const ReachargeDetail = () => {
   const [recharges, setRecharges] = useState([]);
@@ -8,23 +10,32 @@ const ReachargeDetail = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const axiosSecure = UseAxiosSecure();
-
   const statusOptions = ["all", "pending", "approved", "rejected"];
+  const [user, setUser] = useState(null); // Initialize as null
 
+
+  
+  // Fetch user from localStorage once on component mount
   useEffect(() => {
-    fetchRecharges();
-  }, [selectedStatus]);
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []); 
 
   const fetchRecharges = async () => {
     try {
       setLoading(true);
       setError("");
-      const response = await axiosSecure.get(
-        `/api/users/get-AllRecharge-data${
-          selectedStatus !== "all" ? `?status=${selectedStatus}` : ""
-        }`
-      );
-      setRecharges(response.data.data);
+
+      let url = `/api/users/get-AllRecharge-data?user_id=${user?._id}`;
+
+      if (selectedStatus !== "all") {
+        url += `&status=${selectedStatus}`;
+      }
+      const response = await axiosSecure.get(url);
+      setRecharges(response?.data?.data);
+
     } catch (err) {
       setError(err.response?.data?.message || "Failed to fetch recharges");
     } finally {
@@ -32,7 +43,13 @@ const ReachargeDetail = () => {
     }
   };
 
-  const handleStatusUpdate = async (investor_id, recharge_id , status) => {
+  useEffect(() => {
+    if(user){
+      fetchRecharges()
+    }
+  }, [selectedStatus,user]);
+
+  const handleStatusUpdate = async (investor_id, recharge_id, status) => {
     try {
       const result = await Swal.fire({
         title: `Confirm ${status}?`,
@@ -50,14 +67,11 @@ const ReachargeDetail = () => {
         setLoading(true);
         setError("");
 
-        await axiosSecure.post(
-          `/api/users/approve-recharge`,
-          {
-            investor_id,
-            recharge_id,
-            status
-          }
-        );
+        await axiosSecure.post(`/api/users/approve-recharge`, {
+          investor_id,
+          recharge_id,
+          status,
+        });
 
         await Swal.fire({
           title: "Success!",
@@ -100,12 +114,9 @@ const ReachargeDetail = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        Loading...
-      </div>
+        <LoadingSpinner />
     );
   }
-console.log(recharges)
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
@@ -141,7 +152,7 @@ console.log(recharges)
                     Transaction Id
                   </th>
                   <th className="px-6 py-4 text-left text-sm font-medium text-white uppercase tracking-wider">
-                  Recharge Amount
+                    Recharge Amount
                   </th>
                   <th className="px-6 py-4 text-left text-sm font-medium text-white uppercase tracking-wider">
                     Payment Method
@@ -150,7 +161,7 @@ console.log(recharges)
                     Account Number
                   </th>
                   <th className="px-6 py-4 text-left text-sm font-medium text-white uppercase tracking-wider">
-                     Recharge Status
+                    Recharge Status
                   </th>
                   <th className="px-6 py-4 text-left text-sm font-medium text-white uppercase tracking-wider">
                     Actions
