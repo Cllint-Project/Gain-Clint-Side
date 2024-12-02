@@ -53,7 +53,7 @@ const Banner = () => {
   controls
   alt="Banner Video"
 >
-  আপনার ব্রাউজার ভিডিও প্লে সাপোর্ট করে না।
+  
 </video>
 
 
