@@ -1,18 +1,17 @@
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { TeamList } from "./TeamList";
 import { TeamInvite } from "./TeamInvite";
 import { TeamStats } from "./TeamStats";
 import { TeamHeader } from "./TeamHeader";
 import { getTeamMembers } from "../../utils/api";
 import LoadingSpinner from "../../common/LoadingSpinner";
+import { AuthContext } from "../../Auth/AuthProvider";
 
 const Team = () => {
+  const {user, loading,setLoading} = useContext(AuthContext)
   const [userData, setUserData] = useState({});
   const [teamMembers, setTeamMembers] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,7 +31,7 @@ const Team = () => {
     };
 
     fetchData();
-  }, [user?._id]);
+  }, [user?._id,setLoading]);
 
   if (loading) {
     return <LoadingSpinner />;

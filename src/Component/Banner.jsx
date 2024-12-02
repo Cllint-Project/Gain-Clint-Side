@@ -2,39 +2,40 @@ import { useCallback, useContext, useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Auth/AuthProvider";
 import { FaRegCircleUser } from "react-icons/fa6";
-import { VITE_BASE_URL } from "../baseUrl";
-import axios from "axios";
-
+import useAxiosSecure from "../Hooks/UseAxiosSecure";
 const Banner = () => {
   const { logout, user } = useContext(AuthContext);
   const [menu, setShowMenu] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [userData, setUserData] = useState({});
+  // const [loading, setLoading] = useState(false);
+  // const [userData, setUserData] = useState({});
   const navigate = useNavigate();
   const menuRef = useRef(null);
+  const axiosSecure = useAxiosSecure()
 
-  const fetchUserData = async () => {
-    if (!user?._id) {
-      setLoading(false);
-      return;
-    }
+  // const fetchUserData = async () => {
+  //   if (!user?._id) {
+  //     setLoading(false);
+  //     return;
+  //   }
 
-    try {
-      const response = await axios.get(
-        `${VITE_BASE_URL}/api/users/getUser/${user._id}`
-      );
-      const userData = response?.data?.data;
-      setUserData(userData);
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  //   try {
+  //     const response = await axiosSecure.get(
+  //       `/api/users/getUser/${user._id}`
+  //     );
+  //     const userData = response?.data?.data;
+  //     setUserData(userData);
+  //   } catch (error) {
+  //     console.error("Error fetching user data:", error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchUserData();
-  }, [user?._id]);
+  // useEffect(() => {
+  //   if(user?._id){
+  //     fetchUserData();
+  //   }
+  // }, [user?._id,axiosSecure]);
 
   // Handle click outside to close menu
   useEffect(() => {
@@ -81,14 +82,14 @@ const Banner = () => {
               onClick={toggleMenu}
               className="cursor-pointer flex items-center"
             >
-              {userData?._id ? (
+              {user?._id ? (
                 <div className="flex justify-center items-center gap-6">
                   <div className="w-10 h-10 rounded-full overflow-hidden">
-                    {userData?.profileImage ? (
+                    {user?.profileImage ? (
                       <img
-                        src={userData.profileImage}
+                        src={user?.profileImage}
                         className="h-full w-full object-cover"
-                        alt={userData?.username}
+                        alt={user?.username}
                       />
                     ) : (
                       <div className="h-full w-full flex items-center justify-center bg-blue-600 text-white">
@@ -114,14 +115,14 @@ const Banner = () => {
             {/* Dropdown Menu */}
             {menu && (
               <div className="absolute right-0 top-12 w-48 bg-white rounded-lg shadow-lg py-1 z-50">
-                {userData?._id ? (
+                {user?._id ? (
                   <>
                     <div className="px-4 py-2 border-b">
                       <p className="text-sm font-medium text-gray-900 truncate">
-                        {userData.username}
+                        {user?.username}
                       </p>
                     </div>
-                    {userData?.role === "admin" && (
+                    {user?.role === "admin" && (
                       <Link
                         to="/dashboard"
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -146,7 +147,7 @@ const Banner = () => {
 
           {/* Mobile Login/Logout Button */}
           <div className="sm:hidden">
-            {userData?._id ? (
+            {user?._id ? (
               <button
                 onClick={handleLogout}
                 className=" btn btn-sm bg-blue-500 hover:bg-blue-600 text-white"

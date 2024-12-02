@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../Hooks/UseAxiosSecure";
 import LoadingSpinner from "../../common/LoadingSpinner";
+import { AuthContext } from "../../Auth/AuthProvider";
 // import { AuthContext } from "../../Auth/AuthProvider";
 
 const WithdrawDetails = () => {
@@ -9,31 +10,23 @@ const WithdrawDetails = () => {
   const [selectedStatus, setSelectedStatus] = useState("all");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [user, setUser] = useState(null); // Initialize as null
   const axiosSecure = useAxiosSecure();
+  const {user} = useContext(AuthContext);
   const statusOptions = ["all", "pending", "approved", "rejected"];
-
-  // Fetch user from localStorage once on component mount
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-  }, []); // Empty dependency array ensures this runs only once
 
   const fetchWithdrawals = async () => {
     try {
       setLoading(true);
       setError("");
 
-      let url = `/api/users/getWithdraw?user_id=${user?._id}`;
+      let url = `/api/users/getWithdraw`;
 
       if (selectedStatus !== "all") {
-        url += `&status=${selectedStatus}`;
+        url += `?status=${selectedStatus}`;
       }
 
       const response = await axiosSecure.get(url);
-      setWithdrawals(response.data.data);
+      setWithdrawals(response?.data?.data);
     } catch (err) {
       setError(err.response?.data?.message || "Failed to fetch withdrawals");
     } finally {

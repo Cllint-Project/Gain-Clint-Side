@@ -46,8 +46,9 @@ const router = createBrowserRouter([
         path: "/ourteam",
         element: (
           <PrivateRoute>
-          <OurTeam></OurTeam>
+            <OurTeam></OurTeam>
           </PrivateRoute>
+          // done
         ),
       },
       {
@@ -94,7 +95,7 @@ const router = createBrowserRouter([
         path: "/recharge",
         element: (
           <PrivateRoute>
-          <Reacharge></Reacharge>
+            <Reacharge></Reacharge>
           </PrivateRoute>
         ),
       },
@@ -102,8 +103,9 @@ const router = createBrowserRouter([
         path: "/personal",
         element: (
           <PrivateRoute>
-          <Personal></Personal>
+            <Personal></Personal>
           </PrivateRoute>
+          // done
         ),
       },
       {
@@ -114,7 +116,7 @@ const router = createBrowserRouter([
         path: "/transaction",
         element: (
           <PrivateRoute>
-          <Transaction></Transaction>
+            <Transaction></Transaction>
           </PrivateRoute>
         ),
       },
@@ -122,7 +124,7 @@ const router = createBrowserRouter([
         path: "/withdraw",
         element: (
           <PrivateRoute>
-          <WithDraw></WithDraw>
+            <WithDraw></WithDraw>
           </PrivateRoute>
         ),
       },

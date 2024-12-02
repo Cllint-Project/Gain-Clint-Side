@@ -1,12 +1,12 @@
 
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  loadCaptchaEnginge,
-  LoadCanvasTemplate,
-  validateCaptcha,
-} from "react-simple-captcha";
+// import {
+//   // loadCaptchaEnginge,
+//   // LoadCanvasTemplate,
+//   // validateCaptcha,
+// } from "react-simple-captcha";
 import { toast } from "react-toastify";
 import { AuthContext } from "../Auth/AuthProvider";
 import { VscEyeClosed } from "react-icons/vsc";
@@ -23,19 +23,19 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  useEffect(() => {
-    loadCaptchaEnginge(6);
-  }, []);
+  // useEffect(() => {
+  //   loadCaptchaEnginge(6);
+  // }, []);
 
-  const handlevalidatecaptcha = (e) => {
-    const user_captcha_value = e.target.value;
-    // console.log(user_captcha_value);
-    if (validateCaptcha(user_captcha_value) == true) {
-      setdisabled(false);
-    } else {
-      setdisabled(true);
-    }
-  };
+  // const handlevalidatecaptcha = (e) => {
+  //   const user_captcha_value = e.target.value;
+  //   // console.log(user_captcha_value);
+  //   if (validateCaptcha(user_captcha_value) == true) {
+  //     setdisabled(false);
+  //   } else {
+  //     setdisabled(true);
+  //   }
+  // };
 
   const onSubmit = async (data) => {
     setLoading(true);
@@ -121,17 +121,17 @@ const Login = () => {
                 </span>
               )}
             </div>
-            <div className="mb-4">
+            {/* <div className="mb-4">
               <label className="block text-gray-700 text-sm  font-bold mb-2">
                 <LoadCanvasTemplate />
               </label>
               <input
-                onBlur={handlevalidatecaptcha}
+                // onBlur={handlevalidatecaptcha}
                 className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
                 type="text"
                 name="captcha"
               />
-            </div>
+            </div> */}
             <button
               type="submit"
               className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300"

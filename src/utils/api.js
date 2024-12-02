@@ -43,7 +43,7 @@ export const submitRecharge = async (data) => {
 export const getTeamMembers = async (userId) => {
   try {
     const response = await axiosSecure.get(`/api/users/team/${userId}`);
-    return response.data;
+    return response?.data;
   } catch (error) {
     console.error("Error fetching team members:", error);
     throw error;

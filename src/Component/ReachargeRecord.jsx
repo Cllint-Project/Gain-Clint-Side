@@ -8,25 +8,15 @@ const ReachargeRecord = () => {
   const [loading, setLoading] = useState(true);
 
   // Get user from AuthContext
-  const { user: authUser, loading: authLoading } = useContext(AuthContext);
+  const { user, loading: authLoading } = useContext(AuthContext);
 
-  // Fallback to localStorage if AuthContext user is not available
-  const storedUser = JSON.parse(localStorage.getItem("user"));
-  const user = authUser || storedUser; // Priority to AuthContext user
-  const userId = user?._id;
   const axiosSecure = UseAxiosSecure();
-
+  const userId = user?._id;
   useEffect(() => {
     const fetchData = async () => {
-      if (!userId) {
-        console.error("User ID not found!");
-        setLoading(false);
-        return;
-      }
-
       try {
         const res = await axiosSecure.get(
-          `/api/users/get-recharge-data?userId=${userId}`
+          `/api/users/get-recharge-data/${userId}`
         );
         setRechargeData(res?.data?.data || []);
       } catch (error) {
@@ -40,13 +30,12 @@ const ReachargeRecord = () => {
     if (!authLoading) {
       fetchData();
     }
-  }, [userId, authLoading,axiosSecure]);
+  }, [userId, authLoading, axiosSecure]);
 
   if (loading || authLoading) {
     return <LoadingSpinner />;
   }
 
-  
   const getStatusColor = (status) => {
     switch (status.toLowerCase()) {
       case "approved":

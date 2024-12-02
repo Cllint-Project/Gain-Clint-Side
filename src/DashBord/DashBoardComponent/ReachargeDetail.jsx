@@ -1,8 +1,8 @@
-import {useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import UseAxiosSecure from "../../Hooks/UseAxiosSecure";
 import LoadingSpinner from "../../common/LoadingSpinner";
-
+import { AuthContext } from "../../Auth/AuthProvider";
 
 const ReachargeDetail = () => {
   const [recharges, setRecharges] = useState([]);
@@ -11,31 +11,20 @@ const ReachargeDetail = () => {
   const [error, setError] = useState("");
   const axiosSecure = UseAxiosSecure();
   const statusOptions = ["all", "pending", "approved", "rejected"];
-  const [user, setUser] = useState(null); // Initialize as null
-
-
-  
-  // Fetch user from localStorage once on component mount
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-  }, []); 
+  const { user } = useContext(AuthContext);
 
   const fetchRecharges = async () => {
     try {
       setLoading(true);
       setError("");
 
-      let url = `/api/users/get-AllRecharge-data?user_id=${user?._id}`;
+      let url = `/api/users/get-AllRecharge-data`;
 
       if (selectedStatus !== "all") {
-        url += `&status=${selectedStatus}`;
+        url += `?status=${selectedStatus}`;
       }
       const response = await axiosSecure.get(url);
       setRecharges(response?.data?.data);
-
     } catch (err) {
       setError(err.response?.data?.message || "Failed to fetch recharges");
     } finally {
@@ -44,10 +33,10 @@ const ReachargeDetail = () => {
   };
 
   useEffect(() => {
-    if(user){
-      fetchRecharges()
+    if (user) {
+      fetchRecharges();
     }
-  }, [selectedStatus,user]);
+  }, [selectedStatus, user]);
 
   const handleStatusUpdate = async (investor_id, recharge_id, status) => {
     try {
@@ -113,9 +102,7 @@ const ReachargeDetail = () => {
   };
 
   if (loading) {
-    return (
-        <LoadingSpinner />
-    );
+    return <LoadingSpinner />;
   }
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
