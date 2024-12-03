@@ -1,81 +1,237 @@
-import { useState } from "react";
+import {useEffect, useState } from "react";
+import Swal from "sweetalert2";
+import UseAxiosSecure from "../../Hooks/UseAxiosSecure";
+import LoadingSpinner from "../../common/LoadingSpinner";
 
 
 const ReachargeDetail = () => {
-     const [data] = useState([
-          { id: 1, name: "John Doe", number: "001", money: "$1,200", status: "Active" },
-          { id: 2, name: "Jane Smith", number: "002", money: "$2,500", status: "Pending" },
-          { id: 3, name: "Mike Johnson", number: "003", money: "$800", status: "Inactive" },
-          { id: 4, name: "Sarah Williams", number: "004", money: "$3,100", status: "Active" },
-          { id: 5, name: "Tom Brown", number: "005", money: "$1,700", status: "Pending" },
-        ]);
-      
-        const getStatusColor = (status) => {
-          switch (status.toLowerCase()) {
-            case 'active':
-              return 'bg-green-100 text-green-800';
-            case 'pending':
-              return 'bg-yellow-100 text-yellow-800';
-            case 'inactive':
-              return 'bg-red-100 text-red-800';
-            default:
-              return 'bg-gray-100 text-gray-800';
-          }
-        };
-      
-     return (
-          <div>
- <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+  const [recharges, setRecharges] = useState([]);
+  const [selectedStatus, setSelectedStatus] = useState("all");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const axiosSecure = UseAxiosSecure();
+  const statusOptions = ["all", "pending", "approved", "rejected"];
+  const [user, setUser] = useState(null); // Initialize as null
+
+
+  
+  // Fetch user from localStorage once on component mount
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []); 
+
+  const fetchRecharges = async () => {
+    try {
+      setLoading(true);
+      setError("");
+
+      let url = `/api/users/get-AllRecharge-data?user_id=${user?._id}`;
+
+      if (selectedStatus !== "all") {
+        url += `&status=${selectedStatus}`;
+      }
+      const response = await axiosSecure.get(url);
+      setRecharges(response?.data?.data);
+
+    } catch (err) {
+      setError(err.response?.data?.message || "Failed to fetch recharges");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if(user){
+      fetchRecharges()
+    }
+  }, [selectedStatus,user]);
+
+  const handleStatusUpdate = async (investor_id, recharge_id, status) => {
+    try {
+      const result = await Swal.fire({
+        title: `Confirm ${status}?`,
+        text: `Are you sure you want to ${status} this recharge request?`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: status === "approved" ? "#10B981" : "#EF4444",
+        cancelButtonColor: "#6B7280",
+        confirmButtonText:
+          status === "approved" ? "Yes, approve it!" : "Yes, reject it!",
+        cancelButtonText: "Cancel",
+      });
+
+      if (result.isConfirmed) {
+        setLoading(true);
+        setError("");
+
+        await axiosSecure.post(`/api/users/approve-recharge`, {
+          investor_id,
+          recharge_id,
+          status,
+        });
+
+        await Swal.fire({
+          title: "Success!",
+          text: `recharge request has been ${status}`,
+          icon: "success",
+          confirmButtonColor: "#10B981",
+        });
+
+        // Refresh the list after update
+        await fetchRecharges();
+      }
+    } catch (err) {
+      Swal.fire({
+        title: "Error!",
+        text:
+          err.response?.data?.message || "Failed to update recharges status",
+        icon: "error",
+        confirmButtonColor: "#EF4444",
+      });
+      setError(
+        err.response?.data?.message || "Failed to update recharges status"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getStatusColor = (status) => {
+    switch (status?.toLowerCase()) {
+      case "approved":
+        return "bg-green-100 text-green-800";
+      case "pending":
+        return "bg-yellow-100 text-yellow-800";
+      case "rejected":
+        return "bg-red-100 text-red-800";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
+  };
+
+  if (loading) {
+    return (
+        <LoadingSpinner />
+    );
+  }
+  return (
+    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
+        {error && (
+          <div className="mb-4 p-4 bg-red-100 text-red-700 rounded-lg">
+            {error}
+          </div>
+        )}
+
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Filter by Status
+          </label>
+          <select
+            value={selectedStatus}
+            onChange={(e) => setSelectedStatus(e.target.value)}
+            className="mt-1 block w-48 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          >
+            {statusOptions.map((status) => (
+              <option key={status} value={status}>
+                {status?.charAt(0)?.toUpperCase() + status.slice(1)}
+              </option>
+            ))}
+          </select>
+        </div>
+
         <div className="bg-white rounded-lg shadow-xl overflow-hidden">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gradient-to-r from-purple-600 to-indigo-600">
+              <thead className="bg-gradient-to-r from-blue-400 to-blue-600">
                 <tr>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-white uppercase tracking-wider">
-                    Name
+                  <th className="px-6 py-4 text-left text-sm font-medium text-white uppercase tracking-wider">
+                    Transaction Id
                   </th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-white uppercase tracking-wider">
-                    Number
+                  <th className="px-6 py-4 text-left text-sm font-medium text-white uppercase tracking-wider">
+                    Recharge Amount
                   </th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-white uppercase tracking-wider">
-                    Money
+                  <th className="px-6 py-4 text-left text-sm font-medium text-white uppercase tracking-wider">
+                    Payment Method
                   </th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-white uppercase tracking-wider">
-                    Status
+                  <th className="px-6 py-4 text-left text-sm font-medium text-white uppercase tracking-wider">
+                    Account Number
                   </th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-white uppercase tracking-wider">
-                    Action
+                  <th className="px-6 py-4 text-left text-sm font-medium text-white uppercase tracking-wider">
+                    Recharge Status
+                  </th>
+                  <th className="px-6 py-4 text-left text-sm font-medium text-white uppercase tracking-wider">
+                    Actions
                   </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {data.map((item) => (
+                {recharges?.map((recharge) => (
                   <tr
-                    key={item.id}
+                    key={recharge?._id}
                     className="hover:bg-gray-50 transition-colors duration-200"
                   >
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">{item.name}</div>
+                      <div className="text-sm text-gray-900">
+                        {recharge?.transaction_id}
+                      </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-600">{item.number}</div>
+                      <div className="text-sm text-gray-900">
+                        ৳{recharge?.recharge_amount?.toLocaleString()}
+                      </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-semibold text-gray-900">{item.money}</div>
+                      <div className="text-sm text-gray-900">
+                        {recharge?.recharge_option}
+                      </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(item.status)}`}>
-                        {item.status}
+                      <div className="text-sm text-gray-900">
+                        {recharge?.phone_number}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span
+                        className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(
+                          recharge?.recharge_status
+                        )}`}
+                      >
+                        {recharge?.recharge_status}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <button
-                        className="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-4 py-2 rounded-md transition-colors duration-200 transform hover:scale-105"
-                        onClick={() => alert(`Action for ${item.name}`)}
-                      >
-                        View Details
-                      </button>
+                      {recharge?.recharge_status === "pending" && (
+                        <div className="space-x-2">
+                          <button
+                            onClick={() =>
+                              handleStatusUpdate(
+                                recharge?.investor_id,
+                                recharge?._id,
+                                "approved"
+                              )
+                            }
+                            className="bg-green-500 text-white px-3 py-1 rounded-md text-sm font-medium hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all duration-200"
+                          >
+                            Approve
+                          </button>
+                          <button
+                            onClick={() =>
+                              handleStatusUpdate(
+                                recharge?.investor_id,
+                                recharge?._id,
+                                "rejected"
+                              )
+                            }
+                            className="bg-red-500 text-white px-3 py-1 rounded-md text-sm font-medium hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all duration-200"
+                          >
+                            Reject
+                          </button>
+                        </div>
+                      )}
                     </td>
                   </tr>
                 ))}
@@ -85,8 +241,7 @@ const ReachargeDetail = () => {
         </div>
       </div>
     </div>
-          </div>
-     );
+  );
 };
 
 export default ReachargeDetail;
