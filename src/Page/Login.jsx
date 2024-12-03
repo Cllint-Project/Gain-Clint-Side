@@ -41,6 +41,7 @@ const Login = () => {
     setLoading(true);
     try {
       const getUser = await login(data);
+      console.log('login user', getUser)
       if (getUser) {
         toast.success("Login successful!");
         navigate("/");

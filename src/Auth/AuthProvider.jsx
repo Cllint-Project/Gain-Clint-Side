@@ -102,9 +102,16 @@ const AuthProvider = ({ children }) => {
       const res = await axios.get(
         `http://localhost:5000/api/auth/getUserInfo/${userId}`
       );
-      setUser(res?.data?.data); // সম্পূর্ণ ইউজার ডেটা সেট করা
+      const currentUser = res?.data?.data;
+
+      if (!currentUser) {
+        throw new Error("No user data received");
+      }
+
+      setUser(currentUser);
+      return currentUser; // Return user for optional use
     } catch (error) {
-      console.log(error);
+      console.log("Fetch user data error:", error);
       toast.error("Failed to fetch user data");
     }
   };
@@ -125,7 +132,6 @@ const AuthProvider = ({ children }) => {
     } else {
       setLoading(false);
     }
-
   }, []);
 
   const login = async (data) => {
@@ -134,36 +140,53 @@ const AuthProvider = ({ children }) => {
       const token = res?.data?.data?.token;
       localStorage.setItem("token", token);
       const decodedUser = jwtDecode(token);
-      // setUser(decodedUser); // Set decoded user info
-      // ইউজারের সম্পূর্ণ ডেটা ফেচ করা
+
       if (decodedUser?.id) {
-        fetchUserData(decodedUser.id); // `_id` ব্যবহার করে ইউজারের ডেটা ফেচ করা
+        const loginUser = await fetchUserData(decodedUser.id); // `_id` ব্যবহার করে ইউজারের ডেটা ফেচ করা
+        return loginUser;
       }
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      return;
     } catch (error) {
       toast.error(error.response.data.message);
     }
   };
   console.log("decoded user", user);
+
   const Register = async (data) => {
     try {
+      // Call the registration API
       const res = await axiosPublic.post(`/api/auth/register`, data);
       console.log(res, "auth register");
+  
+      // Extract and store token
       const token = res?.data?.data?.token;
+      if (!token) {
+        throw new Error("Token not received from the server");
+      }
+  
       localStorage.setItem("token", token);
+  
+      // Decode token to get user ID
       const decodedUser = jwtDecode(token);
-      // ইউজারের সম্পূর্ণ ডেটা ফেচ করা
-      // if (decodedUser?.id) {
-      //   fetchUserData(decodedUser.id); // `_id` ব্যবহার করে ইউজারের ডেটা ফেচ করা
-      // }
-      logout();
+      if (!decodedUser?.id) {
+        throw new Error("Invalid token structure");
+      }
+  
+      // Set the token in axios headers
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      return;
+  
+      // Fetch and return the full user data
+      const loginUser = await fetchUserData(decodedUser.id); 
+      return loginUser;
+  
     } catch (error) {
-      toast.error(error.response.data.message);
+      // Handle API or logic errors
+      console.error("Registration failed:", error);
+      toast.error(error.response?.data?.message || error.message || "Registration failed");
+      return null; // Return null to indicate failure
     }
   };
+  
 
   const Info = {
     user,
