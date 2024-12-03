@@ -14,7 +14,6 @@ import CardDetails from "../Component/CardDetails";
 import Transaction from "../Component/Transaction";
 import WithDraw from "../Component/WithDraw";
 import DashBordLayout from "../DashBord/DashBordLayout/DashBordLayout";
-import DonetPage from "../Component/DonetPage";
 import ReachargeDetail from "../DashBord/DashBoardComponent/ReachargeDetail";
 import UserManagement from "../DashBord/DashBoardComponent/UserManagement";
 import WithDrawDetails from "../DashBord/DashBoardComponent/WithDrawDetails";
@@ -28,6 +27,10 @@ import Faq1 from "../Component/Faq1";
 import Faq2 from "../Component/Faq2";
 import PrivateRoute from "./PrivateRoute";
 import AdminRoute from "./AdminRoute";
+import Lottary from "../DashBord/DashBoardComponent/Lottary";
+import MachineDetails from "../DashBord/DashBoardComponent/MachineDetails";
+import UserLottary from "../Component/UserLottary";
+import WithdrawRecord from "../Component/WithdrawRecord";
 
 const router = createBrowserRouter([
   {
@@ -129,9 +132,14 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/donate",
-        element: <DonetPage></DonetPage>,
+        path: "/userlottary",
+        element: (
+          <PrivateRoute>
+          <UserLottary></UserLottary>
+          </PrivateRoute>
+        ),
       },
+
       {
         path: "/investmentrecord",
         element: (
@@ -145,6 +153,14 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <ReachargeRecord></ReachargeRecord>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/withdrawrecord",
+        element: (
+          <PrivateRoute>
+            <WithdrawRecord></WithdrawRecord>
           </PrivateRoute>
         ),
       },
@@ -202,6 +218,26 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: "lottary",
+        element: (
+          <PrivateRoute>
+            <AdminRoute>
+            <Lottary></Lottary>
+            </AdminRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "machinedetail",
+        element: (
+          <PrivateRoute>
+            <AdminRoute>
+          <MachineDetails></MachineDetails>
+            </AdminRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
         path: "profile",
         element: (
           <PrivateRoute>
@@ -211,6 +247,7 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
+    
     ],
   },
 ]);

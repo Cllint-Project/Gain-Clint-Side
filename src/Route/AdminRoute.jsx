@@ -4,6 +4,7 @@ import { InfinitySpin } from "react-loader-spinner";
 import { AuthContext } from "../Auth/AuthProvider";
 
 
+
 const AdminRoute = ({ children }) => {
   const { user, loading } = useContext(AuthContext);
   const location = useLocation();
@@ -25,9 +26,11 @@ const AdminRoute = ({ children }) => {
   console.log('admin route role check', user?.role)
   if (user?.role === "admin") {
     return children;
+  }else{
+    return <Navigate state={{ from: location.pathname }} to="/login" replace />;
   }
 
-  return <Navigate state={{ from: location.pathname }} to="/login" replace />;
+  
 };
 
 export default AdminRoute;

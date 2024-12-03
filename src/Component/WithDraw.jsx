@@ -1,17 +1,15 @@
 import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../Auth/AuthProvider";
-import axios from "axios";
 import { Toaster, toast } from "react-hot-toast";
 import useAxiosSecure from "../Hooks/UseAxiosSecure";
-
+import LoadingSpinner from "../common/LoadingSpinner";
 
 const Withdraw = () => {
-  const { user } = useContext(AuthContext);
-  const [loading, setLoading] = useState(false);
+  const { user, loading, setLoading } = useContext(AuthContext);
   const [userData, setUserData] = useState({});
   const axiosSecure = useAxiosSecure();
   const [withdrawData, setWithdrawData] = useState({
-    account_number: '',
+    account_number: "",
     amount: "",
     payment_method: "",
   });
@@ -25,10 +23,10 @@ const Withdraw = () => {
 
       try {
         const response = await axiosSecure.get(
-          `/api/users/getUser/${user._id}`
+          `/api/users/getSingleUser/${user._id}`
         );
         const userData = response?.data?.data;
-        setUserData(userData)
+        setUserData(userData);
 
         const account_number = userData?.phoneNumber;
         setWithdrawData((prev) => ({
@@ -36,19 +34,18 @@ const Withdraw = () => {
           account_number,
         }));
       } catch (error) {
-        console.error('Error fetching user data:', error);
-       
+        console.error("Error fetching user data:", error);
       } finally {
         setLoading(false);
       }
     };
 
     fetchUserData();
-  }, [user?._id,axiosSecure]);
+  }, [user?._id, axiosSecure, setLoading]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    
+
     setWithdrawData((prev) => ({
       ...prev,
       [name]: value,
@@ -66,15 +63,12 @@ const Withdraw = () => {
     // }
     setLoading(true);
     try {
-      const response = await axiosSecure.post(
-        `/api/users/withdraw`,
-        {
-          user_id: user?._id,
-          amount: Number(withdrawData.amount),
-          payment_method: withdrawData.payment_method,
-          account_number: withdrawData.account_number,
-        }
-      );
+      const response = await axiosSecure.post(`/api/users/withdraw`, {
+        user_id: user?._id,
+        amount: Number(withdrawData.amount),
+        payment_method: withdrawData.payment_method,
+        account_number: withdrawData.account_number,
+      });
       if (response.data.success === true) {
         toast.success("Withdrawal request submitted successfully");
         setWithdrawData({
@@ -92,8 +86,10 @@ const Withdraw = () => {
     }
   };
 
-  console.log(userData)
-
+  console.log(userData);
+  if (loading) {
+    return <LoadingSpinner></LoadingSpinner>;
+  }
   return (
     <div className="min-h-screen">
       <div className=" bg-blue-500 rounded-xl max-w-xl mx-auto mt-8">

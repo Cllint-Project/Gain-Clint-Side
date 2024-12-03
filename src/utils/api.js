@@ -49,3 +49,15 @@ export const getTeamMembers = async (userId) => {
     throw error;
   }
 };
+
+export const BuyMachine = async (data) => {
+  try {
+    const endpoint = data?.machine_details && `/api/users/submit-invest`
+
+    const response = await axiosSecure.post(endpoint, data);
+    return response?.data;
+  } catch (error) {
+    console.error("Error submitting Buy machine:", error);
+    throw error;
+  }
+};

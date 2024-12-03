@@ -136,7 +136,7 @@ const PersonalInformation = () => {
             </div>
           </div>
           <ul className="my-14">
-            <li className="flex items-center justify-between p-4 border-b">
+            <li className="flex items-center justify-between p-4 border-b cursor-pointer">
               <span>আমার পুরস্কার</span>
 
               <div className=" flex items-center justify-center p-4">
@@ -186,18 +186,26 @@ const PersonalInformation = () => {
                 </Modal>
               </div>
             </li>
-            <li className="flex items-center justify-between p-4 border-b">
-              <span>দান করুন</span>
+            <li className="flex items-center justify-between p-4 border-b cursor-pointer">
+              <span>লটারি</span>
               <button className="px-6 btn-sm mr-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600  duration-200 text-lg font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all">
-                <Link to={"/donate"} className="text-2xl">
+                <Link to={"/userlottary"} className="text-2xl">
                   <HiArrowLongRight />
                 </Link>
               </button>
             </li>
-            <li className="flex items-center justify-between p-4 border-b">
+            <li className="flex items-center justify-between p-4 border-b cursor-pointer">
               <span>রিচার্জ রেকর্ড</span>
               <button className="px-6 btn-sm mr-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600  duration-200 text-lg font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all">
                 <Link to={"/reachargerecord"} className="text-2xl">
+                  <HiArrowLongRight />
+                </Link>
+              </button>
+            </li>
+            <li className="flex items-center justify-between p-4 border-b cursor-pointer">
+              <span>উইথড্র রেকর্ড</span>
+              <button className="px-6 btn-sm mr-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600  duration-200 text-lg font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all">
+                <Link to={"/withdrawrecord"} className="text-2xl">
                   <HiArrowLongRight />
                 </Link>
               </button>

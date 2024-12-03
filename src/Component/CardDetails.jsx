@@ -1,13 +1,19 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import UseAxiosPublic from "../Hooks/UseAxiosPublic";
+import { AuthContext } from "../Auth/AuthProvider";
+import { BuyMachine } from "../utils/api";
+import { toast } from "react-toastify";
+import useAxiosSecure from "../Hooks/UseAxiosSecure";
 
 const CardDetails = () => {
-  const previousPath = location.pathname;
   const navigate = useNavigate();
   const { id } = useParams();
   const [item, setItem] = useState([]);
   const axiosPublic = UseAxiosPublic();
+  const axiosSecure = useAxiosSecure();
+  const { adminData, fetchAdminData, user } = useContext(AuthContext);
+  const [LastRechargeData, setLastRechargeData] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -15,7 +21,7 @@ const CardDetails = () => {
         const response = await axiosPublic.get(
           `/api/users/get-invest-data/${id}`
         );
-        setItem(response?.data?.data); // Assuming the data is in `response.data.data`
+        setItem(response?.data?.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -23,10 +29,89 @@ const CardDetails = () => {
 
     fetchData();
   }, [id, axiosPublic]);
+  useEffect(() => {
+    fetchAdminData();
+  }, []);
 
-  const handleRechargeClick = (machineData) => {
-    navigate("/recharge", { state: { machineData, previousPath } });
+  useEffect(() => {
+    // get recharge record
+    const fetchLastRechargeData = async () => {
+      try {
+        if (user?._id) {
+          const res = await axiosSecure.get(
+            `/api/users/get-recharge-LastData/${user?._id}`
+          );
+
+          if (res.data.success) {
+            setLastRechargeData(res?.data?.data);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch recharge data:", error);
+      }
+    };
+
+    fetchLastRechargeData();
+  }, [axiosSecure, user?._id]);
+
+  console.log("LastRechargeData:", LastRechargeData);
+
+  const handleRechargeClick = async (machineData) => {
+    const newMachineData = {
+      admin_number: adminData?.phoneNumber,
+      investor_id: user?._id,
+      investor_name: user?.username,
+      recharge_amount: machineData?.investment_amount || 0,
+      recharge_option: LastRechargeData?.recharge_option,
+      phone_number: LastRechargeData?.phone_number,
+      machine_details: {
+        machine_name: item?.machine_name,
+        investment_amount: item?.investment_amount,
+        investment_duration: Number(item?.investment_duration),
+        daily_income: item?.daily_income,
+        total_income: item?.total_income,
+        invest_rate: item?.invest_rate,
+        invest_limit: item?.invest_limit,
+        vipStatus: item?.vipStatus,
+        machine_image: item?.machine_image,
+      },
+    };
+
+    const response = await BuyMachine(newMachineData);
+
+    if (response.message) {
+      toast.success("Transaction submitted successfully!");
+      setTimeout(() => {
+        navigate("/investmentrecord");
+      }, 1000);
+    }
   };
+
+  // const lastItem = rechargeData[rechargeData.length - 1];
+  // console.log("recharge data ", lastItem);
+  // const handleRechargeClick = async (machineData) => {
+  //   const newMachineData = {
+  //     adminNumber: adminData?.phoneNumber,
+  //     investor_id: user?._id,
+  //     investor_name: user?.username,
+  //     recharge_amount: machineData?.investment_amount || 0,
+  //     recharge_option: rechargeData?.recharge_option,
+  //     phone_number: rechargeData?.phone_number,
+  //     // balance: 0,
+  //     // recharge_status: "pending",
+  //     machine_details: machineData || null,
+  //   };
+  //   console.log("buy machine data", newMachineData);
+  //   const response = await BuyMachine(newMachineData);
+
+  //   if (response.message) {
+  //     toast.success("Transaction submitted successfully!");
+  //     // setTimeout(() => {
+  //     //   navigate("/");
+  //     // }, 1000);
+  //   }
+  // };
+
   return (
     <div>
       <div className="max-w-lg mb-14 mt-10 mx-auto border rounded-lg shadow-lg overflow-hidden  bg-white">

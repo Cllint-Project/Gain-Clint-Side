@@ -1,4 +1,4 @@
-import { UserCircle2, WalletMinimal } from "lucide-react";
+import { GiftIcon, UserCircle2, WalletMinimal } from "lucide-react";
 import { useContext, useState } from "react";
 import { AiOutlineBars } from "react-icons/ai";
 import { FcSettings } from "react-icons/fc";
@@ -7,6 +7,8 @@ import { RiCoupon3Fill } from "react-icons/ri";
 import { WiTime12 } from "react-icons/wi";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Auth/AuthProvider";
+import { TfiLayoutTabV } from "react-icons/tfi";
+import { TbWashMachine } from "react-icons/tb";
 
 const DashBord = () => {
   const [isActive, setActive] = useState(false);
@@ -129,6 +131,32 @@ const DashBord = () => {
                 <RiCoupon3Fill className="w-5 h-5" />
 
                 <span className="mx-4 font-medium">Cupon</span>
+              </NavLink>
+              {/* Lottary */}
+              <NavLink
+                to="lottary"
+                className={({ isActive }) =>
+                  `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
+                    isActive ? "bg-gray-300  text-gray-700" : "text-gray-600"
+                  }`
+                }
+              >
+                <GiftIcon className="w-5 h-5" />
+
+                <span className="mx-4 font-medium">Lottary</span>
+              </NavLink>
+              {/* Machine */}
+              <NavLink
+                to="machinedetail"
+                className={({ isActive }) =>
+                  `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
+                    isActive ? "bg-gray-300  text-gray-700" : "text-gray-600"
+                  }`
+                }
+              >
+                <TbWashMachine className="w-5 h-5" />
+
+                <span className="mx-4 font-medium">Machine Detail</span>
               </NavLink>
             </nav>
           </div>

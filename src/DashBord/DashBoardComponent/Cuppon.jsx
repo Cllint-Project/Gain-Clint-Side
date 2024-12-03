@@ -4,9 +4,10 @@ import { toast } from "react-toastify";
 import useAxiosSecure from "../../Hooks/UseAxiosSecure";
 const CouponForm = () => {
   const [formData, setFormData] = useState({
-    code: '',
+    code: "",
     expirationMinutes: 10,
-    adminId: ''
+    adminId: "",
+    couponAmount: 0,
   });
   const axiosSecure = useAxiosSecure();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -16,25 +17,36 @@ const CouponForm = () => {
     setIsSubmitting(true);
 
     try {
+      const response = await axiosSecure.post(
+        `/api/users/admin/coupon`,
+        formData
+      );
 
-      const response = await axiosSecure.post(`/api/users/admin/coupon`, formData);
-      
       if (response.data.success) {
         toast.success(response?.data?.message || "Coupon created successfully");
-        setFormData({ ...formData, code: '' });
+        setFormData({ ...formData, code: "" });
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Failed to create secret coupon');
+      toast.error(
+        error.response?.data?.message || "Failed to create secret coupon"
+      );
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     [name]: name === "expirationMinutes" ? Number(value) : value,
+  //   }));
+  // };
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: name === 'expirationMinutes' ? Number(value) : value
+      [name]: name === "expirationMinutes" || name === "couponAmount" ? Number(value) : value,
     }));
   };
 
@@ -55,7 +67,10 @@ const CouponForm = () => {
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label htmlFor="code" className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="code"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Coupon Code
                 </label>
                 <input
@@ -70,9 +85,31 @@ const CouponForm = () => {
                   required
                 />
               </div>
+              <div>
+                <label
+                  htmlFor="couponAmount"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Amount
+                </label>
+                <input
+                  type="text"
+                  id="couponAmount"
+                  name="couponAmount"
+                  value={formData.amount}
+                  onChange={handleChange}
+                  placeholder="Enter Your Amount"
+                  className="w-full px-4 py-3 border-2 rounded-lg outline-none transition-all duration-300 
+                    border-gray-200 focus:border-blue-600"
+                  required
+                />
+              </div>
 
               <div>
-                <label htmlFor="expirationMinutes" className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="expirationMinutes"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Expiration Time (minutes)
                 </label>
                 <input
@@ -92,9 +129,10 @@ const CouponForm = () => {
                 type="submit"
                 disabled={isSubmitting || !formData.code}
                 className={`w-full py-3 px-4 rounded-lg text-white font-medium transition-all duration-300
-                  ${isSubmitting || !formData.code
-                    ? 'bg-gray-400 cursor-not-allowed'
-                    : 'bg-blue-600 hover:bg-blue-700 active:transform active:scale-[0.98]'
+                  ${
+                    isSubmitting || !formData.code
+                      ? "bg-gray-400 cursor-not-allowed"
+                      : "bg-blue-600 hover:bg-blue-700 active:transform active:scale-[0.98]"
                   }`}
               >
                 {isSubmitting ? (

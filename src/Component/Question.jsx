@@ -13,7 +13,7 @@ const Question = () => {
           className="w-16 h-16 s object-cover rounded"
         />
         <h2 className="text-2xl  font-semibold">
-          TERAWULF এর সর্বশেষ উন্নয়ন ফলাফল: PRO মাইনিং মেশিন
+          Gain এর সর্বশেষ উন্নয়ন ফলাফল: PRO মাইনিং মেশিন
         </h2>
       </Link>
 
@@ -26,7 +26,7 @@ const Question = () => {
           নটিলাস ক্রিপ্টোমিন
         </Link>
         <Link to={"/data"} className="text-left  text-lg w-full  h-[80px] px-4 py-2 bg-white border rounded shadow-sm hover:bg-gray-50">
-          TeraWulf mengumumkan pembaruan produksi dan operasi Mei 2024
+          Gain mengumumkan pembaruan produksi dan operasi Mei 2024
         </Link>
       </div>
     </div>

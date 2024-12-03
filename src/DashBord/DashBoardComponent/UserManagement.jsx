@@ -1,4 +1,3 @@
-
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import { FaUser, FaSort } from "react-icons/fa";
@@ -9,11 +8,6 @@ import useAxiosSecure from "../../Hooks/UseAxiosSecure";
 const UserManagement = () => {
   const [rechargeData, setRechargeData] = useState([]);
   const axiosSecure = useAxiosSecure();
-  // const { user: authUser } = useContext(AuthContext);
-
-  // Fallback to localStorage if AuthContext user is not available
-  // const storedUser = JSON.parse(localStorage.getItem("user"));
-  // const userId = authUser || storedUser; // Priority to AuthContext user
 
   const fetchUsers = async () => {
     try {
@@ -44,16 +38,34 @@ const UserManagement = () => {
 
     if (result.isConfirmed) {
       try {
-        const res = await axiosSecure.put(
-          `/api/users/update-role`,
-          { newRole , userId }
-        );
-        console.log(newRole, userId)
+        const res = await axiosSecure.put(`/api/users/update-role`, {
+          newRole,
+          userId,
+        });
+        console.log(newRole, userId);
         Swal.fire("Success!", res.data.message, "success");
         fetchUsers(); // Refresh the user list
       } catch (error) {
         console.error("Failed to update role:", error);
         Swal.fire("Error!", "Failed to update user role.", "error");
+      }
+    }
+  };
+
+  const handleDelete = async (userId) => {
+    console.log(userId);
+    try {
+      const res = await axiosSecure.delete(`/api/users/delete-user/${userId}`);
+
+      if (res.data.message) {
+        Swal.fire("Success!", res.data.message, "success");
+        fetchUsers();
+      } // Refresh the user list
+    } catch (error) {
+      if (error.response && error.response.data) {
+        Swal.fire("Error!", error.response.data.message, "error");
+      } else {
+        Swal.fire("Error!", "Something went wrong.", "error");
       }
     }
   };
@@ -116,14 +128,28 @@ const UserManagement = () => {
                               {item?.role}
                             </div>
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-center">
-                            <div className="flex justify-center gap-3">
+                          <td className="px-6 py-4 flex flex-row gap-3 whitespace-nowrap text-center">
+                            <div className="flex  justify-center gap-3">
+                              <div>
+                                <button
+                                  className={`inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 ${
+                                    item.role === "admin" && "hidden"
+                                  }`}
+                                  onClick={() =>
+                                    updateRole(item?._id, item?.role)
+                                  }
+                                >
+                                  <FaUser className="mr-2" />
+                                  Change Role
+                                </button>
+                              </div>
+                            </div>
+                            <div>
                               <button
-                                className={`inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 ${item.role === 'admin' && 'hidden'}`}
-                                onClick={() => updateRole(item?._id, item?.role)}
+                                className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
+                                onClick={() => handleDelete(item?._id)}
                               >
-                                <FaUser className="mr-2" />
-                                Change Role
+                                Delete
                               </button>
                             </div>
                           </td>

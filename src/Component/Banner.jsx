@@ -2,7 +2,8 @@ import { useCallback, useContext, useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Auth/AuthProvider";
 import { FaRegCircleUser } from "react-icons/fa6";
-import useAxiosSecure from "../Hooks/UseAxiosSecure";
+import video from "../../src/assets/banner-video.mp4"
+
 const Banner = () => {
   const { logout, user } = useContext(AuthContext);
   const [menu, setShowMenu] = useState(false);
@@ -10,7 +11,6 @@ const Banner = () => {
   // const [userData, setUserData] = useState({});
   const navigate = useNavigate();
   const menuRef = useRef(null);
-  const axiosSecure = useAxiosSecure()
 
   // const fetchUserData = async () => {
   //   if (!user?._id) {
@@ -168,7 +168,7 @@ const Banner = () => {
       {/* Main Image Section */}
       <div className="relative">
         <video
-          src="https://www.terawulf-pre.com/media/xuanchuan.97ec90f0.mp4"
+          src={video}
           className=" lg:w-full sm:w-[1000px] md:w-[1200px] sm:h-[400px] md:h-[500px] lg:object-fill md:object-bottom"
           autoPlay
           muted
@@ -176,7 +176,6 @@ const Banner = () => {
           controls
           alt="Banner Video"
         >
-          আপনার ব্রাউজার ভিডিও প্লে সাপোর্ট করে না।
         </video>
       </div>
     </div>

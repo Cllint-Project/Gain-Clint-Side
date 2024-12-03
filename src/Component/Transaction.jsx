@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { formatRechargeData } from "../utils/formatRechargeData";
 import { submitRecharge } from "../utils/api";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import UseAxiosSecure from "../Hooks/UseAxiosSecure";
+import { AuthContext } from "../Auth/AuthProvider";
 
 function Transaction() {
   const location = useLocation();
@@ -15,8 +16,8 @@ function Transaction() {
   const [transactionId, setTransactionId] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [adminData, setAdminData] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
   const axiosSecure = UseAxiosSecure();
+  const {loading} = useContext(AuthContext)
 
   useEffect(() => {
     const fetchAdminData = async () => {
@@ -32,8 +33,6 @@ function Transaction() {
       } catch (error) {
         // toast.error("Error fetching admin details");
         console.error("Error fetching admin:", error);
-      } finally {
-        setIsLoading(false);
       }
     };
 
@@ -67,7 +66,7 @@ function Transaction() {
     }
   };
 
-  if (isLoading) {
+  if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>

@@ -1,38 +1,19 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "../Auth/AuthProvider";
 import LoadingSpinner from "../common/LoadingSpinner";
-import UseAxiosSecure from "../Hooks/UseAxiosSecure";
 
 const ReachargeRecord = () => {
-  const [rechargeData, setRechargeData] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const {
+    loading,
+    rechargeData = [],
+    fetchRechargeData,
+  } = useContext(AuthContext);
 
-  // Get user from AuthContext
-  const { user, loading: authLoading } = useContext(AuthContext);
-
-  const axiosSecure = UseAxiosSecure();
-  const userId = user?._id;
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axiosSecure.get(
-          `/api/users/get-recharge-data/${userId}`
-        );
-        setRechargeData(res?.data?.data || []);
-      } catch (error) {
-        console.error("Failed to fetch recharge data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+    fetchRechargeData();
+  }, []);
 
-    // Fetch data only if AuthContext is not loading
-    if (!authLoading) {
-      fetchData();
-    }
-  }, [userId, authLoading, axiosSecure]);
-
-  if (loading || authLoading) {
+  if (loading) {
     return <LoadingSpinner />;
   }
 
