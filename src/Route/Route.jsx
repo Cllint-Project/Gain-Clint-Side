@@ -27,11 +27,11 @@ import Faq1 from "../Component/Faq1";
 import Faq2 from "../Component/Faq2";
 import PrivateRoute from "./PrivateRoute";
 import AdminRoute from "./AdminRoute";
-import Lottary from "../DashBord/DashBoardComponent/Lottary";
 import MachineDetails from "../DashBord/DashBoardComponent/MachineDetails";
-import UserLottary from "../Component/UserLottary";
 import WithdrawRecord from "../Component/WithdrawRecord";
 import ShowBalanceDetails from "../Page/Balance/ShowBalanceDetails";
+import UserLottery from "../Component/UserLottary";
+import AdminLottery from "../DashBord/DashBoardComponent/Lottery/AdminLottery";
 
 const router = createBrowserRouter([
   {
@@ -136,7 +136,7 @@ const router = createBrowserRouter([
         path: "/userlottary",
         element: (
           <PrivateRoute>
-          <UserLottary></UserLottary>
+          <UserLottery/>
           </PrivateRoute>
         ),
       },
@@ -231,7 +231,7 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <AdminRoute>
-            <Lottary></Lottary>
+            <AdminLottery/>
             </AdminRoute>
           </PrivateRoute>
         ),
