@@ -53,15 +53,6 @@ const Withdraw = () => {
   };
 
   const handleSubmit = async () => {
-    // if (
-    //   !withdrawData.account_number ||
-    //   !withdrawData.amount ||
-    //   !withdrawData.payment_method
-    // ) {
-    //   toast.error("Please fill in all fields");
-    //   return;
-    // }
-    setLoading(true);
     try {
       const response = await axiosSecure.post(`/api/users/withdraw`, {
         user_id: user?._id,
@@ -69,8 +60,12 @@ const Withdraw = () => {
         payment_method: withdrawData.payment_method,
         account_number: withdrawData.account_number,
       });
-      if (response.data.success === true) {
-        toast.success("Withdrawal request submitted successfully");
+  
+      if (response.data.success) {
+        
+        toast.success("Withdrawal request submitted successfully", {
+          duration: 2000, // Duration in milliseconds
+        });
         setWithdrawData({
           account_number: "",
           amount: "",
@@ -79,14 +74,14 @@ const Withdraw = () => {
       }
     } catch (error) {
       toast.error(
-        error.response?.data?.message || "Failed to submit withdrawal request"
+        error.response?.data?.message || "Failed to submit withdrawal request",
+        { duration: 2000 } // Set a longer duration
       );
-    } finally {
-      setLoading(false);
     }
   };
+  
 
-  console.log(userData);
+  // console.log(userData);
   if (loading) {
     return <LoadingSpinner></LoadingSpinner>;
   }
