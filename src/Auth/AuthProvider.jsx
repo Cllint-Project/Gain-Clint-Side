@@ -91,6 +91,7 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null); // Store decoded token info
   const [adminData, setAdminData] = useState({}); // Store decoded token info
   const [loading, setLoading] = useState(true);
+  const [balanceHistory, setBalanceHistory] = useState([]);
   const axiosPublic = UseAxiosPublic();
   const axiosSecure = useAxiosSecure();
 
@@ -223,7 +224,26 @@ const AuthProvider = ({ children }) => {
     }
   };
 
- 
+  const fetchBalanceHistory = async () => {
+    if (!user?._id) {
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await axiosSecure.get(
+        `/api/users/getUserBalanceDetails/${user._id}`
+      );
+      const userData = response?.data?.data?.balanceHistory;
+      console.log(userData, 3845);
+      setBalanceHistory(userData);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const Info = {
     user,
     loading,
@@ -236,6 +256,8 @@ const AuthProvider = ({ children }) => {
     adminData,
     rechargeData,
     fetchRechargeData,
+    fetchBalanceHistory,
+    balanceHistory
   };
   return <AuthContext.Provider value={Info}>{children}</AuthContext.Provider>;
 };

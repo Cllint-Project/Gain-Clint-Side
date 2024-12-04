@@ -1,4 +1,3 @@
-
 import { useContext, useEffect, useState } from "react";
 import { TeamList } from "./TeamList";
 import { TeamInvite } from "./TeamInvite";
@@ -7,9 +6,11 @@ import { TeamHeader } from "./TeamHeader";
 import { getTeamMembers } from "../../utils/api";
 import LoadingSpinner from "../../common/LoadingSpinner";
 import { AuthContext } from "../../Auth/AuthProvider";
+import DailyBalanceStats from "../../Page/Balance/DailyBalanceStats";
 
 const Team = () => {
-  const {user, loading,setLoading} = useContext(AuthContext)
+  const { user, loading, setLoading, fetchBalanceHistory, balanceHistory } =
+    useContext(AuthContext);
   const [userData, setUserData] = useState({});
   const [teamMembers, setTeamMembers] = useState([]);
 
@@ -31,7 +32,11 @@ const Team = () => {
     };
 
     fetchData();
-  }, [user?._id,setLoading]);
+  }, [user?._id, setLoading]);
+  
+  useEffect(() => {
+    fetchBalanceHistory();
+  }, []);
 
   if (loading) {
     return <LoadingSpinner />;
@@ -42,6 +47,7 @@ const Team = () => {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
         <TeamHeader user={userData} />
         <TeamStats userData={userData} />
+        <DailyBalanceStats balanceHistory={balanceHistory} />
         <TeamInvite referralCode={userData.referralCode} />
         <TeamList members={teamMembers} />
       </div>

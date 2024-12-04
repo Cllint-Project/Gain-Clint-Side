@@ -10,14 +10,11 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { AuthContext } from "../Auth/AuthProvider";
 import LoadingSpinner from "../common/LoadingSpinner";
-import { getTeamMembers } from "../utils/api";
 import useAxiosSecure from "../Hooks/UseAxiosSecure";
 const PersonalInformation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [secretCode, setSecretCode] = useState("");
-  const { user } = useContext(AuthContext);
-  const [userData, setUserData] = useState({});
-  const [loading, setLoading] = useState(true);
+  const { user , loading} = useContext(AuthContext);
   const userId = user?._id;
   const axiosSecure = useAxiosSecure();
   const data = {
@@ -42,30 +39,30 @@ const PersonalInformation = () => {
     setIsOpen(false);
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (user?._id) {
-        try {
-          const response = await getTeamMembers(user._id);
-          setUserData(response.userData);
-        } catch (error) {
-          console.error("Error fetching team data:", error);
-        } finally {
-          setLoading(false);
-        }
-      } else {
-        setLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     if (user?._id) {
+  //       try {
+  //         const response = await getTeamMembers(user._id);
+  //         setUserData(response.userData);
+  //       } catch (error) {
+  //         console.error("Error fetching team data:", error);
+  //       } finally {
+  //         setLoading(false);
+  //       }
+  //     } else {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchData();
-  }, [user?._id]);
+  //   fetchData();
+  // }, [user?._id]);
 
   if (loading) {
     return <LoadingSpinner />;
   }
 
-  console.log(userData);
+  console.log(user);
 
   return (
     <div>
@@ -80,17 +77,17 @@ const PersonalInformation = () => {
           <div className="flex flex-col items-center">
             <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center">
               <img
-                src={`${userData?.profileImage}`}
+                src={`${user?.profileImage}`}
                 alt="Profile"
                 className="rounded-full"
               />
             </div>
-            <h2 className="text-2xl text-white">{userData?.username}</h2>
+            <h2 className="text-2xl text-white">{user?.username}</h2>
           </div>
           <div className="flex justify-between items-center mt-4">
             <div className="flex gap-14 ">
               <div className=" text-center ">
-                <p className="text-lg font-bold">{userData?.balance}TK</p>
+                <p className="text-lg font-bold">{user?.balance}TK</p>
                 <p className="text-sm">অবশিষ্ট ব্যালেন্স</p>
               </div>
               {/* <div className=" text-center">
@@ -136,6 +133,16 @@ const PersonalInformation = () => {
             </div>
           </div>
           <ul className="my-14">
+          <li className="flex items-center justify-between p-4 border-b cursor-pointer">
+              <span>আজকের আয় ও বোনাস</span>
+              <button className="px-6 btn-sm mr-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600  duration-200 text-lg font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all">
+                <Link to={"/ShowBalanceDetails"} className="text-2xl">
+                  <HiArrowLongRight />
+                </Link>
+              </button>
+            </li>
+
+
             <li className="flex items-center justify-between p-4 border-b cursor-pointer">
               <span>আমার পুরস্কার</span>
 
@@ -194,6 +201,7 @@ const PersonalInformation = () => {
                 </Link>
               </button>
             </li>
+            
             <li className="flex items-center justify-between p-4 border-b cursor-pointer">
               <span>রিচার্জ রেকর্ড</span>
               <button className="px-6 btn-sm mr-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600  duration-200 text-lg font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all">

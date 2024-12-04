@@ -31,6 +31,7 @@ import Lottary from "../DashBord/DashBoardComponent/Lottary";
 import MachineDetails from "../DashBord/DashBoardComponent/MachineDetails";
 import UserLottary from "../Component/UserLottary";
 import WithdrawRecord from "../Component/WithdrawRecord";
+import ShowBalanceDetails from "../Page/Balance/ShowBalanceDetails";
 
 const router = createBrowserRouter([
   {
@@ -161,6 +162,14 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <WithdrawRecord></WithdrawRecord>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/ShowBalanceDetails",
+        element: (
+          <PrivateRoute>
+            <ShowBalanceDetails></ShowBalanceDetails>
           </PrivateRoute>
         ),
       },
