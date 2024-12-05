@@ -2,7 +2,7 @@ import { useCallback, useContext, useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Auth/AuthProvider";
 import { FaRegCircleUser } from "react-icons/fa6";
-import video from "../../src/assets/banner-video.mp4"
+import video from "/banner-video.mp4"
 
 const Banner = () => {
   const { logout, user } = useContext(AuthContext);

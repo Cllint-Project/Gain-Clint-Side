@@ -4,7 +4,7 @@ const Details4 = () => {
 <div className="bg-gray-100 min-h-screen flex items-center justify-center p-4">
       <div className="bg-white rounded-lg shadow-lg p-6 max-w-4xl w-full">
         <h2 className="text-2xl font-bold text-gray-800 mb-4">
-          TeraWulf mengumumkan pembaruan produksi dan operasi Mei 2024
+          Gain mengumumkan pembaruan produksi dan operasi Mei 2024
         </h2>
         <hr className="border-gray-300 mb-4" />
         <p className="text-gray-700 leading-7">
@@ -20,7 +20,7 @@ const Details4 = () => {
           Posting video pembaruan konstruksi terkini di saluran YouTube perusahaan.
           <br />
           <br />
-          EASTON, Md., June 04, 2024 (GLOBE NEWSWIRE) -- TeraWulf Inc. (Nasdaq: WULF) (“TeraWulf” atau “Perusahaan”) adalah
+          EASTON, Md., June 04, 2024 (GLOBE NEWSWIRE) -- Gain Inc. (Nasdaq: WULF) (“TeraWulf” atau “Perusahaan”) adalah
           pemilik dan operator fasilitas pertambangan energi nol karbon 95% Power Vertical Energy Company hari ini memberikan
           pembaruan produksi dan operasi bulanan yang tidak diaudit untuk Mei 2024.
           <br />
@@ -52,9 +52,9 @@ const Details4 = () => {
           operasi suhu tinggi untuk mengoptimalkan kinerja Gedung 3.
           <br />
           <br />
-          <strong>Tentang TeraWulf</strong>
+          <strong>Tentang Gain</strong>
           <br />
-          TeraWulf memiliki dan mengoperasikan fasilitas penambangan Bitcoin yang terintegrasi secara vertikal dan ramah
+          Gain memiliki dan mengoperasikan fasilitas penambangan Bitcoin yang terintegrasi secara vertikal dan ramah
           lingkungan di Amerika Serikat. Dipimpin oleh tim pengusaha energi berpengalaman, perusahaan saat ini mengoperasikan
           dua fasilitas penambangan Bitcoin: fasilitas Lake Mariner yang dimiliki sepenuhnya di New York, dan fasilitas Nautilus
           Cryptomine di Pennsylvania melalui usaha patungan dengan Cumulus Coin, LLC. TeraWulf memproduksi Bitcoin yang
