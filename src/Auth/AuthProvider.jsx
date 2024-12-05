@@ -119,7 +119,6 @@ const AuthProvider = ({ children }) => {
       return currentUser; // Return user for optional use
     } catch (error) {
       console.log("Fetch user data error:", error);
-      toast.error("Failed to fetch user data");
     }
   };
 
@@ -257,7 +256,7 @@ const AuthProvider = ({ children }) => {
     rechargeData,
     fetchRechargeData,
     fetchBalanceHistory,
-    balanceHistory
+    balanceHistory,
   };
   return <AuthContext.Provider value={Info}>{children}</AuthContext.Provider>;
 };

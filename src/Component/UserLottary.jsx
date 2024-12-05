@@ -84,6 +84,7 @@ const UserLottery = () => {
           >
             <option value="100">100 TK</option>
             <option value="200">200 TK</option>
+            <option value="300">300 TK</option>
             <option value="500">500 TK</option>
           </select>
         </div>

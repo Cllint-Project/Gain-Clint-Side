@@ -1,8 +1,7 @@
- export const TeamStats = ({ userData }) => {
+/* eslint-disable react/prop-types */
+ export const TeamStats = ({ shortData }) => {
     const stats = [
-      { label: 'মোট ব্যালেন্স', value: `${userData?.balance || 0}TK` },
-      { label: 'আজ', value: '0.00TK' },
-      { label: 'গতকাল', value: '0.00TK' },
+      { label: 'মোট ব্যালেন্স', value: `${shortData?.balance || 0}TK` }
     ];
   
     return (

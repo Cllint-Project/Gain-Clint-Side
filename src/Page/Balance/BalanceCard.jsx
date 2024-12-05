@@ -6,7 +6,7 @@ const BalanceCard = ({ title, amount, icon: Icon }) => {
         <div>
           <p className="text-gray-600 text-sm">{title}</p>
           <p className="text-2xl font-bold text-gray-900">
-            {amount.toLocaleString()} TK
+            {amount} TK
           </p>
         </div>
         {Icon && (

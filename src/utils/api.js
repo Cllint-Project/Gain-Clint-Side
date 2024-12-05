@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import UseAxiosSecure from "../Hooks/UseAxiosSecure";
 
 const axiosSecure = UseAxiosSecure();
@@ -52,12 +53,23 @@ export const getTeamMembers = async (userId) => {
 
 export const BuyMachine = async (data) => {
   try {
-    const endpoint = data?.machine_details && `/api/users/submit-invest`
+    const endpoint = data?.machine_details && `/api/users/submit-invest`;
 
     const response = await axiosSecure.post(endpoint, data);
+    
+    // Show success toast if successful
+    if (response?.data?.success) {
+      toast.success(response.data.message || "Transaction submitted successfully!");
+    }
+    
     return response?.data;
   } catch (error) {
+    // Show error toast on failure
+    const errorMessage = error?.response?.data?.message || "Error submitting Buy machine!";
+    toast.error(errorMessage);
     console.error("Error submitting Buy machine:", error);
+    
+    // Throw error to handle it in the calling component
     throw error;
   }
 };

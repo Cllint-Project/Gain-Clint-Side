@@ -53,11 +53,11 @@ const AdminLottery = () => {
     if (result.isConfirmed) {
       try {
         const response = await axiosSecure.post('/api/lottery/select-winner');
-        
-        if (response.data.success) {
+        console.log(response?.data?.data)
+        if (response?.data?.success) {
           Swal.fire({
             title: 'Winner Selected!',
-            text: `Winning number: ${response.data.winner.lotteryNumber}`,
+            text: `Winning number: ${response?.data?.data?.lotteryNumber}`,
             icon: 'success'
           });
           fetchLotteries();

@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import UseAxiosPublic from "../Hooks/UseAxiosPublic";
 import { AuthContext } from "../Auth/AuthProvider";
 import { BuyMachine } from "../utils/api";
 import { toast } from "react-toastify";
@@ -10,7 +9,6 @@ const CardDetails = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [item, setItem] = useState([]);
-  const axiosPublic = UseAxiosPublic();
   const axiosSecure = useAxiosSecure();
   const { adminData, fetchAdminData, user } = useContext(AuthContext);
   const [LastRechargeData, setLastRechargeData] = useState({});
@@ -18,7 +16,7 @@ const CardDetails = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosPublic.get(
+        const response = await axiosSecure.get(
           `/api/users/get-invest-data/${id}`
         );
         setItem(response?.data?.data);
@@ -28,7 +26,7 @@ const CardDetails = () => {
     };
 
     fetchData();
-  }, [id, axiosPublic]);
+  }, [id, axiosSecure]);
   useEffect(() => {
     fetchAdminData();
   }, []);
@@ -41,6 +39,8 @@ const CardDetails = () => {
           const res = await axiosSecure.get(
             `/api/users/get-recharge-LastData/${user?._id}`
           );
+
+          console.log("hdsfhsd", res.data.data);
 
           if (res.data.success) {
             setLastRechargeData(res?.data?.data);
@@ -77,13 +77,23 @@ const CardDetails = () => {
       },
     };
 
-    const response = await BuyMachine(newMachineData);
+    console.log("newMachineData:", newMachineData);
+    if ((LastRechargeData?.phone_number === "") | undefined) {
+      return toast.error("মেশিন কেনার আগে রিচার্জ করুন");
+    }
 
-    if (response.message) {
-      toast.success("Transaction submitted successfully!");
-      setTimeout(() => {
-        navigate("/investmentrecord");
-      }, 1000);
+    try {
+      const response = await BuyMachine(newMachineData);
+      
+      if (response.success) {
+        // Success message is handled in the BuyMachine function via toast
+        setTimeout(() => {
+          navigate("/investmentrecord");
+        }, 1000);
+      }
+    } catch (error) {
+      // Error message is already handled in the BuyMachine function via toast
+      console.error("Error processing transaction:", error);
     }
   };
 

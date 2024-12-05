@@ -9,7 +9,7 @@ import { AuthContext } from "../../Auth/AuthProvider";
 import DailyBalanceStats from "../../Page/Balance/DailyBalanceStats";
 
 const Team = () => {
-  const { user, loading, setLoading, fetchBalanceHistory, balanceHistory } =
+  const { user, loading, setLoading, fetchBalanceHistory } =
     useContext(AuthContext);
   const [userData, setUserData] = useState({});
   const [teamMembers, setTeamMembers] = useState([]);
@@ -42,12 +42,19 @@ const Team = () => {
     return <LoadingSpinner />;
   }
 
+const shortData = {
+  profileImage: userData?.profileImage,
+  phoneNumber: userData?.phoneNumber,
+  balance: userData?.balance,
+  todayBalance: userData?.todayBalance,
+  todayBonus: userData?.todayBonus,
+}
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
-        <TeamHeader user={userData} />
-        <TeamStats userData={userData} />
-        <DailyBalanceStats balanceHistory={balanceHistory} />
+        <TeamHeader shortData={shortData}/>
+        <TeamStats shortData={shortData} />
+        <DailyBalanceStats shortData={shortData}/>
         <TeamInvite referralCode={userData.referralCode} />
         <TeamList members={teamMembers} />
       </div>

@@ -40,11 +40,15 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Home></Home>,
+        element: <PrivateRoute><Home></Home></PrivateRoute>,
       },
       {
         path: "/invesment",
-        element: <Invesment></Invesment>,
+        element: (
+          <PrivateRoute>
+            <Invesment></Invesment>
+          </PrivateRoute>
+        ),
       },
       {
         path: "/ourteam",
@@ -114,7 +118,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/cardDetails/:id",
-        element: <CardDetails></CardDetails>,
+        element: (
+          <PrivateRoute>
+            <CardDetails></CardDetails>
+          </PrivateRoute>
+        ),
       },
       {
         path: "/transaction",
@@ -136,7 +144,7 @@ const router = createBrowserRouter([
         path: "/userlottary",
         element: (
           <PrivateRoute>
-          <UserLottery/>
+            <UserLottery />
           </PrivateRoute>
         ),
       },
@@ -231,7 +239,7 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <AdminRoute>
-            <AdminLottery/>
+              <AdminLottery />
             </AdminRoute>
           </PrivateRoute>
         ),
@@ -241,7 +249,7 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <AdminRoute>
-          <MachineDetails></MachineDetails>
+              <MachineDetails></MachineDetails>
             </AdminRoute>
           </PrivateRoute>
         ),
@@ -256,7 +264,6 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
-    
     ],
   },
 ]);
