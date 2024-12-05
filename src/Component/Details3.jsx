@@ -18,7 +18,7 @@ const Details3 = () => {
           {/* Text Section */}
           <p className="text-sm sm:text-lg md:text-lg lg:text-xl xl:text-2xl text-gray-800 leading-relaxed text-left my-6 max-w-4xl">
             <strong>নটিলাস ক্রিপ্টোমাইন</strong> হল একটি বিটকয়েন খনির সুবিধা যা যৌথভাবে 
-            <span className="text-blue-500 font-semibold"> টেরাউল্ফ </span> এবং 
+            <span className="text-blue-500 font-semibold"> গেইন </span> এবং 
             <span className="text-blue-500 font-semibold"> ট্যালেন এনার্জি কর্পোরেশন </span> এর মালিকানাধীন, যা পিজেএম ইন্টারকানেকশন নেটওয়ার্কের মধ্যে 
             2.5 গিগাওয়াট শূন্য-কার্বন পারমাণবিক বিদ্যুৎ উৎপাদন সুবিধার মধ্যে অবস্থিত। 
             <br /><br />

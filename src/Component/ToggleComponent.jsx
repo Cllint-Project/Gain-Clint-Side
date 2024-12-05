@@ -146,10 +146,10 @@ const ToggleComponent = () => {
   // Filtering data based on activeTab
   const filteredData =
     activeTab === "P"
-      ? data?.filter((item) => item.machine_name === "M-8" || item.machine_name === "M-10")
+      ? data?.filter((item) => item.machine_name === "M-8" || item.machine_name === "M-10" || item.machine_name === "M-20" || item.machine_name === "M-35" )
       : activeTab === "PRO"
-      ? data?.filter((item) => item.machine_name === "M-20" || item.machine_name === "M-25")
-      : data?.filter((item) => item.machine_name === "M-50" || item.machine_name === "M-100"); // VIP data
+      ? data?.filter((item) => item.machine_name === "PRO-40" ||  item.machine_name === "PRO-45" || item.machine_name === "PRO-50" || item.machine_name === "PRO-55"  )
+      : data?.filter((item) => item.machine_name === "VIP-1" || item.machine_name === "VIP-2" || item.machine_name === "VIP-3" || item.machine_name === "VIP-4" || item.machine_name === "VIP-5") ; // VIP data
 
   return (
     <div className="min-h-[300px] w-full max-w-[750px] mx-auto px-4">

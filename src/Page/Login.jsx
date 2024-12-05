@@ -24,18 +24,20 @@ const Login = () => {
   } = useForm();
 
   useEffect(() => {
-    loadCaptchaEnginge(4, "white", "black", "0123456789");
+    // Load only numbers for captcha
+    loadCaptchaEnginge(6,"white", "red","0123456789"); // '0123456789' ensures only numbers
   }, []);
+
 
   const handlevalidatecaptcha = (e) => {
     const user_captcha_value = e.target.value;
-    // console.log(user_captcha_value);
-    if (validateCaptcha(user_captcha_value) == true) {
+    if (validateCaptcha(user_captcha_value) === true) {
       setdisabled(false);
     } else {
       setdisabled(true);
     }
   };
+
 
   const onSubmit = async (data) => {
     setLoading(true);
@@ -122,9 +124,10 @@ const Login = () => {
               )}
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm  font-bold mb-2">
-                <LoadCanvasTemplate  />
-              </label>
+              <div className="">        
+                <LoadCanvasTemplate />
+              </div>
+
               <input
                 onBlur={handlevalidatecaptcha}
                 className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
