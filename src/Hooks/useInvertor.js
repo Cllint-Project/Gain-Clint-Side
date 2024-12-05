@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import axios from 'axios';
-import { VITE_BASE_URL } from '../../baseUrl';
 
 
 export const useInvestor = () => {
@@ -14,7 +13,7 @@ export const useInvestor = () => {
       setLoading(true);
       setError('');
 
-      const response = await axios.get(`${VITE_BASE_URL}/api/packages/${investorId}`);
+      const response = await axios.get(`/api/packages/${investorId}`);
       console.log(response, investorId)
       setPackages(response.data.data.packages);
       setBalance(response.data.data.balance);

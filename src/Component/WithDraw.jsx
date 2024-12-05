@@ -3,11 +3,13 @@ import { AuthContext } from "../Auth/AuthProvider";
 import { Toaster, toast } from "react-hot-toast";
 import useAxiosSecure from "../Hooks/UseAxiosSecure";
 import LoadingSpinner from "../common/LoadingSpinner";
+import { useNavigate } from "react-router-dom";
 
 const Withdraw = () => {
   const { user, loading, setLoading } = useContext(AuthContext);
   const [userData, setUserData] = useState({});
   const axiosSecure = useAxiosSecure();
+  const navigate = useNavigate()
   const [withdrawData, setWithdrawData] = useState({
     account_number: "",
     amount: "",
@@ -71,6 +73,7 @@ const Withdraw = () => {
           amount: "",
           payment_method: "",
         });
+        navigate('/withdrawrecord')
       }
     } catch (error) {
       toast.error(
