@@ -104,7 +104,7 @@ const DashBord = () => {
                 {/* <BsFillHouseAddFill className='w-5 h-5' /> */}
                 <WalletMinimal />
 
-                <span className="mx-4 font-medium">Reacharge Details</span>
+                <span className="mx-4 font-medium">Recharge Details</span>
               </NavLink>
               {/* Withdraw */}
               <NavLink
@@ -130,7 +130,7 @@ const DashBord = () => {
               >
                 <RiCoupon3Fill className="w-5 h-5" />
 
-                <span className="mx-4 font-medium">Cupon</span>
+                <span className="mx-4 font-medium">Coupon</span>
               </NavLink>
               {/* Lottary */}
               <NavLink
@@ -143,7 +143,7 @@ const DashBord = () => {
               >
                 <GiftIcon className="w-5 h-5" />
 
-                <span className="mx-4 font-medium">Lottary</span>
+                <span className="mx-4 font-medium">Lottery</span>
               </NavLink>
               {/* Machine */}
               <NavLink
@@ -156,7 +156,7 @@ const DashBord = () => {
               >
                 <TbWashMachine className="w-5 h-5" />
 
-                <span className="mx-4 font-medium">Machine Detail</span>
+                <span className="mx-4 font-medium">User Machine Details</span>
               </NavLink>
             </nav>
           </div>

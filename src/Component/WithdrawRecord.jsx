@@ -1,36 +1,37 @@
-import { useContext, useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import { useContext, useState } from "react";
 import useAxiosSecure from "../Hooks/UseAxiosSecure";
 import { AuthContext } from "../Auth/AuthProvider";
-import LoadingSpinner from "../common/LoadingSpinner";
+import usePagination from "../Hooks/UsePagination";
+import Pagination from "../common/Pagination";
 
 const WithdrawRecord = () => {
-  const [withdrawals, setWithdrawals] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState("all");
   const axiosSecure = useAxiosSecure();
-  const { user, loading } = useContext(AuthContext);
+  const { user} = useContext(AuthContext);
   const statusOptions = ["all", "pending", "approved", "rejected"];
 
-  const fetchWithdrawals = async () => {
+  const fetchWithdrawals = async (page,itemsPerPage) => {
     try {
-      let url = `/api/users/getWithdraw?userId=${user?._id}`;
+      let url = `/api/users/getWithdraw?userId=${user?._id}&page=${page}&limit=${itemsPerPage}`;
 
       if (selectedStatus !== "all") {
         url += `&status=${selectedStatus}`;
       }
 
-      const response = await axiosSecure.get(url);
-      setWithdrawals(response?.data?.data);
+      return await axiosSecure.get(url);
     } catch (err) {
-      toast.error(err.response?.data?.message || "Failed to fetch withdrawals");
+      console.log(err.response?.data?.message);
     }
   };
 
-  useEffect(() => {
-    if (user) {
-      fetchWithdrawals(); // Fetch withdrawals only when user is available
-    }
-  }, [selectedStatus, user]);
+  const {
+    data: withdrawals = [],
+    currentPage,
+    totalPages,
+    handlePageChange,
+    refresh,
+  } = usePagination(fetchWithdrawals, 10);
+
 
   const getStatusColor = (status) => {
     switch (status?.toLowerCase()) {
@@ -44,26 +45,23 @@ const WithdrawRecord = () => {
         return "bg-gray-100 text-gray-800";
     }
   };
-  console.log(withdrawals, 47);
-
-  if (loading) return <LoadingSpinner />;
+  
+  const handleStatusChange = (e) => {
+    setSelectedStatus(e.target.value);
+    refresh();
+  };
   return (
     <div>
       <div className="min-h-screen my-10 bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          {/* {error && (
-          <div className="mb-4 p-4 bg-red-100 text-red-700 rounded-lg">
-            {error}
-          </div>
-        )} */}
-
+          
           <div className="mb-6">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Filter by Status
             </label>
             <select
-              value={selectedStatus}
-              onChange={(e) => setSelectedStatus(e.target.value)}
+               value={selectedStatus}
+               onChange={handleStatusChange}
               className="mt-1 block w-48 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
             >
               {statusOptions.map((status) => (
@@ -134,6 +132,16 @@ const WithdrawRecord = () => {
                   ))}
                 </tbody>
               </table>
+
+              {withdrawals?.length > 0 ? (
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+              />
+            ) : (
+              <div className="text-center py-4">No withdrawals found</div>
+            )}
             </div>
           </div>
         </div>

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import UseAxiosPublic from './UseAxiosPublic';
 
 
 export const useInvestor = () => {
@@ -7,13 +8,14 @@ export const useInvestor = () => {
   const [balance, setBalance] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const axiosPublic = UseAxiosPublic();
 
   const fetchInvestorData = async (investorId) => {
     try {
       setLoading(true);
       setError('');
 
-      const response = await axios.get(`/api/packages/${investorId}`);
+      const response = await axiosPublic.get(`/api/packages/${investorId}`);
       console.log(response, investorId)
       setPackages(response.data.data.packages);
       setBalance(response.data.data.balance);

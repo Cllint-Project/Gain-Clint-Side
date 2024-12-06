@@ -7,9 +7,9 @@
     return (
       <div className="bg-blue-500 rounded-b-lg mb-6">
         <div className="p-6">
-          <div className="grid grid-cols-3 gap-4">
+          <div >
             {stats.map((stat, index) => (
-              <div key={index} className="text-center">
+              <div key={index} className="">
                 <h2 className="text-xl font-semibold text-white">{stat.value}</h2>
                 <p className="text-blue-100">{stat.label}</p>
               </div>

@@ -7,7 +7,7 @@ import WinnerModal from "../Component/WinnerModal";
 const Home = () => {
      return (
           <div>
-                 <WinnerModal />
+               <WinnerModal />
                <Banner></Banner>
                <div className="my-12">
                <Card></Card>

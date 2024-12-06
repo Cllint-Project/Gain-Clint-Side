@@ -1,42 +1,35 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import Swal from "sweetalert2";
-import UseAxiosSecure from "../../Hooks/UseAxiosSecure";
-import LoadingSpinner from "../../common/LoadingSpinner";
-import { AuthContext } from "../../Auth/AuthProvider";
 
-const ReachargeDetail = () => {
-  const [recharges, setRecharges] = useState([]);
+import { AuthContext } from "../../Auth/AuthProvider";
+import UsePagination from "../../Hooks/UsePagination";
+import useAxiosSecure from "../../Hooks/UseAxiosSecure";
+import LoadingSpinner from "../../common/LoadingSpinner";
+import Pagination from "../../common/Pagination";
+
+const RechargeDetail = () => {
   const [selectedStatus, setSelectedStatus] = useState("all");
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const axiosSecure = UseAxiosSecure();
+  const axiosSecure = useAxiosSecure();
   const statusOptions = ["all", "pending", "approved", "rejected"];
   const { user } = useContext(AuthContext);
 
-  const fetchRecharges = async () => {
-    try {
-      setLoading(true);
-      setError("");
-
-      let url = `/api/users/get-AllRecharge-data`;
-
-      if (selectedStatus !== "all") {
-        url += `?status=${selectedStatus}`;
-      }
-      const response = await axiosSecure.get(url);
-      setRecharges(response?.data?.data);
-    } catch (err) {
-      setError(err.response?.data?.message || "Failed to fetch recharges");
-    } finally {
-      setLoading(false);
+  const fetchRecharges = async (page, limit) => {
+    let url = `/api/users/get-AllRecharge-data?page=${page}&limit=${limit}`;
+    if (selectedStatus !== "all") {
+      url += `&status=${selectedStatus}`;
     }
+    return await axiosSecure.get(url);
   };
 
-  useEffect(() => {
-    if (user) {
-      fetchRecharges();
-    }
-  }, [selectedStatus, user]);
+  const {
+    data: recharges,
+    currentPage,
+    totalPages,
+    loading,
+    handlePageChange,
+    refresh,
+  } = UsePagination(fetchRecharges);
 
   const handleStatusUpdate = async (investor_id, recharge_id, status) => {
     try {
@@ -53,7 +46,6 @@ const ReachargeDetail = () => {
       });
 
       if (result.isConfirmed) {
-        setLoading(true);
         setError("");
 
         await axiosSecure.post(`/api/users/approve-recharge`, {
@@ -64,27 +56,23 @@ const ReachargeDetail = () => {
 
         await Swal.fire({
           title: "Success!",
-          text: `recharge request has been ${status}`,
+          text: `Recharge request has been ${status}`,
           icon: "success",
           confirmButtonColor: "#10B981",
         });
 
-        // Refresh the list after update
-        await fetchRecharges();
+        refresh();
       }
     } catch (err) {
       Swal.fire({
         title: "Error!",
-        text:
-          err.response?.data?.message || "Failed to update recharges status",
+        text: err.response?.data?.message || "Failed to update recharge status",
         icon: "error",
         confirmButtonColor: "#EF4444",
       });
       setError(
-        err.response?.data?.message || "Failed to update recharges status"
+        err.response?.data?.message || "Failed to update recharge status"
       );
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -104,6 +92,7 @@ const ReachargeDetail = () => {
   if (loading) {
     return <LoadingSpinner />;
   }
+
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
@@ -162,9 +151,10 @@ const ReachargeDetail = () => {
                     className="hover:bg-gray-50 transition-colors duration-200"
                   >
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">
+                      <div className="text-sm text-gray-900 ">
                         {recharge?.transaction_id}
                       </div>
+                      
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm text-gray-900">
@@ -224,6 +214,16 @@ const ReachargeDetail = () => {
                 ))}
               </tbody>
             </table>
+
+            {recharges?.length > 0 ? (
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+              />
+            ) : (
+              <div className="text-center py-4">No recharge data found</div>
+            )}
           </div>
         </div>
       </div>
@@ -231,4 +231,4 @@ const ReachargeDetail = () => {
   );
 };
 
-export default ReachargeDetail;
+export default RechargeDetail;

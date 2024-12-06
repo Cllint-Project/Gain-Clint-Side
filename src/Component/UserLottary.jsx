@@ -49,7 +49,7 @@ const UserLottery = () => {
         className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md space-y-6"
       >
         <h2 className="text-2xl font-bold text-gray-800 text-center">
-          Weekly Lottery
+        সাপ্তাহিক লটারি
         </h2>
 
         <div>
@@ -57,14 +57,14 @@ const UserLottery = () => {
             htmlFor="lotteryNumber"
             className="block text-gray-700 font-medium"
           >
-            Lottery Number (4 digits)
+            লটারি নম্বর (৪ সংখ্যা)
           </label>
           <input
             type="text"
             id="lotteryNumber"
             value={lotteryNumber}
             onChange={(e) => setLotteryNumber(e.target.value.slice(0, 4))}
-            placeholder="Enter 4 digit number"
+            placeholder="4 সংখ্যার নম্বর লিখুন"
             maxLength="4"
             pattern="\d{4}"
             required
@@ -74,7 +74,7 @@ const UserLottery = () => {
 
         <div>
           <label htmlFor="amount" className="block text-gray-700 font-medium">
-            Amount
+          টাকার পরিমাণ
           </label>
           <select
             id="amount"

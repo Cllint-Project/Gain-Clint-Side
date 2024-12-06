@@ -64,7 +64,7 @@ const router = createBrowserRouter([
         element: <Login></Login>,
       },
       {
-        path: "/registation",
+        path: "/registration",
         element: <Registation></Registation>,
       },
       {
@@ -113,7 +113,6 @@ const router = createBrowserRouter([
           <PrivateRoute>
             <Personal></Personal>
           </PrivateRoute>
-          // done
         ),
       },
       {

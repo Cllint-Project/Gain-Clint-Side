@@ -35,13 +35,6 @@ const CouponForm = () => {
     }
   };
 
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setFormData((prev) => ({
-  //     ...prev,
-  //     [name]: name === "expirationMinutes" ? Number(value) : value,
-  //   }));
-  // };
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({

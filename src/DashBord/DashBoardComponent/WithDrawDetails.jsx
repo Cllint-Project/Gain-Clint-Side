@@ -1,44 +1,36 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../Hooks/UseAxiosSecure";
-import LoadingSpinner from "../../common/LoadingSpinner";
 import { AuthContext } from "../../Auth/AuthProvider";
-// import { AuthContext } from "../../Auth/AuthProvider";
+import UsePagination from "../../Hooks/UsePagination";
+import LoadingSpinner from "../../common/LoadingSpinner";
+import Pagination from "../../common/Pagination";
 
 const WithdrawDetails = () => {
-  const [withdrawals, setWithdrawals] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState("all");
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const axiosSecure = useAxiosSecure();
-  const {user} = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const statusOptions = ["all", "pending", "approved", "rejected"];
 
-  const fetchWithdrawals = async () => {
-    try {
-      setLoading(true);
-      setError("");
+  const fetchWithdrawals = async (page, limit) => {
 
-      let url = `/api/users/getWithdraw`;
-
-      if (selectedStatus !== "all") {
-        url += `?status=${selectedStatus}`;
-      }
-
-      const response = await axiosSecure.get(url);
-      setWithdrawals(response?.data?.data);
-    } catch (err) {
-      setError(err.response?.data?.message || "Failed to fetch withdrawals");
-    } finally {
-      setLoading(false);
+    let url = `/api/users/get-all-withdraw?page=${page}&limit=${limit}`;
+    if (selectedStatus !== "all") {
+      url += `&withDrawStatus=${selectedStatus}`;
     }
+    // }
+    return await axiosSecure.get(url);
   };
 
-  useEffect(() => {
-    if (user) {
-      fetchWithdrawals(); // Fetch withdrawals only when user is available
-    }
-  }, [selectedStatus, user]); // Include 'user' as dependency
+  const {
+    data: withdrawals,
+    currentPage,
+    totalPages,
+    loading,
+    handlePageChange,
+    refresh,
+  } = UsePagination(fetchWithdrawals);
 
   const handleStatusUpdate = async (userId, withdrawId, newStatus) => {
     try {
@@ -55,7 +47,6 @@ const WithdrawDetails = () => {
       });
 
       if (result.isConfirmed) {
-        setLoading(true);
         setError("");
 
         await axiosSecure.put(`/api/users/admin/withdraw/approve`, {
@@ -71,8 +62,7 @@ const WithdrawDetails = () => {
           confirmButtonColor: "#10B981",
         });
 
-        // Refresh the list after update
-        await fetchWithdrawals();
+        refresh();
       }
     } catch (err) {
       Swal.fire({
@@ -85,8 +75,6 @@ const WithdrawDetails = () => {
       setError(
         err.response?.data?.message || "Failed to update withdrawal status"
       );
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -104,10 +92,13 @@ const WithdrawDetails = () => {
   };
 
   if (loading) {
-    return (
-        <LoadingSpinner />
-    );
+    return <LoadingSpinner />;
   }
+
+  const handleStatusChange = (e) => {
+    setSelectedStatus(e.target.value);
+    refresh(); // This will trigger a new fetch with the updated status
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
@@ -124,7 +115,7 @@ const WithdrawDetails = () => {
           </label>
           <select
             value={selectedStatus}
-            onChange={(e) => setSelectedStatus(e.target.value)}
+            onChange={handleStatusChange}
             className="mt-1 block w-48 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
           >
             {statusOptions.map((status) => (
@@ -141,7 +132,7 @@ const WithdrawDetails = () => {
               <thead className="bg-gradient-to-r from-blue-400 to-blue-600">
                 <tr>
                   <th className="px-6 py-4 text-left text-sm font-medium text-white uppercase tracking-wider">
-                    User ID
+                    User Name
                   </th>
                   <th className="px-6 py-4 text-left text-sm font-medium text-white uppercase tracking-wider">
                     Pending Balance
@@ -168,7 +159,7 @@ const WithdrawDetails = () => {
                   >
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm text-gray-900">
-                        {withdrawal?.user_id}
+                        {withdrawal?.username}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -229,6 +220,16 @@ const WithdrawDetails = () => {
                 ))}
               </tbody>
             </table>
+
+            {withdrawals?.length > 0 ? (
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+              />
+            ) : (
+              <div className="text-center py-4">No withdrawals found</div>
+            )}
           </div>
         </div>
       </div>

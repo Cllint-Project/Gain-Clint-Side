@@ -86,54 +86,27 @@ const CardDetails = () => {
       const response = await BuyMachine(newMachineData);
       
       if (response.success) {
-        // Success message is handled in the BuyMachine function via toast
         setTimeout(() => {
           navigate("/investmentrecord");
         }, 1000);
       }
     } catch (error) {
-      // Error message is already handled in the BuyMachine function via toast
       console.error("Error processing transaction:", error);
     }
   };
-
-  // const lastItem = rechargeData[rechargeData.length - 1];
-  // console.log("recharge data ", lastItem);
-  // const handleRechargeClick = async (machineData) => {
-  //   const newMachineData = {
-  //     adminNumber: adminData?.phoneNumber,
-  //     investor_id: user?._id,
-  //     investor_name: user?.username,
-  //     recharge_amount: machineData?.investment_amount || 0,
-  //     recharge_option: rechargeData?.recharge_option,
-  //     phone_number: rechargeData?.phone_number,
-  //     // balance: 0,
-  //     // recharge_status: "pending",
-  //     machine_details: machineData || null,
-  //   };
-  //   console.log("buy machine data", newMachineData);
-  //   const response = await BuyMachine(newMachineData);
-
-  //   if (response.message) {
-  //     toast.success("Transaction submitted successfully!");
-  //     // setTimeout(() => {
-  //     //   navigate("/");
-  //     // }, 1000);
-  //   }
-  // };
 
   return (
     <div>
       <div className="max-w-lg mb-14 mt-10 mx-auto border rounded-lg shadow-lg overflow-hidden  bg-white">
         <div className="relative">
           <img
-            className="w-full h-48 object-cover" // Height কমিয়ে h-48 করা হয়েছে
+            className="w-full h-48 object-cover"
             src={item?.machine_image} // Replace with actual image URL
             alt="P-45"
           />
           <div className="absolute top-4 left-4">
             <img
-              src="https://via.placeholder.com/50"
+              src="/gain-logo.jpeg"
               alt="Logo"
               className="h-10"
             />

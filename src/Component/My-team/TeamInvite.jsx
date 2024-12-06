@@ -30,7 +30,7 @@ import { useState } from 'react';
           <div className='flex items-center gap-6'>
             <div>
             <h3 className="text-lg font-semibold text-gray-800">
-            Referral Code: <span className='bg-green-100 text-green-800 px-2 py-1 rounded-2xl'>{referralCode}</span>
+            রেফারেল কোড: <span className='bg-green-100 text-green-800 px-2 py-1 rounded-2xl'>{referralCode}</span>
           </h3>
             </div>
             <div>
@@ -43,7 +43,7 @@ import { useState } from 'react';
           </button>
             </div>
           </div>
-          <p className="text-gray-500 mt-1">Share with friends to earn rewards</p>
+          <p className="text-gray-500 mt-1">বন্ধুদের সাথে শেয়ার করুন</p>
         </div>
         {/* Share */}
         <button

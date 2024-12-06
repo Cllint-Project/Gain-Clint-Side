@@ -8,12 +8,7 @@ const Recharge = () => {
   const navigate = useNavigate();
   const { machineData, previousPath = "" } = location.state || {};
   const { user } = useContext(AuthContext);
-
-  // console.log('Previous pathname:', previousPath);
-  // , previousPath = ''
   const isCardDetails = previousPath.includes('cardDetails');
-  // const isCardDetails = false;
-  console.log("isCardDetails:", machineData,isCardDetails);
 
   const [rechargeData, setRechargeData] = useState({
     investor_id: user?._id,
@@ -82,7 +77,7 @@ const Recharge = () => {
               onChange={handleInputChange}
               placeholder="Enter amount"
               className={`w-full px-4 py-2 border rounded-lg outline-none focus:ring-1 focus:ring-blue-500 focus:outline-blue-500 ${ isCardDetails && "bg-gray-100 cursor-not-allowed"}`}
-              readOnly={isCardDetails} // cardDetails পাথের জন্য readOnly
+              readOnly={isCardDetails}
             />
           </div>
 
