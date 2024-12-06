@@ -1,31 +1,31 @@
 import Swal from "sweetalert2";
-import { useEffect, useState } from "react";
 import { FaUser, FaSort } from "react-icons/fa";
-
-import LoadingSpinner from "../../common/LoadingSpinner";
+import UsePagination from "../../Hooks/UsePagination";
 import useAxiosSecure from "../../Hooks/UseAxiosSecure";
+import LoadingSpinner from "../../common/LoadingSpinner";
+import { handleDelete } from "../../utils/updateAndDeleteApi";
+import Pagination from "../../common/Pagination";
+
 
 const UserManagement = () => {
-  const [rechargeData, setRechargeData] = useState([]);
   const axiosSecure = useAxiosSecure();
 
-  const fetchUsers = async () => {
-    try {
-      const res = await axiosSecure.get(`/api/users/getUsers`);
-      setRechargeData(res?.data?.data || []);
-    } catch (error) {
-      console.error("Failed to fetch users:", error);
-    }
+  const fetchUsers = async (page, limit) => {
+    return await axiosSecure.get(`/api/users/getUsers?page=${page}&limit=${limit}`);
   };
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
+  const {
+    data: rechargeData,
+    currentPage,
+    totalPages,
+    loading,
+    handlePageChange,
+    refresh
+  } = UsePagination(fetchUsers);
 
   const updateRole = async (userId, currentRole) => {
     const newRole = currentRole === "admin" ? "normal-user" : "admin";
 
-    // SweetAlert Confirmation
     const result = await Swal.fire({
       title: "Are you sure?",
       text: `Do you want to change the role to ${newRole}?`,
@@ -42,9 +42,8 @@ const UserManagement = () => {
           newRole,
           userId,
         });
-        console.log(newRole, userId);
         Swal.fire("Success!", res.data.message, "success");
-        fetchUsers(); // Refresh the user list
+        refresh();
       } catch (error) {
         console.error("Failed to update role:", error);
         Swal.fire("Error!", "Failed to update user role.", "error");
@@ -52,23 +51,12 @@ const UserManagement = () => {
     }
   };
 
-  const handleDelete = async (userId) => {
-    console.log(userId);
-    try {
-      const res = await axiosSecure.delete(`/api/users/delete-user/${userId}`);
-
-      if (res.data.message) {
-        Swal.fire("Success!", res.data.message, "success");
-        fetchUsers();
-      } // Refresh the user list
-    } catch (error) {
-      if (error.response && error.response.data) {
-        Swal.fire("Error!", error.response.data.message, "error");
-      } else {
-        Swal.fire("Error!", "Something went wrong.", "error");
-      }
-    }
+  const isDeletedSuccess = async (userId) => {
+    const isSuccess = await handleDelete(userId)
+    isSuccess && refresh();
   };
+
+  if (loading) return <LoadingSpinner />;
 
   return (
     <div>
@@ -129,15 +117,13 @@ const UserManagement = () => {
                             </div>
                           </td>
                           <td className="px-6 py-4 flex flex-row gap-3 whitespace-nowrap text-center">
-                            <div className="flex  justify-center gap-3">
+                            <div className="flex justify-center gap-3">
                               <div>
                                 <button
                                   className={`inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 ${
                                     item.role === "admin" && "hidden"
                                   }`}
-                                  onClick={() =>
-                                    updateRole(item?._id, item?.role)
-                                  }
+                                  onClick={() => updateRole(item?._id, item?.role)}
                                 >
                                   <FaUser className="mr-2" />
                                   Change Role
@@ -147,7 +133,7 @@ const UserManagement = () => {
                             <div>
                               <button
                                 className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
-                                onClick={() => handleDelete(item?._id)}
+                                onClick={() => isDeletedSuccess(item?._id)}
                               >
                                 Delete
                               </button>
@@ -157,9 +143,15 @@ const UserManagement = () => {
                       ))}
                     </tbody>
                   </table>
+
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={handlePageChange}
+                  />
                 </>
               ) : (
-                <LoadingSpinner />
+                <div className="text-center py-4">No users found</div>
               )}
             </div>
           </div>

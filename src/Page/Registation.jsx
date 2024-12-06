@@ -22,12 +22,7 @@ const Registation = () => {
   const onSubmit = async (data) => {
     setLoading(true);
 
-    // Generate a profile image based on username
-    // const profileImage = `https://avatars.dicebear.com/api/initials/${data.username}.svg`;
-
     try {
-      // const profileImage = `https://avatars.dicebear.com/api/initials/${data.username}.svg`;
-      // Generate profile image using md5 hash of the username
       const profileImage = `https://www.gravatar.com/avatar/${md5(
         data?.username
       )}?d=identicon`;

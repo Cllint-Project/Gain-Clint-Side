@@ -1,61 +1,48 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { PlusCircle, MinusCircle, Search } from "lucide-react";
 import useAxiosSecure from "../../Hooks/UseAxiosSecure";
+import usePagination from "../../Hooks/UsePagination";
+import Pagination from "../../common/Pagination";
+
 
 const UserPackages = () => {
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [expandedUser, setExpandedUser] = useState(null);
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchTimeout, setSearchTimeout] = useState(null);
   const axiosSecure = useAxiosSecure();
 
-  const fetchUsers = async (pageNum, search = "") => {
-    try {
-      const response = await axiosSecure.get(
-        `/api/users/user-purchases?page=${pageNum}&search=${search}`
-      );
-      const { users: newUsers, hasMore: moreData } = response.data;
-
-      setUsers(pageNum === 1 ? newUsers : [...users, ...newUsers]);
-      setHasMore(moreData);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching users:", error);
-      setLoading(false);
-    }
+  const fetchUserPackages = async (page, itemsPerPage) => {
+    const response = await axiosSecure.get(
+      `/api/users/user-purchases?page=${page}&limit=${itemsPerPage}&search=${searchTerm}`
+    );
+    return response;
   };
 
-  useEffect(() => {
-    fetchUsers(1);
-  }, []);
+  const {
+    data: users,
+    currentPage,
+    totalPages,
+    loading,
+    handlePageChange,
+    refresh,
+  } = usePagination(fetchUserPackages, 10);
 
   const handleSearch = (value) => {
     if (searchTimeout) clearTimeout(searchTimeout);
-
+    setSearchTerm(value);
+    
     setSearchTimeout(
       setTimeout(() => {
-        setPage(1);
-        fetchUsers(1, value);
+        refresh();
       }, 500)
     );
-  };
-
-  const loadMore = () => {
-    if (!loading && hasMore) {
-      const nextPage = page + 1;
-      setPage(nextPage);
-      fetchUsers(nextPage, searchTerm);
-    }
   };
 
   const toggleUserExpand = (userId) => {
     setExpandedUser(expandedUser === userId ? null : userId);
   };
 
-  if (loading && page === 1) {
+  if (loading && currentPage === 1) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent"></div>
@@ -76,10 +63,8 @@ const UserPackages = () => {
               type="text"
               placeholder="Search by name or phone..."
               className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              onChange={(e) => {
-                setSearchTerm(e.target.value);
-                handleSearch(e.target.value);
-              }}
+              value={searchTerm}
+              onChange={(e) => handleSearch(e.target.value)}
             />
           </div>
         </div>
@@ -168,19 +153,13 @@ const UserPackages = () => {
               )}
             </div>
           ))}
-
-          {hasMore && (
-            <div className="p-4 text-center">
-              <button
-                onClick={loadMore}
-                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                disabled={loading}
-              >
-                {loading ? "Loading..." : "Load More"}
-              </button>
-            </div>
-          )}
         </div>
+
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
       </div>
     </div>
   );

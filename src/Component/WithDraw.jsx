@@ -6,7 +6,9 @@ import LoadingSpinner from "../common/LoadingSpinner";
 import { useNavigate } from "react-router-dom";
 
 const Withdraw = () => {
+    const defaultImg = '/default.jpg'
   const { user, loading, setLoading } = useContext(AuthContext);
+
   const [userData, setUserData] = useState({});
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate()
@@ -61,6 +63,7 @@ const Withdraw = () => {
         amount: Number(withdrawData.amount),
         payment_method: withdrawData.payment_method,
         account_number: withdrawData.account_number,
+        username: user?.username,
       });
   
       if (response.data.success) {
@@ -83,8 +86,6 @@ const Withdraw = () => {
     }
   };
   
-
-  // console.log(userData);
   if (loading) {
     return <LoadingSpinner></LoadingSpinner>;
   }
@@ -98,8 +99,7 @@ const Withdraw = () => {
           <div className="w-16 h-16 flex items-center gap-2">
             <img
               src={
-                userData?.profileImage ||
-                "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                userData?.profileImage || defaultImg
               }
               alt="Profile"
               className="w-full h-full rounded-full object-cover border-2 border-white"
@@ -109,7 +109,7 @@ const Withdraw = () => {
                 {userData?.username || "User"}
               </h2>
               <p className="text-blue-100">
-                {userData?.phoneNumber || "No phone number"}
+                {userData?.phoneNumber || "017xxxxx"}
               </p>
             </div>
           </div>
@@ -117,7 +117,7 @@ const Withdraw = () => {
           <div className="flex items-center gap-10">
             <div className="text-white p-4 rounded-lg">
               <h2 className="text-xl font-semibold">
-                {userData?.balance || "0.00"}TK
+                {userData?.balance || "0"}TK
               </h2>
               <p>মোট আয়</p>
             </div>

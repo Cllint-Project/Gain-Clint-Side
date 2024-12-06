@@ -1,21 +1,38 @@
-import { useContext, useEffect } from "react";
+import { useContext, useState } from "react";
+import useAxiosSecure from "../Hooks/UseAxiosSecure";
 import { AuthContext } from "../Auth/AuthProvider";
-import LoadingSpinner from "../common/LoadingSpinner";
+import usePagination from "../Hooks/UsePagination";
+import Pagination from "../common/Pagination";
 
 const ReachargeRecord = () => {
+  const [selectedStatus, setSelectedStatus] = useState("all");
+  const axiosSecure = useAxiosSecure();
+  const statusOptions = ["all", "pending", "approved", "rejected"];
+  const { user } = useContext(AuthContext);
+
+  const fetchRecharges = async (page, limit) => {
+    let url = `/api/users/get-recharge-data?userId=${user?._id}&page=${page}&limit=${limit}`;
+
+    if (selectedStatus !== "all") {
+      url += `&status=${selectedStatus}`;
+    }
+    return await axiosSecure.get(url);
+  };
+
   const {
-    loading,
-    rechargeData = [],
-    fetchRechargeData,
-  } = useContext(AuthContext);
+    data: recharges,
+    currentPage,
+    totalPages,
+    handlePageChange,
+    refresh,
+  } = usePagination(fetchRecharges);
 
-  useEffect(() => {
-    fetchRechargeData();
-  }, []);
+  const handleStatusChange = (e) => {
+    setSelectedStatus(e.target.value);
+    refresh();
+  };
 
-  if (loading) {
-    return <LoadingSpinner />;
-  }
+  console.log(recharges, 'recharges')
 
   const getStatusColor = (status) => {
     switch (status.toLowerCase()) {
@@ -29,11 +46,27 @@ const ReachargeRecord = () => {
         return "bg-gray-100 text-gray-800";
     }
   };
-
   return (
     <div>
       <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Filter by Status
+            </label>
+            <select
+              value={selectedStatus}
+              onChange={handleStatusChange}
+              className="mt-1 block w-48 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            >
+              {statusOptions.map((status) => (
+                <option key={status} value={status}>
+                  {status.charAt(0).toUpperCase() + status.slice(1)}
+                </option>
+              ))}
+            </select>
+          </div>
+
           <div className="bg-white rounded-lg shadow-xl overflow-hidden">
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200">
@@ -57,7 +90,7 @@ const ReachargeRecord = () => {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {rechargeData?.map((item) => (
+                  {recharges?.map((item) => (
                     <tr
                       key={item?._id}
                       className="hover:bg-gray-50 transition-colors duration-200"
@@ -95,6 +128,16 @@ const ReachargeRecord = () => {
                   ))}
                 </tbody>
               </table>
+
+              {recharges?.length > 0 ? (
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+              />
+            ) : (
+              <div className="text-center py-4">No recharges found</div>
+            )}
             </div>
           </div>
         </div>

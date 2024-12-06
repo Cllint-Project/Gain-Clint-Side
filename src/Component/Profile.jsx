@@ -110,7 +110,7 @@ const Profile = () => {
           <div className="relative h-20">
             <div className="absolute -bottom-20 left-1/2 transform -translate-x-1/2">
               <img
-                src={formData.profileImage || "https://via.placeholder.com/128"}
+                src={formData.profileImage || "/default.jpg"}
                 alt="Profile"
                 className="w-32 h-32 rounded-full border-4 border-white object-cover"
               />

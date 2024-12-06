@@ -9,7 +9,7 @@ import { AuthContext } from "../../Auth/AuthProvider";
 import DailyBalanceStats from "../../Page/Balance/DailyBalanceStats";
 
 const Team = () => {
-  const { user, loading, setLoading, fetchBalanceHistory } =
+  const { user, loading, setLoading } =
     useContext(AuthContext);
   const [userData, setUserData] = useState({});
   const [teamMembers, setTeamMembers] = useState([]);
@@ -33,10 +33,6 @@ const Team = () => {
 
     fetchData();
   }, [user?._id, setLoading]);
-  
-  useEffect(() => {
-    fetchBalanceHistory();
-  }, []);
 
   if (loading) {
     return <LoadingSpinner />;
@@ -44,6 +40,7 @@ const Team = () => {
 
 const shortData = {
   profileImage: userData?.profileImage,
+  username: userData?.username,
   phoneNumber: userData?.phoneNumber,
   balance: userData?.balance,
   todayBalance: userData?.todayBalance,
@@ -51,7 +48,7 @@ const shortData = {
 }
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-5 pb-20 ">
         <TeamHeader shortData={shortData}/>
         <TeamStats shortData={shortData} />
         <DailyBalanceStats shortData={shortData}/>

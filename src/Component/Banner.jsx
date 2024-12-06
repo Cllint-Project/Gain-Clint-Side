@@ -7,37 +7,9 @@ import video from "/banner-video.mp4"
 const Banner = () => {
   const { logout, user } = useContext(AuthContext);
   const [menu, setShowMenu] = useState(false);
-  // const [loading, setLoading] = useState(false);
-  // const [userData, setUserData] = useState({});
   const navigate = useNavigate();
   const menuRef = useRef(null);
 
-  // const fetchUserData = async () => {
-  //   if (!user?._id) {
-  //     setLoading(false);
-  //     return;
-  //   }
-
-  //   try {
-  //     const response = await axiosSecure.get(
-  //       `/api/users/getUser/${user._id}`
-  //     );
-  //     const userData = response?.data?.data;
-  //     setUserData(userData);
-  //   } catch (error) {
-  //     console.error("Error fetching user data:", error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if(user?._id){
-  //     fetchUserData();
-  //   }
-  // }, [user?._id,axiosSecure]);
-
-  // Handle click outside to close menu
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -64,9 +36,7 @@ const Banner = () => {
       <div className="flex justify-between items-center bg-blue-500 px-4 py-2">
         {/* Logo */}
         <div>
-          {/* <h2 className="text-2xl text-white">Gain</h2> */}
           <img
-            // className='hidden md:block'
             src="/gain-logo.jpeg"
             alt="logo"
             width="45"
@@ -87,7 +57,7 @@ const Banner = () => {
                   <div className="w-10 h-10 rounded-full overflow-hidden">
                     {user?.profileImage ? (
                       <img
-                        src={user?.profileImage}
+                        src={user?.profileImage || '/default.jpg'}
                         className="h-full w-full object-cover"
                         alt={user?.username}
                       />
@@ -124,7 +94,7 @@ const Banner = () => {
                     </div>
                     {user?.role === "admin" && (
                       <Link
-                        to="/dashboard"
+                        to="/dashboard/profile"
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                         onClick={() => setShowMenu(false)}
                       >

@@ -31,7 +31,6 @@ function Transaction() {
           }));
         }
       } catch (error) {
-        // toast.error("Error fetching admin details");
         console.error("Error fetching admin:", error);
       }
     };

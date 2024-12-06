@@ -16,8 +16,6 @@ const InvesmentData = () => {
         const res = await axiosSecure.get(`/api/users/claim-daily/${userId}`);
 
         const getData = res?.data?.data;
-        console.log(getData);
-
         SetRechargeData(getData);
       } catch (error) {
         console.error("machine data fail to fetch", error);
@@ -25,8 +23,6 @@ const InvesmentData = () => {
     };
     fetchData();
   }, [userId, axiosSecure]);
-
-  // console.log(rechargeData, 31);
 
   const handleClaim = async (package_id) => {
     const data = {
@@ -42,7 +38,6 @@ const InvesmentData = () => {
           `Claim successful! Your new balance is ${response?.data?.data?.newBalance} TK`
         );
       }
-      // সফল হলে স্টেট আপডেট করুন বা অন্য কোনো অ্যাকশন নিন
       setIsClaimed(true);
     } catch (error) {
       console.error(
@@ -138,7 +133,7 @@ const InvesmentData = () => {
           </>
         ))
       ) : (
-        <h2>No data found...</h2>
+        <h2 className="text-center text-2xl py-10">No data found...</h2>
       )}
     </div>
   );

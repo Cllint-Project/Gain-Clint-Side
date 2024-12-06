@@ -10,9 +10,8 @@ export const TeamList = ({ members }) => {
       </div>
     );
   }
-console.log(members)
   return (
-    <div className="bg-white shadow-lg rounded-lg p-6">
+    <div className="bg-white shadow-lg rounded-lg p-6 ">
       <h3 className="text-lg font-semibold text-gray-800 mb-4">টিম তালিকা</h3>
       <div className="space-y-4">
         {members?.map((member) => (
