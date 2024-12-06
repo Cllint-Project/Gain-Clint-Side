@@ -2,8 +2,8 @@
 import axios from "axios";
 
 const axiosSecure = axios.create({
-  baseURL: "http://localhost:5000", // Adjust based on backend URL
-  // baseURL: "https://gain-server-side-production.up.railway.app", // Adjust based on backend URL
+  // baseURL: "http://localhost:5000", 
+  baseURL: "https://gain-server-side-production.up.railway.app", 
 });
 
 const useAxiosSecure = () => {
