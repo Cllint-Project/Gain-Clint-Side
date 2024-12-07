@@ -19,7 +19,7 @@ const BalanceOverview = () => {
     currentPage,
     totalPages,
     handlePageChange,
-  } = usePagination(fetchRecharges, 5);
+  } = usePagination(fetchRecharges, 15);
 
   const shortData = {
     todayBalance: user?.todayBalance,
