@@ -114,6 +114,10 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+  const hello = () =>{
+    console.log(3847576)
+  }
+
   // get recharge record
   // const fetchRechargeData = async () => {
   //   try {
@@ -159,7 +163,8 @@ const AuthProvider = ({ children }) => {
     Register,
     logout,
     fetchAdminData,
-    adminData
+    adminData,
+    hello
   };
   return <AuthContext.Provider value={Info}>{children}</AuthContext.Provider>;
 };
